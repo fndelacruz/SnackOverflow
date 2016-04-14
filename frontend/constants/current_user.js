@@ -1,0 +1,3 @@
+module.exports = {
+  RECEIVED_CURRENT_USER: 'RECEIVED_CURRENT_USER'
+};

@@ -1,6 +1,22 @@
 var React = require('react');
+var CurrentUserStore = require('../../stores/current_user');
+var ApiUtil = require('../../util/api_util');
 
+var _callbackId;
 module.exports = React.createClass({
+  getInitialState: function() {
+    return { currentUser: CurrentUserStore.fetch() };
+  },
+  componentDidMount: function() {
+    _callbackId = CurrentUserStore.addListener(this.onChange);
+    ApiUtil.fetchCurrentUser();
+  },
+  componentWillUnmount: function() {
+    _callbackId.remove();
+  },
+  onChange: function() {
+    this.setState({ currentUser: CurrentUserStore.fetch() });
+  },
   render: function() {
     return (
       <div>
@@ -12,7 +28,7 @@ module.exports = React.createClass({
               <li>Notifications</li>
             </ul>
             <ul className='nav-right-container base'>
-              <li>currentUser</li>
+              <li>{this.state.currentUser.display_name}</li>
               <li>help</li>
               <li id='nav-search-container'>
                 <input className='nav-search' type='text' placeholder="? Search"/>
