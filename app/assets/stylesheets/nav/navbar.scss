@@ -3,11 +3,10 @@
   background: #000;
 }
 
-.nav {
+.nav-main {
   width: 1060px;
   margin: 0 auto;
   font-size: 14px;
-  // background: #aaa;
 }
 
 .nav-left-container {
@@ -21,25 +20,39 @@
 .base > li {
   display: block;
   padding: 9px 5px;
-
   float: left;
   cursor: pointer;
-  // background: #ccc;
 }
 
 .base > li:hover {
   background: #555;
 }
 
-.nav-right-container > li:last-child {
+#nav-search-container {
   cursor: default;
   padding: 5px 0 5px 20px;
 }
 
-.nav-right-container > li:last-child:hover {
+.nav-search-container:hover {
   background: inherit;
 }
 
 .nav-search {
   height: 24px;
+}
+
+.nav-header {
+  padding: 40px 0;
+}
+
+.nav-header li {
+  margin-left: 4px;
+  padding: 5px 10px;
+  color: #fff;
+  background: #999;
+  transition: background 100ms;
+
+}
+.nav-header li:hover {
+  background: #ea1;
 }
