@@ -1,0 +1,42 @@
+<% action = params[:controller] === "sessions" ? session_url : users_url %>
+<% submit = params[:controller] === "sessions" ? "Login" : "Signup" %>
+
+<form action="<%= action %>" method="POST">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+  <label>
+    email
+    <input type="text" name="user[email]" value="<%= user.email %>" id="user_email">
+  </label>
+
+<% if params[:controller] === "users" %>
+  <label>
+    display_name
+    <input type="text" name="user[display_name]" value="<%= user.display_name %>" id="user_display_name">
+  </label>
+<% end %>
+
+  <label>
+    password
+    <input type="password" name="user[password]" id="user_password">
+  </label>
+
+  <input type="submit" value="<%= submit %>">
+</form>
+
+<% if params[:controller] === "sessions" %>
+<form action="<%= session_url %>" method="POST">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <input type="hidden" name="user[email]" value="ann@ann.ann">
+  <input type="hidden" name="user[password]" value="annann">
+  <input type="submit" value="Guest Login">
+</form>
+<% end %>
+
+<% if flash[:notices] %>
+  <ul>
+    <% flash[:notices].each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>

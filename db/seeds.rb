@@ -5,16 +5,16 @@ ActiveRecord::Base.transaction do
   tag4 = Tag.create!(name: 'tag4')
 
   ann = User.create!(
-    email: 'ann@ann.ann', display_name: 'ann1', password: 'annann'
+    email: 'ann@ann.ann', display_name: 'ann', password: 'annann'
   )
   bob = User.create!(
-    email: 'bob@bob.bob', display_name: 'bob1', password: 'bobbob'
+    email: 'bob@bob.bob', display_name: 'bob', password: 'bobbob'
   )
   cal = User.create!(
-    email: 'cal@cal.cal', display_name: 'cal1', password: 'calcal'
+    email: 'cal@cal.cal', display_name: 'cal', password: 'calcal'
   )
   dan = User.create!(
-    email: 'dan@dan.dan', display_name: 'dan1', password: 'dandan'
+    email: 'dan@dan.dan', display_name: 'dan', password: 'dandan'
   )
 
   ann_q1 = ann.questions.create!(
