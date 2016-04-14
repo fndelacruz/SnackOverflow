@@ -13,3 +13,60 @@
  *= require_tree .
  *= require_self
  */
+
+html, body, div, span, p, h1, h2, h3, h4, h5, h6, ul, li, button, strong, em, i,
+img, article, header, footer, nav, small, form, label, input, textarea, time {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  outline: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: inherit;
+  vertical-align: inherit;
+  box-sizing: inherit;
+  background: transparent;
+}
+
+html {
+  font-family: 'Roboto', sans-serif;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+button {
+  cursor: pointer;
+}
+
+input[type='submit'] {
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: color 200ms, background 200ms;
+}
+
+input[type='submit']:hover {
+  background: #000;
+  color: #fff;
+}
+
+.group:after   {
+  display: block;
+  content: '';
+  clear: both;
+}
+
+input {
+  background: #fff;
+  color: #000;
+}

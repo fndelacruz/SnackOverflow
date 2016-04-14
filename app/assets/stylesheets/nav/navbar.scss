@@ -1,0 +1,45 @@
+.nav-container {
+  color: #fff;
+  background: #000;
+}
+
+.nav {
+  width: 1060px;
+  margin: 0 auto;
+  font-size: 14px;
+  // background: #aaa;
+}
+
+.nav-left-container {
+  float: left
+}
+
+.nav-right-container {
+  float: right
+}
+
+.base > li {
+  display: block;
+  padding: 9px 5px;
+
+  float: left;
+  cursor: pointer;
+  // background: #ccc;
+}
+
+.base > li:hover {
+  background: #555;
+}
+
+.nav-right-container > li:last-child {
+  cursor: default;
+  padding: 5px 0 5px 20px;
+}
+
+.nav-right-container > li:last-child:hover {
+  background: inherit;
+}
+
+.nav-search {
+  height: 24px;
+}
