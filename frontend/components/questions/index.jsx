@@ -2,12 +2,18 @@ var React = require('react');
 var QuestionStore = require('../../stores/question');
 var ApiUtil = require('../../util/api_util');
 var QuestionIndexItem = require('./index_item');
+var QuestionNav = require('./nav');
 
 var _callbackId;
 
-module.exports = React.createClass({
+var SORT_TYPES = ['newest', 'featured', 'frequent', 'votes', 'active'];
+
+var QuestionsIndex = React.createClass({
   getInitialState: function() {
-    return { questions: QuestionStore.all() };
+    return {
+      questions: QuestionStore.all(),
+      sortBy: SORT_TYPES[0]
+    };
   },
   componentDidMount: function() {
     _callbackId = QuestionStore.addListener(this.onChange);
@@ -19,6 +25,9 @@ module.exports = React.createClass({
   onChange: function() {
     this.setState({ questions: QuestionStore.all() });
   },
+  handleSortChange: function(sortBy) {
+    this.setState({ sortBy: sortBy });
+  },
   render: function() {
     if (!this.state.questions.length) {
       return (<div></div>);
@@ -27,12 +36,17 @@ module.exports = React.createClass({
       return <QuestionIndexItem {...question} key={'question-' + question.id} />;
     });
     return (
-      <div className='main-content'>
-        <div>QuestionsIndexNavPlaceholder</div>
-        <ul>
+      <div>
+        <QuestionNav
+          links={SORT_TYPES}
+          active={this.state.sortBy}
+          handleSortChange={this.handleSortChange}/>
+        <div>
           {QuestionIndexItems}
-        </ul>
+        </div>
       </div>
     );
   }
 });
+
+module.exports = QuestionsIndex;

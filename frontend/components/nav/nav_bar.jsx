@@ -2,12 +2,12 @@ var React = require('react');
 var CurrentUserStore = require('../../stores/current_user');
 var ApiUtil = require('../../util/api_util');
 var hashHistory = require('react-router').hashHistory;
-var HeaderLink = require('./header_link');
+var NavHeaderLink = require('./header_link');
 
 var HEADERS = ['questions', 'jobs', 'tags', 'users', 'badges'];
 
 var _callbackId;
-module.exports = React.createClass({
+var NavBar = React.createClass({
   getInitialState: function() {
     return { currentUser: CurrentUserStore.fetch() };
   },
@@ -25,9 +25,10 @@ module.exports = React.createClass({
     hashHistory.push(destination);
   },
   render: function() {
-    var HeaderLinks = HEADERS.map(function(name) {
+    var NavHeaderLinks = HEADERS.map(function(name) {
       return (
-        <HeaderLink
+        <NavHeaderLink
+          key={'header-' + name}
           link={name}
           navigate={this.navigate}
           currentPath={this.props.location.pathname} />);
@@ -58,15 +59,17 @@ module.exports = React.createClass({
             </li>
           </ul>
           <ul className='nav-right-container base'>
-            {HeaderLinks}
+            {NavHeaderLinks}
             <li>Ask Question</li>
           </ul>
         </div>
 
-        <main>
+        <main className='main-content'>
           {this.props.children}
         </main>
       </div>
     );
   }
 });
+
+module.exports = NavBar;

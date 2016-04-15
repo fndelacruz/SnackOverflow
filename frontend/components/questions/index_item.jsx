@@ -11,7 +11,7 @@ function liTagsMap(questionId, tags) {
   });
 }
 
-module.exports = React.createClass({
+QuestionsIndexItem = React.createClass({
   render: function() {
     var question = this.props, tags;
     if (question.tags.length) {
@@ -26,8 +26,8 @@ module.exports = React.createClass({
     }
     return (
       <div className='question-index-item'>
-        QuestionIndexItemPlaceholder
         <div>asked by: {question.user.display_name}</div>
+        <div>created at: {question.created_at}</div>
         <div>title: {question.title}</div>
         <div>content: {question.content}</div>
         <div>votes: {question.vote_count}</div>
@@ -38,3 +38,5 @@ module.exports = React.createClass({
     );
   }
 });
+
+module.exports = QuestionsIndexItem;

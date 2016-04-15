@@ -1,6 +1,6 @@
 var React = require('react');
 var Util = require('../../util/util');
-module.exports = React.createClass({
+var NavHeaderLink = React.createClass({
   render: function() {
     var destinationUrl = '/' + this.props.link + '/', id;
     if (this.props.currentPath === destinationUrl) {
@@ -15,3 +15,5 @@ module.exports = React.createClass({
     );
   }
 });
+
+module.exports = NavHeaderLink;

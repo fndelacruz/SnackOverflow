@@ -4,19 +4,8 @@
   font-size: 14px;
 }
 
-.nav-left-container {
-  float: left
-}
-
-.nav-right-container {
-  float: right
-}
-
 .base > li {
-  display: block;
   padding: 9px 5px;
-  float: left;
-  cursor: pointer;
 }
 
 .base > li:hover {
@@ -36,9 +25,10 @@
   height: 24px;
 }
 
-.nav-header {
-  padding: 40px 0;
+div.nav-header {
+  padding: 35px 0;
   font-size: 14px;
+  margin-bottom: 15px;
 }
 
 .nav-header li {
