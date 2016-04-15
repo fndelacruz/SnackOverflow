@@ -21,7 +21,7 @@ module.exports = React.createClass({
   },
   render: function() {
     if (!this.state.questions.length) {
-      return (<div>no questions here!</div>);
+      return (<div></div>);
     }
     var QuestionIndexItems = this.state.questions.map(function(question) {
       return <QuestionIndexItem {...question} key={'question-' + question.id} />;

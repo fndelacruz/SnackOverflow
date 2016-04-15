@@ -2,6 +2,9 @@ var React = require('react');
 var CurrentUserStore = require('../../stores/current_user');
 var ApiUtil = require('../../util/api_util');
 var hashHistory = require('react-router').hashHistory;
+var HeaderLink = require('./header_link');
+
+var HEADERS = ['questions', 'jobs', 'tags', 'users', 'badges'];
 
 var _callbackId;
 module.exports = React.createClass({
@@ -22,6 +25,13 @@ module.exports = React.createClass({
     hashHistory.push(destination);
   },
   render: function() {
+    var HeaderLinks = HEADERS.map(function(name) {
+      return (
+        <HeaderLink
+          link={name}
+          navigate={this.navigate}
+          currentPath={this.props.location.pathname} />);
+    }.bind(this));
     return (
       <div>
         <div className='nav-container'>
@@ -48,11 +58,7 @@ module.exports = React.createClass({
             </li>
           </ul>
           <ul className='nav-right-container base'>
-            <li onClick={this.navigate.bind(null, '/questions/')}>Questions</li>
-            <li>Jobs</li>
-            <li>Tags</li>
-            <li>Users</li>
-            <li>Badges</li>
+            {HeaderLinks}
             <li>Ask Question</li>
           </ul>
         </div>
