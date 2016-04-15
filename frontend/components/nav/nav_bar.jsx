@@ -21,7 +21,7 @@ module.exports = React.createClass({
     return (
       <div>
         <div className='nav-container'>
-          <div className='nav-main group'>
+          <div className='main-content group'>
             <ul className='nav-left-container base'>
               <li><span>SnackOverflow</span></li>
               <li>Inbox</li>
@@ -37,7 +37,7 @@ module.exports = React.createClass({
           </div>
         </div>
 
-        <div className='nav-header nav-main group'>
+        <div className='nav-header main-content group'>
           <ul className='nav-left-container base'>
             <li><h1 className='logo'>SnackOverflow</h1></li>
           </ul>
@@ -50,6 +50,10 @@ module.exports = React.createClass({
             <li>Ask Question</li>
           </ul>
         </div>
+
+        <main>
+          {this.props.children}
+        </main>
       </div>
     );
   }

@@ -23,7 +23,7 @@ module Votable
     votes.find_by_user_id(user.id).destroy
   end
 
-  def score
+  def vote_count
     votes.pluck(:value).sum
   end
 end

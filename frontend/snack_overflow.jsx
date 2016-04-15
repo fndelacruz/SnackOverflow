@@ -3,10 +3,12 @@ var ReactDOM = require('react-dom');
 var Router = require('react-router').Router;
 var Route = require('react-router').Route;
 var NavBar = require('./components/nav/nav_bar');
+var QuestionsIndex = require('./components/questions/index');
 
 var App = (
   <Router>
     <Route path='/' component={NavBar}>
+      <Route path='questions' component={QuestionsIndex} />
     </Route>
   </Router>
 );

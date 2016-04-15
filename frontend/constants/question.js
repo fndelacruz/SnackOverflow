@@ -1,0 +1,3 @@
+module.exports = {
+  RECEIVE_QUESTIONS: 'RECEIVE_QUESTIONS'
+};

@@ -70,3 +70,10 @@ input {
   background: #fff;
   color: #000;
 }
+
+/* For all major components (Questions, Tags, Users) */
+
+.main-content {
+  width: 1060px;
+  margin: 0 auto;
+}

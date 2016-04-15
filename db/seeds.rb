@@ -32,6 +32,22 @@ ActiveRecord::Base.transaction do
     content: 'Just wondering.',
     tag_ids: [2, 4]
   )
+  bob_q2 = bob.questions.create!(
+    title: 'Why do people like bacon so much?',
+    content: 'It is not that great.',
+    tag_ids: [1, 4]
+  )
+  bob_q3 = bob.questions.create!(
+    title: 'What is the universe?',
+    content: 'I think it consist of a large cat.',
+    tag_ids: [1, 4]
+  )
+  dan_q1 = dan.questions.create!(
+    title: 'What does this mean?',
+    content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    tag_ids: [1, 4]
+  )
+
 
   ann_q1.answers.create!(user: bob, content: 'Because your parents named you.')
   ann_q1.answers.create!(user: bob, content: 'Because it just is.')
