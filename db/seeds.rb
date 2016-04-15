@@ -16,6 +16,18 @@ ActiveRecord::Base.transaction do
   dan = User.create!(
     email: 'dan@dan.dan', display_name: 'dan', password: 'dandan'
   )
+  edd = User.create!(
+    email: 'edd@edd.edd', display_name: 'edd', password: 'eddedd'
+  )
+  fry = User.create!(
+    email: 'fry@fry.fry', display_name: 'fry', password: 'fryfry'
+  )
+  guy = User.create!(
+    email: 'guy@guy.guy', display_name: 'guy', password: 'guyguy'
+  )
+  hal = User.create!(
+    email: 'hal@hal.hal', display_name: 'hal', password: 'halhal'
+  )
 
   ann_q1 = ann.questions.create!(
     title: 'Why is my name ann?',
@@ -79,6 +91,7 @@ ActiveRecord::Base.transaction do
   ann_q2.downvote(bob)
   ann_q2.downvote(cal)
   ann_q2.downvote(dan)
+  ann_q2.upvote(edd)
 
   cal_a1.upvote(cal)
   cal_a1.upvote(bob)
@@ -86,6 +99,15 @@ ActiveRecord::Base.transaction do
 
   ann_c1.upvote(ann)
   ann_c1.upvote(dan)
+
+  bob_q3.upvote(ann)
+  bob_q3.upvote(bob)
+  bob_q3.upvote(cal)
+  bob_q3.upvote(dan)
+  bob_q3.upvote(edd)
+  bob_q3.upvote(fry)
+  bob_q3.upvote(guy)
+  bob_q3.upvote(hal)
 
   View.create!(viewable: ann_q1, user: ann, created_at: 1.hour.ago, updated_at: 1.hour.ago)
   View.create!(viewable: ann_q1, user: ann)

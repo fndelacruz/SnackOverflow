@@ -3,16 +3,18 @@ var QuestionStore = require('../../stores/question');
 var ApiUtil = require('../../util/api_util');
 var QuestionIndexItem = require('./index_item');
 var QuestionNav = require('./nav');
+var QuestionActions = require('../../actions/question');
 
 var _callbackId;
 
-var SORT_TYPES = ['newest', 'featured', 'frequent', 'votes', 'active'];
+var SORT_TYPES = ['newest', 'featured', 'frequent', 'votes', 'active', 'views'];
+var defaultSortType = SORT_TYPES[0];
 
 var QuestionsIndex = React.createClass({
   getInitialState: function() {
     return {
       questions: QuestionStore.all(),
-      sortBy: SORT_TYPES[0]
+      sortBy: QuestionStore.getSortBy()
     };
   },
   componentDidMount: function() {
@@ -23,10 +25,15 @@ var QuestionsIndex = React.createClass({
     _callbackId.remove();
   },
   onChange: function() {
-    this.setState({ questions: QuestionStore.all() });
+    this.setState({
+      questions: QuestionStore.all(),
+      sortBy: QuestionStore.getSortBy()
+    });
   },
   handleSortChange: function(sortBy) {
-    this.setState({ sortBy: sortBy });
+    if (sortBy !== this.state.sortBy) {
+      QuestionActions.changeQuestionSort(sortBy);
+    }
   },
   render: function() {
     if (!this.state.questions.length) {
