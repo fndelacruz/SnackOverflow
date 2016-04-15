@@ -4,9 +4,10 @@ var Router = require('react-router').Router;
 var Route = require('react-router').Route;
 var NavBar = require('./components/nav/nav_bar');
 var QuestionsIndex = require('./components/questions/index');
+var hashHistory = require('react-router').hashHistory;
 
 var App = (
-  <Router>
+  <Router history={hashHistory}>
     <Route path='/' component={NavBar}>
       <Route path='questions' component={QuestionsIndex} />
     </Route>
