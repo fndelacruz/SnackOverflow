@@ -111,4 +111,16 @@ ActiveRecord::Base.transaction do
 
   View.create!(viewable: ann_q1, user: ann, created_at: 1.hour.ago, updated_at: 1.hour.ago)
   View.create!(viewable: ann_q1, user: ann)
+  View.create!(viewable: bob_q3, user: ann)
+  View.create!(viewable: bob_q3, user: bob)
+  View.create!(viewable: bob_q3, user: cal)
+  View.create!(viewable: bob_q2, user: cal)
+  View.create!(viewable: dan_q1, user: ann)
+  View.create!(viewable: dan_q1, user: bob)
+  View.create!(viewable: dan_q1, user: cal)
+  View.create!(viewable: dan_q1, user: dan)
+  View.create!(viewable: dan_q1, user: edd)
+  View.create!(viewable: dan_q1, user: fry)
+  View.create!(viewable: dan_q1, user: guy)
+  View.create!(viewable: dan_q1, user: hal)
 end

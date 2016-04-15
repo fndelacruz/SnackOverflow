@@ -2,6 +2,7 @@ json.extract!(
   question,
   :id, :title, :content, :created_at
 )
+json.created_at_words "asked #{time_ago_in_words(question.created_at)} ago"
 
 json.user do
   json.id question.user.id

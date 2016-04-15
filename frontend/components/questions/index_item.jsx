@@ -4,36 +4,88 @@ function liTagsMap(questionId, tags) {
   return tags.map(function(tag) {
     return (
       <li
+        onClick={this.handleTagClick}
         key={'question-' + questionId + '-tag-' + tag.id}>
         {tag.name}
       </li>
     );
-  });
+  }.bind(this));
+}
+
+var maxContentLength = 300;
+function handleContent(content) {
+  if (content.length > maxContentLength) {
+    return content.slice(0, maxContentLength) + ' ...';
+  } else {
+    return content;
+  }
 }
 
 QuestionsIndexItem = React.createClass({
+  handleTitleClick: function() {
+    alert('TODO');
+  },
+  handleTagClick: function() {
+    alert('TODO');
+  },
   render: function() {
     var question = this.props, tags;
     if (question.tags.length) {
       tags = (
-        <div>
-          tags
-          <ul>
-            {liTagsMap(question.id, question.tags)}
-          </ul>
-        </div>
+        <ul className='question-index-item-tags'>
+          {liTagsMap.call(this, question.id, question.tags)}
+        </ul>
       );
     }
+
     return (
-      <div className='question-index-item'>
-        <div>asked by: {question.user.display_name}</div>
-        <div>created at: {question.created_at}</div>
-        <div>title: {question.title}</div>
-        <div>content: {question.content}</div>
-        <div>votes: {question.vote_count}</div>
-        <div>answers: {question.answer_count}</div>
-        <div>views: {question.view_count}</div>
-        {tags}
+      <div className='question-index-item group'>
+        <div className='question-index-item-stats'>
+          <div className='question-index-item-stats-element'>
+            <div className='question-index-item-stats-number'>{question.vote_count}</div>
+            <div className='question-index-item-stats-label'>
+              {question.vote_count === 1 ? 'vote' : 'votes'}
+            </div>
+          </div>
+          <div className='question-index-item-stats-element'>
+            <div className='question-index-item-stats-number'>{question.answer_count}</div>
+            <div className='question-index-item-stats-label'>
+              {question.answer_count === 1 ? 'answer' : 'answers'}
+            </div>
+          </div>
+          <div className='question-index-item-stats-views'>
+            {question.view_count + (question.view_count === 1 ? ' view' : ' views')}
+          </div>
+        </div>
+
+        <div className='question-index-item-main'>
+          <h2
+            className='question-index-item-title'
+            onClick={this.handleTitleClick}>
+            {question.title}
+          </h2>
+          <p className='question-index-item-content'>
+            {handleContent(question.content)}
+          </p>
+
+          <div className='question-index-item-footer group'>
+            {tags}
+            <div className='question-index-item-date-user-info'>
+              <div className='question-index-item-date'>
+                {question.created_at_words}
+              </div>
+              <div className='question-index-item-user-container'>
+                <div className='question-index-item-user-pic' />
+                <div className='question-index-item-user-display-name'>
+                  {question.user.display_name}
+                </div>
+                <div className='question-index-item-user-score'>
+                  over 9000!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

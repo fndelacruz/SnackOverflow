@@ -30,5 +30,4 @@ document.addEventListener('DOMContentLoaded', function() {
   if (root) {
     ReactDOM.render(App, document.getElementById('root'));
   }
-  console.log('loaded');
 });
