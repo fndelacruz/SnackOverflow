@@ -44,12 +44,17 @@ var QuestionsIndex = React.createClass({
     });
     return (
       <div>
-        <QuestionNav
-          links={SORT_TYPES}
-          active={this.state.sortBy}
-          handleSortChange={this.handleSortChange}/>
-        <div>
-          {QuestionIndexItems}
+        <div className='content-double-main'>
+          <QuestionNav
+            links={SORT_TYPES}
+            active={this.state.sortBy}
+            handleSortChange={this.handleSortChange}/>
+          <div>
+            {QuestionIndexItems}
+          </div>
+        </div>
+        <div className='content-double-sidebar'>
+          sidebar placeholder
         </div>
       </div>
     );

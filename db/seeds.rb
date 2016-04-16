@@ -30,33 +30,33 @@ ActiveRecord::Base.transaction do
   )
 
   ann_q1 = ann.questions.create!(
-    title: 'Why is my name ann?',
-    content: 'I need to know!',
+    title: FFaker::BaconIpsum.sentence,
+    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
     tag_ids: [1, 2]
   )
   ann_q2 = ann.questions.create!(
-    title: 'How many other people are named ann?',
-    content: 'I only know of myself',
+    title: FFaker::BaconIpsum.sentence,
+    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
     tag_ids: []
   )
   bob_q1 = bob.questions.create!(
-    title: 'Does anyone else like my name, bob?',
-    content: 'Just wondering.',
+    title: FFaker::BaconIpsum.sentence,
+    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
     tag_ids: [2, 4]
   )
   bob_q2 = bob.questions.create!(
-    title: 'Why do people like bacon so much?',
-    content: 'It is not that great.',
+    title: FFaker::BaconIpsum.sentence,
+    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
     tag_ids: [1, 4]
   )
   bob_q3 = bob.questions.create!(
-    title: 'What is the universe?',
-    content: 'I think it consist of a large cat.',
+    title: FFaker::BaconIpsum.sentence,
+    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
     tag_ids: [1, 4]
   )
   dan_q1 = dan.questions.create!(
-    title: 'What does this mean?',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    title: FFaker::BaconIpsum.sentence,
+    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
     tag_ids: [1, 4]
   )
 

@@ -129,3 +129,16 @@ input {
   border-top: 2px solid orange;
   padding: 7px 10px 9px 10px;
 }
+
+/* For Questions and Badges */
+
+.content-double-main {
+  width: 728px;
+  float: left;
+}
+
+.content-double-sidebar {
+  width: 300px;
+  border: 1px solid blue;
+  float: right;
+}

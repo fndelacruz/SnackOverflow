@@ -12,7 +12,7 @@ function liTagsMap(questionId, tags) {
   }.bind(this));
 }
 
-var maxContentLength = 300;
+var maxContentLength = 180;
 function handleContent(content) {
   if (content.length > maxContentLength) {
     return content.slice(0, maxContentLength) + ' ...';
@@ -26,6 +26,9 @@ QuestionsIndexItem = React.createClass({
     alert('TODO');
   },
   handleTagClick: function() {
+    alert('TODO');
+  },
+  handleUserClick: function() {
     alert('TODO');
   },
   render: function() {
@@ -75,8 +78,12 @@ QuestionsIndexItem = React.createClass({
                 {question.created_at_words}
               </div>
               <div className='question-index-item-user-container'>
-                <div className='question-index-item-user-pic' />
-                <div className='question-index-item-user-display-name'>
+                <div
+                  className='question-index-item-user-pic'
+                  onClick={this.handleUserClick} />
+                <div
+                  className='question-index-item-user-display-name'
+                  onClick={this.handleUserClick}>
                   {question.user.display_name}
                 </div>
                 <div className='question-index-item-user-score'>
