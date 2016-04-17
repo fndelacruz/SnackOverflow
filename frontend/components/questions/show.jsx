@@ -1,6 +1,7 @@
 var React = require('react');
 var ApiUtil = require('../../util/api_util');
 var QuestionStore = require('../../stores/question');
+var AnswersIndex = require('../answers/index');
 
 function liTagsMap(questionId, tags) {
   return tags.map(function(tag) {
@@ -30,7 +31,9 @@ var QuestionShow = React.createClass({
     _callbackId.remove();
   },
   onChange: function() {
-    this.setState({ question: QuestionStore.getQuestion(this.props.params.questionId) });
+    this.setState(
+      { question: QuestionStore.getQuestion(this.props.params.questionId) }
+    );
   },
   handleVote: function(votable, id, value) {
     switch (votable) {
@@ -166,6 +169,7 @@ var QuestionShow = React.createClass({
           <div className='question-show-question-comments-container'>
             comments placeholder
           </div>
+          <AnswersIndex answers={question.answers} />
         </div>
 
         <div className='content-double-sidebar'>

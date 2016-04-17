@@ -1,6 +1,6 @@
 var React = require('react');
 
-var QuestionsNav = React.createClass({
+var SortNav = React.createClass({
   render: function() {
     var liLinks = this.props.links.map(function(link) {
       var className;
@@ -19,7 +19,7 @@ var QuestionsNav = React.createClass({
 
     return (
       <div className='subheader group'>
-        <h1>All Questions</h1>
+        <h1>{this.props.header}</h1>
         <ul className='nav-right-container'>
           {liLinks}
         </ul>
@@ -28,4 +28,4 @@ var QuestionsNav = React.createClass({
   }
 });
 
-module.exports = QuestionsNav;
+module.exports = SortNav;

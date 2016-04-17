@@ -2,13 +2,13 @@ var React = require('react');
 var QuestionStore = require('../../stores/question');
 var ApiUtil = require('../../util/api_util');
 var QuestionIndexItem = require('./index_item');
-var QuestionNav = require('./nav');
+var SortNav = require('../shared/sort_nav');
 var QuestionActions = require('../../actions/question');
 
 var _callbackId;
 
-var SORT_TYPES = ['newest', 'featured', 'frequent', 'votes', 'active', 'views'];
-var defaultSortType = SORT_TYPES[0];
+var QUESTION_SORT_TYPES =
+  ['newest', 'featured', 'frequent', 'votes', 'active', 'views'];
 
 var QuestionsIndex = React.createClass({
   getInitialState: function() {
@@ -45,9 +45,10 @@ var QuestionsIndex = React.createClass({
     return (
       <div>
         <div className='content-double-main'>
-          <QuestionNav
-            links={SORT_TYPES}
+          <SortNav
+            links={QUESTION_SORT_TYPES}
             active={this.state.sortBy}
+            header='All Questions'
             handleSortChange={this.handleSortChange}/>
           <div>
             {QuestionIndexItems}
