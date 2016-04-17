@@ -76,6 +76,13 @@ ActiveRecord::Base.transaction do
   cal_a1.comments.create!(user: bob, content: "Yes, it is common." )
   cal_a1.comments.create!(user: ann, content: "If you say so." )
 
+  ann_q1.comments.create!(user: ann, content: FFaker::BaconIpsum.sentences(rand(5) + 3).join(' ') )
+  ann_q1.comments.create!(user: dan, content: FFaker::BaconIpsum.sentences(rand(5) + 3).join(' ') )
+  ann_q1.comments.create!(user: fry, content: FFaker::BaconIpsum.sentences(rand(5) + 3).join(' ') )
+  ann_q1.comments.create!(user: guy, content: FFaker::BaconIpsum.sentences(rand(5) + 3).join(' ') )
+  ann_q1.comments.create!(user: hal, content: FFaker::BaconIpsum.sentences(rand(5) + 3).join(' ') )
+  ann_q1.comments.create!(user: bob, content: FFaker::BaconIpsum.sentences(rand(5) + 3).join(' ') )
+
   ann_q1.add_favorite(ann)
   ann_q1.add_favorite(bob)
   bob_q1.add_favorite(bob)
@@ -97,8 +104,12 @@ ActiveRecord::Base.transaction do
   cal_a1.upvote(bob)
   cal_a1.upvote(dan)
 
-  ann_c1.upvote(ann)
-  ann_c1.upvote(dan)
+  ann_q1.comments[0].upvote(ann)
+  ann_q1.comments[0].upvote(bob)
+  ann_q1.comments[0].upvote(cal)
+  ann_q1.comments[0].upvote(dan)
+  ann_q1.comments[0].downvote(fry)
+  ann_q1.comments[0].upvote(guy)
 
   bob_q3.upvote(ann)
   bob_q3.upvote(bob)

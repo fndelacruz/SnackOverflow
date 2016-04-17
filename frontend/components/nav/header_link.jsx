@@ -3,7 +3,8 @@ var Util = require('../../util/util');
 var NavHeaderLink = React.createClass({
   render: function() {
     var destinationUrl = '/' + this.props.link + '/', id;
-    if (this.props.currentPath === destinationUrl) {
+    var match = new RegExp('^/' + this.props.link);
+    if (this.props.currentPath.match(match)) {
       id = 'header-nav-active';
     }
     return (

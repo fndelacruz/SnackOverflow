@@ -1,4 +1,5 @@
 var React = require('react');
+var hashHistory = require('react-router').hashHistory;
 
 function liTagsMap(questionId, tags) {
   return tags.map(function(tag) {
@@ -23,7 +24,7 @@ function handleContent(content) {
 
 QuestionsIndexItem = React.createClass({
   handleTitleClick: function() {
-    alert('TODO');
+    hashHistory.push('/questions/' + this.props.id);
   },
   handleTagClick: function() {
     alert('TODO');
@@ -35,7 +36,7 @@ QuestionsIndexItem = React.createClass({
     var question = this.props, tags;
     if (question.tags.length) {
       tags = (
-        <ul className='question-index-item-tags'>
+        <ul className='tags'>
           {liTagsMap.call(this, question.id, question.tags)}
         </ul>
       );
@@ -62,29 +63,29 @@ QuestionsIndexItem = React.createClass({
         </div>
 
         <div className='question-index-item-main'>
-          <h2
+          <span
             className='question-index-item-title'
             onClick={this.handleTitleClick}>
             {question.title}
-          </h2>
+          </span>
           <p className='question-index-item-content'>
             {handleContent(question.content)}
           </p>
 
-          <div className='question-index-item-footer group'>
+          <div className='content-double-footer group'>
             {tags}
-            <div className='question-index-item-date-user-info'>
-              <div className='question-index-item-date'>
+            <div className='stub-date-user-container'>
+              <div className='stub-date'>
                 {question.created_at_words}
               </div>
               <div className='question-index-item-user-container'>
                 <div
                   className='question-index-item-user-pic'
                   onClick={this.handleUserClick} />
-                <div
-                  className='question-index-item-user-display-name'
-                  onClick={this.handleUserClick}>
-                  {question.user.display_name}
+                <div className='question-index-item-user-display-name'>
+                  <span onClick={this.handleUserClick}>
+                    {question.user.display_name}
+                  </span>
                 </div>
                 <div className='question-index-item-user-score'>
                   over 9000!

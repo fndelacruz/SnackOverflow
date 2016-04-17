@@ -14,6 +14,8 @@
  *= require_self
  */
 
+/* reset */
+
 html, body, div, span, p, h1, h2, h3, h4, h5, h6, ul, li, button, strong, em, i,
 img, article, header, footer, nav, small, form, label, input, textarea, time {
   margin: 0;
@@ -65,10 +67,15 @@ input[type='submit']:hover {
   content: '';
   clear: both;
 }
+/* defaults*/
 
 input {
   background: #fff;
   color: #000;
+}
+
+html {
+  font-size: 14px;
 }
 
 /* Navs */
@@ -139,6 +146,45 @@ input {
 
 .content-double-sidebar {
   width: 300px;
-  border: 1px solid blue;
   float: right;
+}
+
+/* Tags */
+
+.tags li {
+  padding: 4px 8px;
+  margin-right: 10px;
+  float: left;
+  font-size: 12px;
+  cursor: pointer;
+  background: #e2e2ff;
+  color: #00f;
+  transition: background 100ms;
+}
+
+.tags li:hover {
+  background: #ccf;
+}
+
+/* For footer of tools, date, user snippet below questions and answers */
+
+.content-double-footer {
+  font-size: 12px;
+}
+
+.stub-date-user-container {
+  margin-left: 15px;
+  padding: 8px;
+  width: 180px;
+  float: right;
+}
+
+.stub-date {
+  margin-bottom: 4px;
+}
+
+/* For debugging */
+
+#dev-border {
+  outline: 1px solid black;
 }

@@ -3,4 +3,11 @@ class Api::QuestionsController < ApplicationController
     # TODO: implement pagination
     @questions = Question.includes(:user, :votes, :answers, :views, :tags).all
   end
+
+  def show
+    @question = Question
+      .includes(:user, :votes, {answers: [:user, :votes]}, :views, :tags,
+        {comments: [:user, :votes]}, :favorites)
+      .find(params[:id])
+  end
 end

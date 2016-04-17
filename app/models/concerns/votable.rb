@@ -24,6 +24,6 @@ module Votable
   end
 
   def vote_count
-    votes.pluck(:value).sum
+    votes.map(&:value).sum
   end
 end

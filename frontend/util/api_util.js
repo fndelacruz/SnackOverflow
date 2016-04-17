@@ -28,5 +28,18 @@ module.exports = {
         debugger
       }
     });
+  },
+  fetchQuestion: function(questionId) {
+    $.ajax({
+      method: 'GET',
+      url: 'api/questions/' + questionId,
+      dataType: 'json',
+      success: function(question) {
+        QuestionActions.receiveQuestion(question);
+      },
+      error: function() {
+        debugger
+      }
+    });
   }
 };

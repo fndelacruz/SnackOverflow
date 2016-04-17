@@ -13,5 +13,11 @@ module.exports = {
       action: sortBy,
       actionType: QuestionConstants.CHANGE_QUESTION_SORT
     });
+  },
+  receiveQuestion: function(question) {
+    AppDispatcher.dispatch({
+      action: question,
+      actionType: QuestionConstants.RECEIVE_QUESTION
+    });
   }
 };

@@ -54,6 +54,10 @@ function sortByViews(questions) {
   });
 }
 
+function resetQuestion(question) {
+  _questions[question.id] = question;
+}
+
 QuestionStore.all = function() {
   var questions = Object.keys(_questions).map(function(id) {
     return _questions[id];
@@ -89,6 +93,10 @@ QuestionStore.all = function() {
   return questions; // TODO: take this out after implementing the rest of sort options
 };
 
+QuestionStore.getQuestion = function(questionId) {
+  return $.extend({}, _questions[questionId]);
+};
+
 QuestionStore.getSortBy = function() {
   return _sortBy;
 };
@@ -100,6 +108,9 @@ QuestionStore.__onDispatch = function(payload) {
       break;
     case QuestionConstants.CHANGE_QUESTION_SORT:
       changeQuestionSort(payload.action);
+      break;
+    case QuestionConstants.RECEIVE_QUESTION:
+      resetQuestion(payload.action);
       break;
   }
   this.__emitChange();

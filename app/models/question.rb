@@ -33,6 +33,10 @@ class Question < ActiveRecord::Base
     answers.length
   end
 
+  def favorite_count
+    favorites.length
+  end
+
   # NOTE: ajax may eliminate the need for #add/remove_favorite on this model
   # TODO: remove user argument after implementing current_user
   def add_favorite(user)
