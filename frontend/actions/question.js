@@ -19,5 +19,5 @@ module.exports = {
       action: question,
       actionType: QuestionConstants.RECEIVE_QUESTION
     });
-  }
+  },
 };

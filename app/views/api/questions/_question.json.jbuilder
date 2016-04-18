@@ -23,14 +23,17 @@ if show_detail
   json.comments question.comments do |comment|
     json.user comment.user, :id, :display_name
     json.extract!(comment,
-      :content, :created_at, :updated_at, :vote_count)
+      :id, :content, :created_at, :updated_at, :vote_count)
   end
 
   json.answers question.answers do |answer|
     json.user answer.user, :id, :display_name
     json.extract!(answer,
-      :content, :created_at, :updated_at, :vote_count)
+      :id, :content, :created_at, :updated_at, :vote_count)
   end
 
   json.favorite_count question.favorite_count
+else
+  json.answers []
+  json.comments []
 end

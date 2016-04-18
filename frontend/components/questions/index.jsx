@@ -13,8 +13,8 @@ var QUESTION_SORT_TYPES =
 var QuestionsIndex = React.createClass({
   getInitialState: function() {
     return {
-      questions: QuestionStore.all(),
-      sortBy: QuestionStore.getSortBy()
+      questions: QuestionStore.allQuestions(),
+      sortBy: QuestionStore.getQuestionSortBy()
     };
   },
   componentDidMount: function() {
@@ -26,8 +26,8 @@ var QuestionsIndex = React.createClass({
   },
   onChange: function() {
     this.setState({
-      questions: QuestionStore.all(),
-      sortBy: QuestionStore.getSortBy()
+      questions: QuestionStore.allQuestions(),
+      sortBy: QuestionStore.getQuestionSortBy()
     });
   },
   handleSortChange: function(sortBy) {

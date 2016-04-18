@@ -92,7 +92,7 @@ var QuestionShow = React.createClass({
           {question.title}
         </div>
 
-        <div className='content-double-main' id='dev-border'>
+        <div className='content-double-main'>
           <ShowItem
             type='Question'
             item={question}
@@ -101,6 +101,7 @@ var QuestionShow = React.createClass({
             handleFavorite={this.handleFavorite}
             handleTagClick={this.handleTagClick}
             handleToolClick={this.handleToolClick} />
+          <AnswersIndex answers={question.answers} />
         </div>
 
         <div className='content-double-sidebar'>

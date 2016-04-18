@@ -4,8 +4,10 @@ var AnswersIndexItem = React.createClass({
   render: function() {
     return (
       <div>
-        AnswersIndexItem
+        {JSON.stringify(this.props.answer)}
       </div>
     );
   }
 });
+
+module.exports = AnswersIndexItem;
