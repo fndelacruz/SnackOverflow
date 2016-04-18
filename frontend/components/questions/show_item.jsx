@@ -25,16 +25,16 @@ function voteClass(userVote, type) {
   return className;
 }
 
-function liTagsMap(questionId, tags) {
+function liTagsMap(questionId, tags, handleTagClick) {
   return tags.map(function(tag) {
     return (
       <li
-        onClick={this.handleTagClick}
+        onClick={handleTagClick}
         key={'question-' + questionId + '-tag-' + tag.id}>
         {tag.name}
       </li>
     );
-  }.bind(this));
+  });
 }
 
 var ShowItem = React.createClass({ // used for question show and answers index item
@@ -43,7 +43,7 @@ var ShowItem = React.createClass({ // used for question show and answers index i
     if (item.tags && item.tags.length) {
       tags = (
         <ul className='tags'>
-          {liTagsMap.call(this, item.id, item.tags)}
+          {liTagsMap.call(null, item.id, item.tags, this.props.handleTagClick)}
         </ul>
       );
     }

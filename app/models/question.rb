@@ -11,6 +11,10 @@
 #
 
 class Question < ActiveRecord::Base
+  include Commentable
+  include Votable
+  include Viewable
+
   validates :user, :title, :content, presence: true
   # validate tag_ids?
 
@@ -25,14 +29,21 @@ class Question < ActiveRecord::Base
   has_many :favorites
   has_many :favorite_users, through: :favorites, source: :user
 
-  include Commentable
-  include Votable
-  include Viewable
+  def self.detailed_all
+    self.includes(:user, :votes, :answers, :views, :tags).all
+  end
+
+  def self.detailed_find(id)
+    self
+      .includes(:user, :votes, {answers: [:user, :votes]}, :views, :tags,
+        {comments: [:user, :votes]}, :favorites)
+      .find(id)
+  end
 
   def question
     self
   end
-  
+
   def answer_count
     answers.length
   end

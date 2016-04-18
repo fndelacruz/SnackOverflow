@@ -1,7 +1,7 @@
 class Api::QuestionsController < ApplicationController
   def index
     # TODO: implement pagination
-    @questions = Question.includes(:user, :votes, :answers, :views, :tags).all
+    @questions = Question.detailed_all
   end
 
   def show
@@ -9,10 +9,7 @@ class Api::QuestionsController < ApplicationController
 
     if question
       View.create!(user: current_user, viewable: question)
-      @question = Question
-        .includes(:user, :votes, {answers: [:user, :votes]}, :views, :tags,
-          {comments: [:user, :votes]}, :favorites)
-        .find(params[:id])
+      @question = Question.detailed_find(params[:id])
     end
   end
 end

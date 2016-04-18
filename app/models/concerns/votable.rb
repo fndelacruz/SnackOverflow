@@ -30,4 +30,5 @@ module Votable
   def user_vote(user_id)
     votes.find { |vote| vote.user_id == user_id}
   end
+
 end

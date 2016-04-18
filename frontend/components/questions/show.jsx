@@ -99,6 +99,7 @@ var QuestionShow = React.createClass({
             handleVote={this.handleVote}
             handleUserClick={this.handleUserClick}
             handleFavorite={this.handleFavorite}
+            handleTagClick={this.handleTagClick}
             handleToolClick={this.handleToolClick} />
         </div>
 

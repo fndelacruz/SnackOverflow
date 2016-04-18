@@ -3,7 +3,7 @@ class Api::VotesController < ApplicationController
     vote = Vote.new(vote_params)
     vote.user = current_user
     if vote.save!
-      @question = vote.votable.question
+      @question = Question.detailed_find(vote.votable.question.id)
     else
       debugger
     end
@@ -12,8 +12,8 @@ class Api::VotesController < ApplicationController
   def destroy
     vote = Vote.find(params[:id])
     if vote.user == current_user
-      @question = vote.votable.question
       vote.destroy!
+      @question = Question.detailed_find(vote.votable.question.id)
     else
       render json: {}, status: :forbidden
     end
