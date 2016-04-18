@@ -18,4 +18,8 @@ class Comment < ActiveRecord::Base
   belongs_to :commentable, polymorphic: true
 
   include Votable
+
+  def question
+    commentable_type == 'Question' ? commentable : commentable.question
+  end
 end

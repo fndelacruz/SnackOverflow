@@ -15,6 +15,31 @@ function liTagsMap(questionId, tags) {
   }.bind(this));
 }
 
+function voteClass(user_vote, type) {
+  var className;
+  switch (type) {
+    case 'upArrow':
+      className = 'arrow arrow-up-large';
+      if (user_vote && user_vote.value === 1) {
+        className += ' arrow-up-large-active';
+      }
+      break;
+    case 'downArrow':
+      className = 'arrow arrow-down-large';
+      if (user_vote && user_vote.value === -1) {
+        className += ' arrow-down-large-active';
+      }
+      break;
+    case 'score':
+      className = 'question-show-question-vote-count';
+      if (user_vote) {
+        className += ' question-show-question-vote-count-active';
+      }
+      break;
+  }
+  return className;
+}
+
 var _callbackId;
 var QuestionShow = React.createClass({
   getInitialState: function() {
@@ -36,14 +61,23 @@ var QuestionShow = React.createClass({
     );
   },
   handleVote: function(votable, id, value) {
-    switch (votable) {
-      case 'question':
-        alert('TODO');
-        break;
+    if (!this.state.question.user_vote) {
+      ApiUtil.createVote({
+        'vote[votable_type]': votable,
+        'vote[votable_id]': id,
+        'vote[value]': value
+      });
+    } else if (this.state.question.user_vote) {
+      ApiUtil.destroyVote(this.state.question.user_vote.id);
     }
   },
-  handleFavorite: function(questionId) {
-    alert('TODO');
+  handleFavorite: function() {
+    var question = this.state.question;
+    if (!question.favorite) {
+      ApiUtil.createFavorite(question.id);
+    } else {
+      ApiUtil.destroyFavorite(question.favorite.id);
+    }
   },
   handleTagClick: function() {
     alert('TODO');
@@ -74,6 +108,7 @@ var QuestionShow = React.createClass({
         </ul>
       );
     }
+
     return (
       <div className='question-show'>
         <div className='question-show-header'>
@@ -85,22 +120,24 @@ var QuestionShow = React.createClass({
             <div className='question-show-question-sidebar'>
               <div className='question-show-question-vote-container'>
                 <div
-                  onClick={this.handleVote.bind(null, 'question', question.id, 1)}
-                  className='arrow arrow-up-large' />
-                <div className='question-show-question-vote-count'>
+                  onClick={this.handleVote.bind(null, 'Question', question.id, 1)}
+                  className={voteClass(question.user_vote, 'upArrow')} />
+                <div className={voteClass(question.user_vote, 'score')}>
                  {question.vote_count}
                 </div>
                 <div
-                  onClick={this.handleVote.bind(null, 'question', question.id, -1)}
-                  className='arrow arrow-down-large' />
+                  onClick={this.handleVote.bind(null, 'Question', question.id, -1)}
+                  className={voteClass(question.user_vote, 'downArrow')} />
               </div>
               <div className='question-show-favorite-container'>
                 <span
-                  onClick={this.handleFavorite.bind(null, question.id)}
-                  className='question-show-favorite-icon'>
+                  onClick={this.handleFavorite}
+                  className={'question-show-favorite-icon' +
+                    (question.favorite ? ' question-show-favorite-icon-active' : '')}>
                   ★
                 </span>
-                <div className='question-show-favorite-count' >
+                <div className={'question-show-favorite-count' +
+                  (question.favorite ? ' question-show-favorite-count-active' : '')} >
                   {question.favorite_count}
                 </div>
               </div>
@@ -169,7 +206,7 @@ var QuestionShow = React.createClass({
           <div className='question-show-question-comments-container'>
             comments placeholder
           </div>
-          <AnswersIndex answers={question.answers} />
+
         </div>
 
         <div className='content-double-sidebar'>

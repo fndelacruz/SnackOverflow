@@ -5,9 +5,14 @@ class Api::QuestionsController < ApplicationController
   end
 
   def show
-    @question = Question
-      .includes(:user, :votes, {answers: [:user, :votes]}, :views, :tags,
-        {comments: [:user, :votes]}, :favorites)
-      .find(params[:id])
+    question = Question.find(params[:id])
+
+    if question
+      View.create!(user: current_user, viewable: question)
+      @question = Question
+        .includes(:user, :votes, {answers: [:user, :votes]}, :views, :tags,
+          {comments: [:user, :votes]}, :favorites)
+        .find(params[:id])
+    end
   end
 end

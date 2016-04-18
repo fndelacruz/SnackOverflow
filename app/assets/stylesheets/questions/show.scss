@@ -32,7 +32,7 @@
   border-bottom: 15px solid #777;
 }
 
-.arrow-up-large:hover {
+.arrow-up-large:hover, .arrow-up-large-active {
   border-bottom: 15px solid #ea1;
 }
 
@@ -40,11 +40,19 @@
   margin: 8px 0;
 }
 
+.question-show-question-vote-count-active {
+  color: #ea1;
+}
+
+.question-show-favorite-count-active {
+  color: #ea1;
+}
+
 .arrow-down-large {
   border-top: 15px solid #777;
 }
 
-.arrow-down-large:hover {
+.arrow-down-large:hover, .arrow-down-large-active {
   border-top: 15px solid #ea1;
 }
 
@@ -63,7 +71,7 @@
   transition: 100ms color;
 }
 
-.question-show-favorite-icon:hover {
+.question-show-favorite-icon:hover, .question-show-favorite-icon-active {
   color: #ea1;
 }
 

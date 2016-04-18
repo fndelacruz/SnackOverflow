@@ -41,5 +41,59 @@ module.exports = {
         debugger
       }
     });
+  },
+  createVote: function(vote) {
+    $.ajax({
+      method: 'POST',
+      url: '/api/votes',
+      data: vote,
+      dataType: 'json',
+      success: function(question) {
+        QuestionActions.receiveQuestion(question);
+      },
+      error: function() {
+        debugger
+      }
+    });
+  },
+  destroyVote: function(voteId) {
+    $.ajax({
+      method: 'DELETE',
+      url: '/api/votes/' + voteId,
+      dataType: 'json',
+      success: function(question) {
+        QuestionActions.receiveQuestion(question);
+      },
+      error: function() {
+        debugger
+      }
+    });
+  },
+  createFavorite: function(questionId) {
+    $.ajax({
+      method: 'POST',
+      url: '/api/favorites',
+      data: { 'favorite[question_id]': questionId },
+      dataType: 'json',
+      success: function(question) {
+        QuestionActions.receiveQuestion(question);
+      },
+      error: function() {
+        debugger
+      }
+    });
+  },
+  destroyFavorite: function(favoriteId) {
+    $.ajax({
+      method: 'DELETE',
+      url: '/api/favorites/' + favoriteId,
+      dataType: 'json',
+      success: function(question) {
+        QuestionActions.receiveQuestion(question);
+      },
+      error: function() {
+        debugger
+      }
+    });
   }
 };

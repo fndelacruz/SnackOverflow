@@ -18,7 +18,6 @@ class Question < ActiveRecord::Base
 
   has_many :answers, dependent: :destroy
   has_many :responders, -> { distinct }, through: :answers, source: :user
-  has_many :comments, as: :commentable, dependent: :destroy
 
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings, source: :tag
@@ -26,9 +25,14 @@ class Question < ActiveRecord::Base
   has_many :favorites
   has_many :favorite_users, through: :favorites, source: :user
 
+  include Commentable
   include Votable
   include Viewable
 
+  def question
+    self
+  end
+  
   def answer_count
     answers.length
   end

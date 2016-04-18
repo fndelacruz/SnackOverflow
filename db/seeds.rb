@@ -60,6 +60,13 @@ ActiveRecord::Base.transaction do
     tag_ids: [1, 4]
   )
 
+  20.times do
+    dan.questions.create!(
+      title: FFaker::BaconIpsum.sentence,
+      content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
+    )
+  end
+
 
   ann_q1.answers.create!(user: bob, content: 'Because your parents named you.')
   ann_q1.answers.create!(user: bob, content: 'Because it just is.')

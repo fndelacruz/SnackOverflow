@@ -29,8 +29,6 @@ class User < ActiveRecord::Base
   has_many :given_answers, class_name: 'Answer'
   has_many :answer_receivers, -> { distinct }, through: :given_answers, source: :user
 
-  has_many :comments
-
   has_many :favorites
   has_many :favorite_questions, through: :favorites, source: :question
 

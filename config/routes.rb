@@ -10,5 +10,7 @@ Rails.application.routes.draw do
       end
     end
     resources :questions, except: [:new, :edit]
+    resources :votes, only: [:create, :destroy]
+    resources :favorites, only: [:create, :destroy]
   end
 end
