@@ -116,8 +116,10 @@ var ShowItem = React.createClass({ // used for question show and answers index i
                 <div
                   className='question-index-item-user-pic'
                   onClick={this.props.handleUserClick} />
-                <div className='question-index-item-user-display-name'>
-                  <span onClick={this.props.handleUserClick}>
+                <div className='question-index-item-user-display-name-container'>
+                  <span
+                    className='user-display-name-link'
+                    onClick={this.props.handleUserClick}>
                     {item.user.display_name}
                   </span>
                 </div>
@@ -135,8 +137,10 @@ var ShowItem = React.createClass({ // used for question show and answers index i
                 <div
                   className='question-index-item-user-pic'
                   onClick={this.props.handleUserClick} />
-                <div className='question-index-item-user-display-name'>
-                  <span onClick={this.props.handleUserClick}>
+                <div className='question-index-item-user-display-name-container'>
+                  <span
+                    className='user-display-name-link'
+                    onClick={this.props.handleUserClick}>
                     {item.user.display_name}
                   </span>
                 </div>
@@ -146,7 +150,9 @@ var ShowItem = React.createClass({ // used for question show and answers index i
               </div>
             </div>
           </div>
-          <CommentsIndex comments={item.comments} />
+          <CommentsIndex
+            comments={item.comments}
+            handleVote={this.props.handleVote}/>
         </div>
       </div>
     );

@@ -25,7 +25,7 @@ var QuestionShow = React.createClass({
       answerSortBy: QuestionStore.getAnswerSortBy()
     });
   },
-  handleVote: function(votable, id, value) {
+  handleVote: function(votable, id, value, commentUserVote) {
     var user_vote;
     switch (votable) {
       case 'Question':
@@ -37,7 +37,7 @@ var QuestionShow = React.createClass({
         }).user_vote;
         break;
       case 'Comment':
-        debugger
+        user_vote = commentUserVote;
         break;
     }
     if (!user_vote) {

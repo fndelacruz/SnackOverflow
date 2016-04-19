@@ -82,8 +82,10 @@ QuestionsIndexItem = React.createClass({
                 <div
                   className='question-index-item-user-pic'
                   onClick={this.handleUserClick} />
-                <div className='question-index-item-user-display-name'>
-                  <span onClick={this.handleUserClick}>
+                <div className='question-index-item-user-display-name-container'>
+                  <span
+                    className='user-display-name-link'
+                    onClick={this.handleUserClick}>
                     {question.user.display_name}
                   </span>
                 </div>

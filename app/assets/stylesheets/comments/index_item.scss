@@ -1,8 +1,67 @@
 .comment-index-item-container {
-  padding: 5px 20px;
+  padding: 10px 0px;
   border-bottom: 1px solid #ddd;
 }
 
 .comment-index-item-container:first-child {
   border-top: 1px solid #ddd;
+}
+
+.comment-index-item-vote-container {
+  float: left;
+  width: 45px;
+  height: 30px
+}
+
+
+.comment-index-item-main {
+  float: left;
+  width: 550px;
+}
+
+.comment-vote-count {
+  float: left;
+}
+.comment-vote-count-active {
+  color: #ea1;
+}
+
+.comment-index-item-container:hover .comment-arrow-up,
+.comment-index-item-container:hover .comment-arrow-down, {
+  display: block;
+}
+
+.comment-index-item-vote-arrows-container {
+  float: left;
+  margin-left: 5px;
+}
+
+.comment-arrow {
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  cursor: pointer;
+  transition: border 100ms;
+}
+
+.comment-arrow-up {
+  display: none;
+  border-bottom: 8px solid #777;
+  margin-bottom: 3px;
+}
+.comment-arrow-up:hover, .comment-arrow-up-active{
+  border-bottom: 8px solid #ea1;
+}
+
+.comment-arrow-down {
+  display: none;
+  border-top: 8px solid #777;
+  margin-top: 3px;
+}
+
+.comment-arrow-down:hover, .comment-arrow-down-active {
+  border-top: 8px solid #ea1;
+}
+
+.comment-arrow-up-active, .comment-arrow-down-active {
+  display: block;
 }

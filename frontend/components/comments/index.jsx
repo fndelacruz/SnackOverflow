@@ -11,9 +11,10 @@ var CommentsIndex = React.createClass({
       return (
         <CommentsIndexItem
           key={'comment-' + comment.id}
+          handleVote={this.props.handleVote}
           comment={comment}/>
       );
-    });
+    }.bind(this));
 
     return (
       <div className='comments-index-container'>

@@ -35,7 +35,7 @@ class Question < ActiveRecord::Base
 
   def self.detailed_find(id)
     self
-      .includes(:user, :votes, {answers: [:user, :votes]}, :views, :tags,
+      .includes(:user, :votes, {answers: [:user, :votes, {comments: [:user, :votes]}]}, :views, :tags,
         {comments: [:user, :votes]}, :favorites)
       .find(id)
   end
