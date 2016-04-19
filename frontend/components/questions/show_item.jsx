@@ -99,7 +99,8 @@ var ShowItem = React.createClass({ // used for question show and answers index i
                 share
               </span>
               <span onClick={this.props.handleToolClick.bind(null, 'edit')}>
-                improve this question
+                {'improve this ' + (this.props.type === 'Question' ?
+                  'question' : 'answer')}
               </span>
               <span onClick={this.props.handleToolClick.bind(null, 'flag')}>
                 flag

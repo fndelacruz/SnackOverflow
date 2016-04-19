@@ -26,24 +26,28 @@ var QuestionShow = React.createClass({
     });
   },
   handleVote: function(votable, id, value) {
+    var user_vote;
     switch (votable) {
       case 'Question':
-        if (!this.state.question.user_vote) {
-          ApiUtil.createVote({
-            'vote[votable_type]': votable,
-            'vote[votable_id]': id,
-            'vote[value]': value
-          });
-        } else if (this.state.question.user_vote) {
-          ApiUtil.destroyVote(this.state.question.user_vote.id);
-          }
+        user_vote = this.state.question.user_vote;
         break;
       case 'Answer':
-        debugger
+        user_vote = this.state.question.answers.find(function(answer) {
+          return answer.id === id;
+        }).user_vote;
         break;
       case 'Comment':
         debugger
         break;
+    }
+    if (!user_vote) {
+      ApiUtil.createVote({
+        'vote[votable_type]': votable,
+        'vote[votable_id]': id,
+        'vote[value]': value
+      });
+    } else {
+      ApiUtil.destroyVote(user_vote.id);
     }
   },
   handleFavorite: function() {
