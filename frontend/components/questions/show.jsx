@@ -66,13 +66,6 @@ var QuestionShow = React.createClass({
     if (Object.keys(question).length === 0) {
       return (<div />);
     }
-    // if (question.tags && question.tags.length) {
-    //   tags = (
-    //     <ul className='tags'>
-    //       {liTagsMap.call(this, question.id, question.tags)}
-    //     </ul>
-    //   );
-    // }
 
     return (
       <div className='question-show'>

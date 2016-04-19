@@ -68,31 +68,25 @@ QuestionStore.allQuestions = function() {
     // TODO: DRY this enumeration of sort types. combine with the array literal
     // QuestionIndexItem. move to util constants?
     case 'newest':
-      // console.log('sorting by', _questionSortBy);
       sortQuestionsByNewest(questions);
       break;
     case 'featured':
-      // console.log('sorting by', _questionSortBy);
       console.error('TODO');
       break;
     case 'frequent':
-      // console.log('sorting by', _questionSortBy);
       console.error('TODO');
       break;
     case 'votes':
-      // console.log('sorting by', _questionSortBy);
       sortQuestionsByVotes(questions);
       break;
     case 'active':
-      // console.log('sorting by', _questionSortBy);
       console.error('TODO');
       break;
     case 'views':
-      // console.log('sorting by', _questionSortBy);
       sortQuestionsByViews(questions);
       break;
   }
-  return questions; // TODO: take this out after implementing the rest of sort options
+  return questions;
 };
 
 QuestionStore.getQuestion = function(questionId) {
@@ -102,15 +96,12 @@ QuestionStore.getQuestion = function(questionId) {
   var answers = _questions[questionId].answers;
     switch (_sortAnswersBy) {
       case 'active':
-      // console.log('sorting answers by', _sortAnswersBy);
       sortAnswersByActive(answers);
       break;
       case 'oldest':
-      // console.log('sorting answers by', _sortAnswersBy);
       sortAnswersByOldest(answers);
       break;
       case 'votes':
-      // console.log('sorting answers by', _sortAnswersBy);
       sortAnswersByVotes(answers);
       break;
     }
@@ -141,15 +132,7 @@ QuestionStore.__onDispatch = function(payload) {
 
 /* Answers */
 
-// var _answers = {};
 var _sortAnswersBy = 'votes';
-
-// function resetAnswers(answers) {
-//   _answers = {};
-//   answers.forEach(function(answer) {
-//     _answers[answer.id] = answer;
-//   });
-// }
 
 function changeAnswerSort(sortAnswersBy) {
   _sortAnswersBy = sortAnswersBy;
@@ -183,40 +166,6 @@ function sortAnswersByVotes(answers) {
 function sortAnswersByActive(answers) {
   alert('TODO');
 }
-
-// function resetAnswer(answer) {
-//   _answers[answer.id] = answer;
-// }
-
-// QuestionStore.allAnswers = function(questionId) {
-//   // var answers = Object.keys(_questions[questionId].answers).map(function(id) {
-//   //   return _answers[id];
-//   // });
-//   var answers = _questions[questionId].answers;
-//   // debugger
-//   if (!answers) {
-//     return [];
-//   }
-//   switch (_sortAnswersBy) {
-//     case 'active':
-//       // console.log('sorting answers by', _sortAnswersBy);
-//       sortAnswersByActive(answers);
-//       break;
-//     case 'oldest':
-//       // console.log('sorting answers by', _sortAnswersBy);
-//       sortAnswersByOldest(answers);
-//       break;
-//     case 'votes':
-//       // console.log('sorting answers by', _sortAnswersBy);
-//       sortAnswersByVotes(answers);
-//       break;
-//   }
-//   return answers;
-// };
-
-// AnswerStore.getAnswer = function(answerId) {
-//   return $.extend({}, _answers[answerId]);
-// };
 
 QuestionStore.getAnswerSortBy = function() {
   return _sortAnswersBy;
