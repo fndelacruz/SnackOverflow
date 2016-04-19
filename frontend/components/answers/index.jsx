@@ -11,21 +11,24 @@ function answerHeader(answersLength) {
 var ANSWER_SORT_TYPES = ['active', 'oldest', 'votes'];
 
 var AnswersIndex = React.createClass({
-  getInitialState: function() {
-    return {
-      // answers: QuestionStore.allAnswers(this.props.questionId),
-      answerSortBy: QuestionStore.getAnswerSortBy()
-     };
-  },
-  handleSortChange: function() {
-    alert('TODO');
+  // getInitialState: function() {
+  //   return {
+  //     // answers: QuestionStore.allAnswers(this.props.questionId),
+  //     answerSortBy: QuestionStore.getAnswerSortBy()
+  //    };
+  // },
+  handleSortChange: function(sortBy) {
+    if (sortBy !== this.props.answerSortBy) {
+      QuestionActions.changeAnswerSort(sortBy);
+    }
   },
   render: function() {
+    // debugger
     return (
       <div>
         <SortNav
           links={ANSWER_SORT_TYPES}
-          active={this.state.answerSortBy}
+          active={this.props.answerSortBy}
           header={answerHeader(this.props.answers.length)}
           handleSortChange={this.handleSortChange} />
         {this.props.answers.map(function(answer) {

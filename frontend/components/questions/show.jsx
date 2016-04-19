@@ -4,19 +4,6 @@ var QuestionStore = require('../../stores/question');
 var AnswersIndex = require('../answers/index');
 var ShowItem = require('./show_item');
 
-// function liTagsMap(questionId, tags) {
-//   return tags.map(function(tag) {
-//     return (
-//       <li
-//         onClick={this.handleTagClick}
-//         key={'question-' + questionId + '-tag-' + tag.id}>
-//         {tag.name}
-//       </li>
-//     );
-//   }.bind(this));
-// }
-
-
 var _callbackId;
 var QuestionShow = React.createClass({
   getInitialState: function() {
@@ -33,9 +20,10 @@ var QuestionShow = React.createClass({
     _callbackId.remove();
   },
   onChange: function() {
-    this.setState(
-      { question: QuestionStore.getQuestion(this.props.params.questionId) }
-    );
+    this.setState({
+      question: QuestionStore.getQuestion(this.props.params.questionId),
+      answerSortBy: QuestionStore.getAnswerSortBy()
+    });
   },
   handleVote: function(votable, id, value) {
     if (!this.state.question.user_vote) {
@@ -101,7 +89,9 @@ var QuestionShow = React.createClass({
             handleFavorite={this.handleFavorite}
             handleTagClick={this.handleTagClick}
             handleToolClick={this.handleToolClick} />
-          <AnswersIndex answers={question.answers} />
+          <AnswersIndex
+            answers={question.answers}
+            answerSortBy={this.state.answerSortBy} />
         </div>
 
         <div className='content-double-sidebar'>

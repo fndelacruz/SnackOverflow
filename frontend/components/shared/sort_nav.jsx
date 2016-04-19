@@ -3,8 +3,11 @@ var React = require('react');
 var SortNav = React.createClass({
   render: function() {
     var liLinks = this.props.links.map(function(link) {
-      var className;
+      var className = 'defaultSortNavLiClass';
+      console.log('active is:', this.props.active);
+      console.log('current tab is:', link);
       if (this.props.active === link) {
+        console.log('active tab is: ', this.props.active);
         className = 'active';
       }
       return (

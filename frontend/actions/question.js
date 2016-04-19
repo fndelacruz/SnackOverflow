@@ -20,4 +20,10 @@ module.exports = {
       actionType: QuestionConstants.RECEIVE_QUESTION
     });
   },
+  changeAnswerSort: function(sortBy) {
+    AppDispatcher.dispatch({
+      action: sortBy,
+      actionType: QuestionConstants.CHANGE_ANSWER_SORT
+    });
+  }
 };

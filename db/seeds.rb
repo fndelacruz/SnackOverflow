@@ -68,8 +68,9 @@ ActiveRecord::Base.transaction do
   end
 
 
-  ann_q1.answers.create!(user: bob, content: 'Because your parents named you.')
-  ann_q1.answers.create!(user: bob, content: 'Because it just is.')
+  ann_q1_a1 = ann_q1.answers.create!(user: bob, content: 'Because your parents named you.')
+  ann_q1_a2 = ann_q1.answers.create!(user: bob, content: 'Because it just is.')
+  ann_q1_a3 = ann_q1.answers.create!(user: cal, content: 'hi there.')
   ann_q2.answers.create!(user: bob, content: "My mom's name is Ann.")
   cal_a1 = ann_q2.answers.create!(user: cal, content: "I know 3 Ann's. It's common!")
   bob_q1.answers.create!(user: ann, content: "Nope. I don't like it.")
@@ -141,4 +142,15 @@ ActiveRecord::Base.transaction do
   View.create!(viewable: dan_q1, user: fry)
   View.create!(viewable: dan_q1, user: guy)
   View.create!(viewable: dan_q1, user: hal)
+
+  ann_q1_a1.upvote(ann)
+  ann_q1_a1.upvote(bob)
+  ann_q1_a2.upvote(ann)
+  ann_q1_a2.upvote(bob)
+  ann_q1_a2.upvote(cal)
+  ann_q1_a2.upvote(dan)
+  ann_q1_a3.downvote(ann)
+  ann_q1_a3.downvote(bob)
+  ann_q1_a3.downvote(cal)
+  ann_q1_a3.downvote(dan)
 end
