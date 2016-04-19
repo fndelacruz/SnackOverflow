@@ -164,7 +164,7 @@ function sortAnswersByVotes(answers) {
 }
 
 function sortAnswersByActive(answers) {
-  alert('TODO');
+  alert('TODO sortAnswersByActive');
 }
 
 QuestionStore.getAnswerSortBy = function() {

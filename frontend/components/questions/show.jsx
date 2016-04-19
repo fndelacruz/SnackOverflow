@@ -26,14 +26,24 @@ var QuestionShow = React.createClass({
     });
   },
   handleVote: function(votable, id, value) {
-    if (!this.state.question.user_vote) {
-      ApiUtil.createVote({
-        'vote[votable_type]': votable,
-        'vote[votable_id]': id,
-        'vote[value]': value
-      });
-    } else if (this.state.question.user_vote) {
-      ApiUtil.destroyVote(this.state.question.user_vote.id);
+    switch (votable) {
+      case 'Question':
+        if (!this.state.question.user_vote) {
+          ApiUtil.createVote({
+            'vote[votable_type]': votable,
+            'vote[votable_id]': id,
+            'vote[value]': value
+          });
+        } else if (this.state.question.user_vote) {
+          ApiUtil.destroyVote(this.state.question.user_vote.id);
+          }
+        break;
+      case 'Answer':
+        debugger
+        break;
+      case 'Comment':
+        debugger
+        break;
     }
   },
   handleFavorite: function() {
@@ -45,7 +55,7 @@ var QuestionShow = React.createClass({
     }
   },
   handleTagClick: function() {
-    alert('TODO');
+    alert('TODO handleTagClick');
   },
   handleToolClick: function(type) {
     switch (type) {
@@ -56,10 +66,10 @@ var QuestionShow = React.createClass({
       case 'flag':
         break;
     }
-    alert('TODO');
+    alert('TODO handleToolClick');
   },
   handleUserClick: function(userId) {
-    alert('TODO');
+    alert('TODO handleUserClick');
   },
   render: function() {
     var question = this.state.question, tags;
@@ -84,7 +94,11 @@ var QuestionShow = React.createClass({
             handleToolClick={this.handleToolClick} />
           <AnswersIndex
             answers={question.answers}
-            answerSortBy={this.state.answerSortBy} />
+            answerSortBy={this.state.answerSortBy}
+            handleVote={this.handleVote}
+            handleUserClick={this.handleUserClick}
+            handleTagClick={this.handleTagClick}
+            handleToolClick={this.handleToolClick} />
         </div>
 
         <div className='content-double-sidebar'>

@@ -27,10 +27,10 @@ QuestionsIndexItem = React.createClass({
     hashHistory.push('/questions/' + this.props.id);
   },
   handleTagClick: function() {
-    alert('TODO');
+    alert('TODO handleTagClick');
   },
   handleUserClick: function() {
-    alert('TODO');
+    alert('TODO handleUserClick');
   },
   render: function() {
     var question = this.props, tags;

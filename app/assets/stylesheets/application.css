@@ -147,6 +147,7 @@ html {
 .content-double-sidebar {
   width: 300px;
   float: right;
+  padding: 20px 0;
 }
 
 /* Tags */

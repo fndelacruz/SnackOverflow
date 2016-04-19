@@ -37,9 +37,28 @@ function liTagsMap(questionId, tags, handleTagClick) {
   });
 }
 
+function renderFavoriteContainer(item) {
+  if (this.props.handleFavorite) {
+    return (
+      <div className='question-show-item-favorite-container'>
+        <span
+          onClick={this.props.handleFavorite}
+          className={'question-show-favorite-icon' +
+            (item.favorite ? ' question-show-favorite-icon-active' : '')}>
+          ★
+        </span>
+        <div className={'question-show-favorite-count' +
+          (item.favorite ? ' question-show-favorite-count-active' : '')} >
+          {item.favorite_count}
+        </div>
+      </div>
+    );
+  }
+}
+
 var ShowItem = React.createClass({ // used for question show and answers index item
   render: function() {
-    var item = this.props.item, type = this.props.type, tags;
+    var item = this.props.item, type = this.props.type, tags, id;
     if (item.tags && item.tags.length) {
       tags = (
         <ul className='tags'>
@@ -47,8 +66,11 @@ var ShowItem = React.createClass({ // used for question show and answers index i
         </ul>
       );
     }
+    if (this.props.type === 'Question') {
+      id = 'question-show-question';
+    }
     return (
-      <div className='question-show-item-container group'>
+      <div className='question-show-item-container group' id={id}>
         <div className='question-show-item-sidebar'>
           <div className='question-show-item-vote-container'>
             <div
@@ -61,18 +83,7 @@ var ShowItem = React.createClass({ // used for question show and answers index i
               onClick={this.props.handleVote.bind(null, type, item.id, -1)}
               className={voteClass(item.user_vote, 'downArrow')} />
           </div>
-          <div className='question-show-item-favorite-container'>
-            <span
-              onClick={this.props.handleFavorite}
-              className={'question-show-favorite-icon' +
-                (item.favorite ? ' question-show-favorite-icon-active' : '')}>
-              ★
-            </span>
-            <div className={'question-show-favorite-count' +
-              (item.favorite ? ' question-show-favorite-count-active' : '')} >
-              {item.favorite_count}
-            </div>
-          </div>
+          {renderFavoriteContainer.call(this, item)}
         </div>
 
         <div className='question-show-item-main'>

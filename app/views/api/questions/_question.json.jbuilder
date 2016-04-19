@@ -30,6 +30,8 @@ if show_detail
     json.user answer.user, :id, :display_name
     json.extract!(answer,
       :id, :content, :created_at, :updated_at, :vote_count)
+    json.created_at_words "answered #{time_ago_in_words(answer.created_at)} ago"
+    json.updated_at_words "edited #{time_ago_in_words(answer.updated_at)} ago"
   end
 
   json.favorite_count question.favorite_count
