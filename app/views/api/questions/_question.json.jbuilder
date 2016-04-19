@@ -21,11 +21,10 @@ if show_detail
     .find { |favorite| favorite.user_id == current_user.id }
 
 
+  # TODO: determine why this partial isn't working
+  # json.partial! question.comments, partial: '/api/comments/comment', as: :comment
   json.comments question.comments do |comment|
-    json.user comment.user, :id, :display_name
-    json.extract!(comment,
-      :id, :content, :created_at, :updated_at, :vote_count)
-    json.user_vote comment.user_vote(current_user.id)
+    json.partial!('/api/comments/comment', comment: comment)
   end
 
   json.answers question.answers do |answer|
@@ -35,6 +34,9 @@ if show_detail
     json.created_at_words "answered #{time_ago_in_words(answer.created_at)} ago"
     json.updated_at_words "edited #{time_ago_in_words(answer.updated_at)} ago"
     json.user_vote answer.user_vote(current_user.id)
+    json.comments answer.comments do |comment|
+      json.partial!('/api/comments/comment', comment: comment)
+    end
   end
 
 else

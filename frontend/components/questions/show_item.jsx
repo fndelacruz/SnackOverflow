@@ -1,4 +1,5 @@
 var React = require('react');
+var CommentsIndex = require('../comments/index');
 
 function voteClass(userVote, type) {
   var className;
@@ -145,9 +146,7 @@ var ShowItem = React.createClass({ // used for question show and answers index i
               </div>
             </div>
           </div>
-          <div className='question-show-item-comments-container'>
-            comments placeholder
-          </div>
+          <CommentsIndex comments={item.comments} />
         </div>
       </div>
     );
