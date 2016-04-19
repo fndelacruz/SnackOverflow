@@ -30,7 +30,7 @@ class Question < ActiveRecord::Base
   has_many :favorite_users, through: :favorites, source: :user
 
   def self.detailed_all
-    self.includes(:user, :votes, :answers, :views, :tags).all
+    self.includes(:user, :votes, :answers, :views, :tags, :favorites).all
   end
 
   def self.detailed_find(id)

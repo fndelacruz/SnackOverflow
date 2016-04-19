@@ -55,7 +55,12 @@ var QuestionsIndex = React.createClass({
           </div>
         </div>
         <div className='content-double-sidebar'>
-          sidebar placeholder
+          <div className='sidebar-quantity'>
+            {this.state.questions.length}
+          </div>
+          <div className='sidebar-label'>
+            questions
+          </div>
         </div>
       </div>
     );

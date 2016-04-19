@@ -12,13 +12,14 @@ end
 
 json.tags question.tags, :id, :name
 
+json.user_vote question.user_vote(current_user.id)
+json.favorite_count question.favorite_count
 
 if show_detail
   json.favorite question
     .favorites
     .find { |favorite| favorite.user_id == current_user.id }
 
-  json.user_vote question.user_vote(current_user.id) # may move this outside of show_detail for faster rendering
 
   json.comments question.comments do |comment|
     json.user comment.user, :id, :display_name
@@ -36,7 +37,6 @@ if show_detail
     json.user_vote answer.user_vote(current_user.id)
   end
 
-  json.favorite_count question.favorite_count
 else
   json.answers []
   json.comments []
