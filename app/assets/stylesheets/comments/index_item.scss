@@ -16,7 +16,7 @@
 
 .comment-index-item-main {
   float: left;
-  width: 550px;
+  width: 605px;
 }
 
 .comment-vote-count {
@@ -29,6 +29,10 @@
 .comment-index-item-container:hover .comment-arrow-up,
 .comment-index-item-container:hover .comment-arrow-down, {
   display: block;
+}
+
+.comment-index-item-container:hover .comment-index-item-delete {
+  display: inline;
 }
 
 .comment-index-item-vote-arrows-container {
@@ -64,4 +68,14 @@
 
 .comment-arrow-up-active, .comment-arrow-down-active {
   display: block;
+}
+
+.comment-index-item-delete {
+  color: #aaa;
+  cursor:pointer;
+  display: none;
+}
+
+.comment-index-item-delete:hover {
+  color: #0be;
 }

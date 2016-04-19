@@ -21,7 +21,6 @@ img, article, header, footer, nav, small, form, label, input, textarea, time {
   margin: 0;
   border: 0;
   padding: 0;
-  outline: 0;
   font: inherit;
   color: inherit;
   text-align: inherit;
@@ -30,6 +29,28 @@ img, article, header, footer, nav, small, form, label, input, textarea, time {
   box-sizing: inherit;
   background: transparent;
 }
+
+input[type="password"],
+input[type="email"],
+input[type="text"],
+input[type="submit"],
+textarea,
+button {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  outline-offset: 3px;
+}
+
+textarea:focus {
+  outline-offset: 1px;
+}
+
+/*textarea:focus {
+  outline: 1px solid black;
+  border: 1px solid transparent;
+  border: 0;
+}*/
 
 html {
   font-family: 'Roboto', sans-serif;
@@ -76,6 +97,41 @@ input {
 
 html {
   font-size: 14px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+
+textarea:focus {
+  /*outline: 2px solid black;*/
+}
+
+button {
+  color: #fff;
+  background: #08f;
+  padding: 5px 10px;
+  transition: background 100ms;
+  border-radius: 5px;
+  border: 1px solid #bbf;
+}
+
+button:hover {
+  background: #11f;
+}
+
+.button-disabled {
+  cursor: not-allowed;
+  background: #aaf;
+}
+
+.button-disabled:hover {
+  background: #aaf;
+}
+
+.hidden {
+  display: none;
 }
 
 /* Navs */

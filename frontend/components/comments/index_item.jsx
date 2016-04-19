@@ -1,4 +1,5 @@
 var React = require('react');
+var ApiUtil = require('../../util/api_util');
 
 function commentVoteClass(userVote, type) {
   var className;
@@ -29,8 +30,17 @@ var CommentsIndexItem = React.createClass({
   handleUserClick: function(userId) {
     alert('TODO handleUserClick');
   },
+  handleDeleteComment: function() {
+    ApiUtil.destroyComment(this.props.comment.id);
+  },
   render: function() {
     var comment = this.props.comment;
+    var commentDelete = !comment.owned ? null :
+      <span
+        onClick={this.handleDeleteComment}
+        className='comment-index-item-delete'>
+        delete comment
+      </span>;
     return (
       <div className='comment-index-item-container group'>
         <div className='comment-index-item-vote-container'>
@@ -40,7 +50,7 @@ var CommentsIndexItem = React.createClass({
           <div className='comment-index-item-vote-arrows-container'>
             <div
               onClick={this.props.handleVote.bind(null, 'Comment', comment.id, 1, comment.user_vote)}
-              className={commentVoteClass(comment.user_vote, 'upArrow')}/>
+              className={commentVoteClass(comment.user_vote, 'upArrow')} />
             <div
               onClick={this.props.handleVote.bind(null, 'Comment', comment.id, -1, comment.user_vote)}
               className={commentVoteClass(comment.user_vote, 'downArrow')} />
@@ -53,7 +63,8 @@ var CommentsIndexItem = React.createClass({
             onClick={this.handleUserClick.bind(null, comment.user.id)}>
           {comment.user.display_name}
           </span>
-          <span>{' ' + comment.created_at_words}</span>
+          <span>{' ' + comment.created_at_words + ' '}</span>
+          {commentDelete}
         </div>
       </div>
     );

@@ -95,5 +95,33 @@ module.exports = {
         debugger
       }
     });
+  },
+  createComment: function(comment, callback) {
+    $.ajax({
+      method: 'POST',
+      url: '/api/comments',
+      data: comment,
+      dataType: 'json',
+      success: function(question) {
+        QuestionActions.receiveQuestion(question);
+        callback();
+      },
+      error: function() {
+        debugger
+      }
+    });
+  },
+  destroyComment: function(commentId) {
+    $.ajax({
+      method: 'DELETE',
+      url: '/api/comments/' + commentId,
+      dataType: 'json',
+      success: function(question) {
+        QuestionActions.receiveQuestion(question);
+      },
+      error: function() {
+        debugger
+      }
+    });
   }
 };

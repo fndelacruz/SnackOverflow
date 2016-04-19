@@ -1,0 +1,24 @@
+.comments-form-container {
+  // outline: 1px solid red;
+  margin-top: 10px;
+}
+
+.comments-form-display-toggle {
+  color: #aaa;
+  cursor: pointer;
+}
+
+.comments-form-display-toggle:hover {
+  color: #0be;
+}
+
+.comments-form-content {
+  outline: 1px solid #999;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.comments-form-submit {
+  margin-top: 10px;
+  float: right;
+}

@@ -1,5 +1,6 @@
 var React = require('react');
 var CommentsIndex = require('../comments/index');
+var CommentsForm = require('../comments/form');
 
 function voteClass(userVote, type) {
   var className;
@@ -153,6 +154,7 @@ var ShowItem = React.createClass({ // used for question show and answers index i
           <CommentsIndex
             comments={item.comments}
             handleVote={this.props.handleVote}/>
+          <CommentsForm type={this.props.type} id={this.props.item.id} />
         </div>
       </div>
     );
