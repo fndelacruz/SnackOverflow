@@ -1,11 +1,11 @@
 var React = require('react');
 
-var SmallSortNav = React.createClass({
+var SortNav = React.createClass({
   render: function() {
     var liLinks = this.props.links.map(function(link) {
-      var className = 'defaultSmallSortNavLiClass';
+      var className = 'sort-nav';
       if (this.props.active === link) {
-        className = 'active';
+        className += ' active';
       }
       return (
         <li
@@ -28,4 +28,4 @@ var SmallSortNav = React.createClass({
   }
 });
 
-module.exports = SmallSortNav;
+module.exports = SortNav;

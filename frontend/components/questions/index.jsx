@@ -2,7 +2,7 @@ var React = require('react');
 var QuestionStore = require('../../stores/question');
 var ApiUtil = require('../../util/api_util');
 var QuestionIndexItem = require('./index_item');
-var SmallSortNav = require('../shared/small_sort_nav');
+var SortNav = require('../shared/sort_nav');
 var QuestionActions = require('../../actions/question');
 
 var _callbackId;
@@ -47,7 +47,7 @@ var QuestionsIndex = React.createClass({
     return (
       <div>
         <div className='content-double-main'>
-          <SmallSortNav
+          <SortNav
             links={QUESTION_SORT_TYPES}
             active={this.state.sortBy}
             header='All Questions'

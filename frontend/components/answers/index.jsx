@@ -1,5 +1,5 @@
 var React = require('react');
-var SmallSortNav = require('../shared/small_sort_nav');
+var SortNav = require('../shared/sort_nav');
 var QuestionStore = require('../../stores/question');
 var QuestionActions = require('../../actions/question');
 var ShowItem = require('../questions/show_item');
@@ -32,7 +32,7 @@ var AnswersIndex = React.createClass({
     }.bind(this));
     return (
       <div className='answers-index-container'>
-        <SmallSortNav
+        <SortNav
           links={ANSWER_SORT_TYPES}
           active={this.props.answerSortBy}
           header={answerHeader(this.props.answers.length)}
