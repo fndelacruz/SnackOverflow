@@ -1,5 +1,6 @@
 var React = require('react');
 var CommentsIndexItem = require('./index_item');
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 var CommentsIndex = React.createClass({
   render: function() {
@@ -15,10 +16,14 @@ var CommentsIndex = React.createClass({
           comment={comment}/>
       );
     }.bind(this));
-
     return (
       <div className='comments-index-container'>
-        {comments}
+        <ReactCSSTransitionGroup
+          transitionName='comments'
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={500}>
+          {comments}
+        </ReactCSSTransitionGroup>
       </div>
     );
   }

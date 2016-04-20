@@ -38,19 +38,14 @@ textarea,
 button {
   -webkit-appearance: none;
   appearance: none;
-  outline: none;
-  outline-offset: 3px;
+  outline: 0;
+  outline-offset: 0;
 }
 
 textarea:focus {
-  outline-offset: 1px;
+  outline: 0;
+  outline-offset: 0;
 }
-
-/*textarea:focus {
-  outline: 1px solid black;
-  border: 1px solid transparent;
-  border: 0;
-}*/
 
 html {
   font-family: 'Roboto', sans-serif;
@@ -88,6 +83,7 @@ input[type='submit']:hover {
   content: '';
   clear: both;
 }
+
 /* defaults*/
 
 input {
@@ -103,9 +99,20 @@ textarea {
   resize: vertical;
 }
 
+input[type="password"],
+input[type="email"],
+input[type="text"],
+input[type="submit"],
+textarea {
+  outline: 1px solid #ccc;
+}
 
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="text"]:focus,
+input[type="submit"]:focus,
 textarea:focus {
-  /*outline: 2px solid black;*/
+  outline: 1px solid #0bf;
 }
 
 button {
