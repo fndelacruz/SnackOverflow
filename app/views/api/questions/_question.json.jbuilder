@@ -13,9 +13,9 @@ json.owned question.user === current_user ? true : false
 
 json.tags question.tags, :id, :name
 
-json.user_vote question.user_vote(current_user.id)
+json.user_vote question.user_vote(current_user)
 json.favorite_count question.favorite_count
-json.favorite question.owned_favorite(current_user.id)
+json.favorite question.owned_favorite(current_user)
 
 if show_detail
   json.comments question.comments.sort_by(&:id) do |comment|
@@ -26,6 +26,7 @@ if show_detail
     json.partial!('/api/answers/answer', answer: answer)
   end
 
+  json.user_answered question.user_answered?(current_user)
 else
   json.answers []
   json.comments []

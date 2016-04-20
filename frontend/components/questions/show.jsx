@@ -107,7 +107,7 @@ var QuestionShow = React.createClass({
             handleUserClick={this.handleUserClick}
             handleTagClick={this.handleTagClick}
             handleToolClick={this.handleToolClick} />
-          <AnswersNew questionId={question.id} />
+          <AnswersNew question={question} />
         </div>
 
         <div className='content-double-sidebar'>

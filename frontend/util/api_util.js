@@ -140,7 +140,7 @@ module.exports = {
       }
     });
   },
-  createAnswer: function(answer) {
+  createAnswer: function(answer, callback) {
     $.ajax({
       method: 'POST',
       url: '/api/answers',
@@ -148,6 +148,7 @@ module.exports = {
       dataType: 'json',
       success: function(question) {
         QuestionActions.receiveQuestion(question);
+        callback();
       },
       error: function() {
         debugger

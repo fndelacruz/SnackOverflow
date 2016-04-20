@@ -40,8 +40,13 @@ class Question < ActiveRecord::Base
       .find(id)
   end
 
-  def owned_favorite(user_id)
-    favorites.find { |favorite| favorite.user_id == user_id }
+  def user_answered?(user)
+    question.answers.map(&:user_id).include?(user.id)
+  end
+
+
+  def owned_favorite(user)
+    favorites.find { |favorite| favorite.user_id == user.id }
   end
 
   def question
