@@ -71,6 +71,7 @@ ActiveRecord::Base.transaction do
   ann_q1_a1 = ann_q1.answers.create!(user: bob, content: 'Because your parents named you.')
   ann_q1_a2 = ann_q1.answers.create!(user: bob, content: 'Because it just is.')
   ann_q1_a3 = ann_q1.answers.create!(user: cal, content: 'hi there.')
+  ann_q1_a4 = ann_q1.answers.create!(user: ann, content: 'Here I answer my own question.')
   ann_q2.answers.create!(user: bob, content: "My mom's name is Ann.")
   cal_a1 = ann_q2.answers.create!(user: cal, content: "I know 3 Ann's. It's common!")
   bob_q1.answers.create!(user: ann, content: "Nope. I don't like it.")
@@ -129,14 +130,6 @@ ActiveRecord::Base.transaction do
   ann_q1.comments[4].upvote(bob)
   ann_q1.comments[4].upvote(dan)
 
-  bob_q3.upvote(ann)
-  bob_q3.upvote(bob)
-  bob_q3.upvote(cal)
-  bob_q3.upvote(dan)
-  bob_q3.upvote(edd)
-  bob_q3.upvote(fry)
-  bob_q3.upvote(guy)
-  bob_q3.upvote(hal)
 
   View.create!(viewable: ann_q1, user: ann, created_at: 1.hour.ago, updated_at: 1.hour.ago)
   View.create!(viewable: ann_q1, user: ann)
@@ -153,14 +146,4 @@ ActiveRecord::Base.transaction do
   View.create!(viewable: dan_q1, user: guy)
   View.create!(viewable: dan_q1, user: hal)
 
-  ann_q1_a1.upvote(ann)
-  ann_q1_a1.upvote(bob)
-  ann_q1_a2.upvote(ann)
-  ann_q1_a2.upvote(bob)
-  ann_q1_a2.upvote(cal)
-  ann_q1_a2.upvote(dan)
-  ann_q1_a3.downvote(ann)
-  ann_q1_a3.downvote(bob)
-  ann_q1_a3.downvote(cal)
-  ann_q1_a3.downvote(dan)
 end
