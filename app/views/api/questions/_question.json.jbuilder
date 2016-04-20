@@ -9,18 +9,15 @@ json.user do
   json.display_name question.user.display_name
   # TODO: user score count, badges
 end
-json.owned json.user === current_user ? true : false
+json.owned question.user === current_user ? true : false
 
 json.tags question.tags, :id, :name
 
 json.user_vote question.user_vote(current_user.id)
 json.favorite_count question.favorite_count
+json.favorite question.owned_favorite(current_user.id)
 
 if show_detail
-  json.favorite question
-    .favorites
-    .find { |favorite| favorite.user_id == current_user.id }
-
   json.comments question.comments.sort_by(&:id) do |comment|
     json.partial!('/api/comments/comment', comment: comment)
   end

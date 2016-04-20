@@ -1,5 +1,5 @@
 json.user answer.user, :id, :display_name
-json.owned json.user === current_user ? true : false
+json.owned answer.user === current_user ? true : false
 json.extract!(answer,
   :id, :content, :created_at, :updated_at, :vote_count)
 json.created_at_words "answered #{time_ago_in_words(answer.created_at)} ago"

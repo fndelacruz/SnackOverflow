@@ -40,6 +40,10 @@ class Question < ActiveRecord::Base
       .find(id)
   end
 
+  def owned_favorite(user_id)
+    favorites.find { |favorite| favorite.user_id == user_id }
+  end
+
   def question
     self
   end

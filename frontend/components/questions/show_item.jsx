@@ -60,7 +60,7 @@ function renderFavoriteContainer(item) {
 
 var ShowItem = React.createClass({ // used for question show and answers index item
   render: function() {
-    var item = this.props.item, type = this.props.type, tags, id;
+    var item = this.props.item, type = this.props.type, tags, id, tools;
     if (item.tags && item.tags.length) {
       tags = (
         <ul className='tags'>
@@ -70,6 +70,20 @@ var ShowItem = React.createClass({ // used for question show and answers index i
     }
     if (this.props.type === 'Question') {
       id = 'question-show-question';
+    }
+    if (item.owned) {
+      tools = (
+        <div className='question-show-item-main-footer-tools'>
+          <span onClick={this.props.handleToolClick
+            .bind(null, 'edit', type, item.id)}>
+            edit
+          </span>
+          <span onClick={this.props.handleToolClick
+            .bind(null, 'delete', type, item.id)}>
+            delete
+          </span>
+        </div>
+      );
     }
     return (
       <div className='question-show-item-container group' id={id}>
@@ -96,17 +110,7 @@ var ShowItem = React.createClass({ // used for question show and answers index i
             {tags}
           </div>
           <div className='content-double-footer group'>
-            <div className='question-show-item-main-footer-tools'>
-              <span onClick={this.props.handleToolClick
-                .bind(null, 'edit', type, item.id)}>
-                edit
-              </span>
-              <span onClick={this.props.handleToolClick
-                .bind(null, 'delete', type, item.id)}>
-                delete
-              </span>
-            </div>
-
+            {tools}
             <div className='stub-date-user-container stub-date-user-container-created-at'>
               <div className='stub-date'>
                 {item.created_at_words}
