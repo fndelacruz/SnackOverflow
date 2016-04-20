@@ -1,14 +1,35 @@
 var React = require('react');
 var SortNav = require('../shared/sort_nav');
+var UserStore = require('../../stores/user');
+var UserActions = require('../../actions/user');
+var ApiUtil = require('../../util/api_util');
 
 var USER_SORT_TYPES = ['reputation', 'new users', 'voters'];
 
+var _callbackId;
+
 var UsersIndex = React.createClass({
   getInitialState: function() {
-    return { sortBy: 'reputation' }; // temporary. set to UserStore.sortBy()
+    return {
+      users: UserStore.all(),
+      sortBy: UserStore.getSortBy()
+    };
   },
-  handleSortChange: function() {
-    alert('TODO handleSortChange users');
+  componentDidMount: function() {
+    _callbackId = UserStore.addListener(this.onChange);
+    ApiUtil.fetchUsers();
+  },
+  componentWillUnmount: function() {
+    _callbackId.remove();
+  },
+  handleSortChange: function(sortBy) {
+    UserActions.changeUserSort(sortBy);
+  },
+  onChange: function() {
+    this.setState({
+      users: UserStore.all(),
+      sortBy: UserStore.getSortBy()
+    });
   },
   render: function() {
     return (
@@ -18,6 +39,17 @@ var UsersIndex = React.createClass({
           active={this.state.sortBy}
           header='Users'
           handleSortChange={this.handleSortChange}/>
+        <ul>
+          {this.state.users.map(function(user) {
+            return (
+              <li key={'user-' + user.id}>
+                {user.id + ': ' + user.display_name +
+                  ', reputation: ' + user.reputation +
+                  ', vote_count: ' + user.vote_count}
+              </li>
+            );
+          })}
+        </ul>
       </div>
     );
   }

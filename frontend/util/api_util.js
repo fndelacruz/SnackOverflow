@@ -1,6 +1,7 @@
 var CurrentUserActions = require('../actions/current_user');
 var CurrentUserConstants = require('../constants/current_user');
 var QuestionActions = require('../actions/question');
+var UserActions = require('../actions/user');
 var hashHistory = require('react-router').hashHistory;
 
 module.exports = {
@@ -182,4 +183,17 @@ module.exports = {
       }
     });
   },
+  fetchUsers: function(users) {
+    $.ajax({
+      method: 'GET',
+      url: '/api/users',
+      dataType: 'json',
+      success: function(users) {
+        UserActions.receiveUsers(users);
+      },
+      error: function() {
+        debugger
+      }
+    });
+  }
 };

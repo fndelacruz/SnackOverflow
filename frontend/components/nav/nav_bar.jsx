@@ -33,6 +33,7 @@ var NavBar = React.createClass({
           navigate={this.navigate}
           currentPath={this.props.location.pathname} />);
     }.bind(this));
+    var currentUser = this.state.currentUser;
     return (
       <div>
         <div className='nav-container'>
@@ -43,7 +44,8 @@ var NavBar = React.createClass({
               <li>Notifications</li>
             </ul>
             <ul className='nav-right-container base'>
-              <li>{this.state.currentUser.display_name}</li>
+              <li>{currentUser.display_name + ' ' + currentUser.reputation}
+              </li>
               <li>help</li>
               <li id='nav-search-container'>
                 <input className='nav-search' type='text' placeholder="? Search"/>

@@ -53,6 +53,24 @@ class User < ActiveRecord::Base
     user if user && user.is_password?(password)
   end
 
+  # NOTE: for UsersShow. Likely will need to expand the includes for more details
+  def self.detailed_find(userId)
+    User.includes({ questions: :votes }, { given_answers: :votes }, :votes,
+        { comments: :votes })
+      .find(userId)
+  end
+
+  # NOTE: for UsersIndex
+  def self.basic_all
+    User.includes({ questions: :votes }, { given_answers: :votes }, :votes,
+        { comments: :votes })
+      .all
+  end
+
+  def vote_count
+    votes.length
+  end
+
   def reputation
     question_rep = questions.map(&:votes).flatten.map do |vote|
       if vote.value == 1
@@ -71,8 +89,11 @@ class User < ActiveRecord::Base
     end.sum
 
     answer_downvote_rep = votes
-      .where(user_id: id, votable_type: 'Answer', value: -1)
-      .map { User::REPUTATION_SCHEME[:give_answer_downvote] }
+      .select do |vote|
+        vote.user_id === id &&
+        vote.votable_type === 'Answer' &&
+        vote.value === -1
+      end.map { User::REPUTATION_SCHEME[:give_answer_downvote] }
       .sum
 
     comment_rep = comments.map(&:votes).flatten.map do |vote|
