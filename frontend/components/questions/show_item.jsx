@@ -97,15 +97,13 @@ var ShowItem = React.createClass({ // used for question show and answers index i
           </div>
           <div className='content-double-footer group'>
             <div className='question-show-item-main-footer-tools'>
-              <span onClick={this.props.handleToolClick.bind(null, 'share')}>
-                share
+              <span onClick={this.props.handleToolClick
+                .bind(null, 'edit', type, item.id)}>
+                edit
               </span>
-              <span onClick={this.props.handleToolClick.bind(null, 'edit')}>
-                {'improve this ' + (this.props.type === 'Question' ?
-                  'question' : 'answer')}
-              </span>
-              <span onClick={this.props.handleToolClick.bind(null, 'flag')}>
-                flag
+              <span onClick={this.props.handleToolClick
+                .bind(null, 'delete', type, item.id)}>
+                delete
               </span>
             </div>
 

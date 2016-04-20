@@ -26,7 +26,7 @@ class Question < ActiveRecord::Base
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings, source: :tag
 
-  has_many :favorites
+  has_many :favorites, dependent: :destroy
   has_many :favorite_users, through: :favorites, source: :user
 
   def self.detailed_all

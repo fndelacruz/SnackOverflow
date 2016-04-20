@@ -9,6 +9,7 @@ json.user do
   json.display_name question.user.display_name
   # TODO: user score count, badges
 end
+json.owned json.user === current_user ? true : false
 
 json.tags question.tags, :id, :name
 
@@ -25,15 +26,7 @@ if show_detail
   end
 
   json.answers question.answers do |answer|
-    json.user answer.user, :id, :display_name
-    json.extract!(answer,
-      :id, :content, :created_at, :updated_at, :vote_count)
-    json.created_at_words "answered #{time_ago_in_words(answer.created_at)} ago"
-    json.updated_at_words "edited #{time_ago_in_words(answer.updated_at)} ago"
-    json.user_vote answer.user_vote(current_user.id)
-    json.comments answer.comments.sort_by(&:id) do |comment|
-      json.partial!('/api/comments/comment', comment: comment)
-    end
+    json.partial!('/api/answers/answer', answer: answer)
   end
 
 else

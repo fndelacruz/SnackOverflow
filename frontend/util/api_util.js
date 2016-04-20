@@ -153,5 +153,32 @@ module.exports = {
         debugger
       }
     });
-  }
+  },
+  destroyQuestion: function(questionId, callback) {
+    $.ajax({
+      method: 'DELETE',
+      url: '/api/questions/' + questionId,
+      dataType: 'json',
+      success: function(questions) {
+        callback();
+        QuestionActions.receiveQuestions(questions);
+      },
+      error: function() {
+        debugger;
+      }
+    });
+  },
+  destroyAnswer: function(answerId) {
+    $.ajax({
+      method: 'DELETE',
+      url: '/api/answers/' + answerId,
+      dataType: 'json',
+      success: function(question) {
+        QuestionActions.receiveQuestion(question);
+      },
+      error: function() {
+        debugger;
+      }
+    });
+  },
 };

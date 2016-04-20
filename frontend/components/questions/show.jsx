@@ -4,6 +4,7 @@ var QuestionStore = require('../../stores/question');
 var AnswersIndex = require('../answers/index');
 var ShowItem = require('./show_item');
 var AnswersNew = require('../answers/new');
+var hashHistory = require('react-router').hashHistory;
 
 var _callbackId;
 var QuestionShow = React.createClass({
@@ -62,16 +63,18 @@ var QuestionShow = React.createClass({
   handleTagClick: function() {
     alert('TODO handleTagClick');
   },
-  handleToolClick: function(type) {
-    switch (type) {
-      case 'share':
-        break;
-      case 'edit':
-        break;
-      case 'flag':
-        break;
+  handleToolClick: function(toolType, itemType, id) {
+    if (toolType === 'edit') {
+      alert('TODO handleToolClick edit');
+    } else if (toolType === 'delete') {
+      if (itemType === 'Question') {
+        ApiUtil.destroyQuestion(id, function() {
+          hashHistory.push('/questions/');
+        });
+      } else if (itemType === 'Answer') {
+        ApiUtil.destroyAnswer(id);
+      }
     }
-    alert('TODO handleToolClick');
   },
   handleUserClick: function(userId) {
     alert('TODO handleUserClick');
