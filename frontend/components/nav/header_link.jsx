@@ -11,7 +11,8 @@ var NavHeaderLink = React.createClass({
       <li
         id={id}
         onClick={this.props.navigate.bind(null, destinationUrl)}>
-        {Util.capitalize(this.props.link)}
+        {this.props.link === 'ask' ?
+          'Ask Question' : Util.capitalize(this.props.link)}
       </li>
     );
   }

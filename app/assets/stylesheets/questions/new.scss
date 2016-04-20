@@ -1,0 +1,54 @@
+.ask-double-main {
+  float: left;
+  width: 660px;
+  margin-top: 15px;
+}
+
+.ask-double-sidebar {
+  padding: 15px;
+  float: right;
+  width: 335px;
+  background: #ffd;
+  border: 1px solid #cc8;
+}
+
+.ask-title-container {
+  position: relative;
+}
+.ask-title-label {
+  font-weight: 700;
+  width: 40px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.ask-title-input {
+  border: 1px solid #ccc;
+  padding: 0 8px;
+  height: 30px;
+  width: 602px;
+  float: right;
+}
+
+.ask-content-input{
+  margin: 20px 0;
+  padding: 10px;
+  outline: 1px solid #ccc;
+  width: 640px;
+  height: 200px;
+
+  outline-offset: 0;
+}
+.ask-content-input:focus, .ask-title-input:focus {
+  outline-offset: 0;
+  outline: 1px solid #0bf;
+}
+
+.ask-double-sidebar-header {
+  font-size: 18px;
+}
+
+.ask-double-sidebar-content li {
+  margin: 10px 0;
+}

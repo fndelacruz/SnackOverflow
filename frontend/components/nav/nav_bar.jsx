@@ -4,7 +4,7 @@ var ApiUtil = require('../../util/api_util');
 var hashHistory = require('react-router').hashHistory;
 var NavHeaderLink = require('./header_link');
 
-var HEADERS = ['questions', 'jobs', 'tags', 'users', 'badges'];
+var HEADERS = ['questions', 'jobs', 'tags', 'users', 'badges', 'ask'];
 
 var _callbackId;
 var NavBar = React.createClass({
@@ -60,7 +60,6 @@ var NavBar = React.createClass({
           </ul>
           <ul className='nav-right-container base'>
             {NavHeaderLinks}
-            <li>Ask Question</li>
           </ul>
         </div>
 

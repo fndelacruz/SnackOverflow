@@ -1,6 +1,7 @@
 var CurrentUserActions = require('../actions/current_user');
 var CurrentUserConstants = require('../constants/current_user');
 var QuestionActions = require('../actions/question');
+var hashHistory = require('react-router').hashHistory;
 
 module.exports = {
   fetchCurrentUser: function() {
@@ -118,6 +119,21 @@ module.exports = {
       dataType: 'json',
       success: function(question) {
         QuestionActions.receiveQuestion(question);
+      },
+      error: function() {
+        debugger
+      }
+    });
+  },
+  createQuestion: function(question, callback) {
+    $.ajax({
+      method: 'POST',
+      url: 'api/questions',
+      data: question,
+      dataType: 'json',
+      success: function(question) {
+        QuestionActions.receiveQuestion(question);
+        hashHistory.push('/questions/' + question.id);
       },
       error: function() {
         debugger

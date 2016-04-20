@@ -26,6 +26,7 @@
     "flux": "^2.1.1",
     "history": "1.13.x",
     "react": "^0.14.2",
+    "react-addons-css-transition-group": "^0.14.6",
     "react-dom": "^0.14.2",
     "react-router": "^2.0.1",
     "webpack": "^1.12.4"

@@ -12,4 +12,20 @@ class Api::QuestionsController < ApplicationController
       @question = Question.detailed_find(params[:id])
     end
   end
+
+  def create
+    @question = Question.new(question_params)
+    @question.user = current_user
+    if @question.save!
+      # TODO: anything here?
+    else
+      render json: @question.errors.full_messages, error: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def question_params
+    params.require(:question).permit(:content, :title)
+  end
 end
