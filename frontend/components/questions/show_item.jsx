@@ -127,7 +127,7 @@ var ShowItem = React.createClass({ // used for question show and answers index i
                   </span>
                 </div>
                 <div className='question-index-item-user-score'>
-                  over 9000!
+                  {item.user.reputation}
                 </div>
               </div>
             </div>
@@ -148,7 +148,7 @@ var ShowItem = React.createClass({ // used for question show and answers index i
                   </span>
                 </div>
                 <div className='question-index-item-user-score'>
-                  over 9000!
+                  {item.user.reputation}
                 </div>
               </div>
             </div>

@@ -25,6 +25,11 @@ var NavBar = React.createClass({
     hashHistory.push(destination);
   },
   render: function() {
+    var currentUser = this.state.currentUser, currentUserSnippet;
+    if (Object.keys(this.state.currentUser).length) {
+      currentUserSnippet =
+        currentUser.display_name + ' ' + currentUser.reputation;
+    }
     var NavHeaderLinks = HEADERS.map(function(name) {
       return (
         <NavHeaderLink
@@ -33,7 +38,6 @@ var NavBar = React.createClass({
           navigate={this.navigate}
           currentPath={this.props.location.pathname} />);
     }.bind(this));
-    var currentUser = this.state.currentUser;
     return (
       <div>
         <div className='nav-container'>
@@ -44,7 +48,8 @@ var NavBar = React.createClass({
               <li>Notifications</li>
             </ul>
             <ul className='nav-right-container base'>
-              <li>{currentUser.display_name + ' ' + currentUser.reputation}
+              <li>
+                {currentUserSnippet}
               </li>
               <li>help</li>
               <li id='nav-search-container'>

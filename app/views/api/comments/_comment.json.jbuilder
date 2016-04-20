@@ -1,4 +1,6 @@
-json.user comment.user, :id, :display_name
+json.user do
+  json.partial!('/api/users/user', user: comment.user, options: { stub: true })
+end
 json.owned comment.user === current_user ? true : false
 json.extract!(comment,
   :id, :content, :created_at, :updated_at, :vote_count)

@@ -29,14 +29,18 @@ class Question < ActiveRecord::Base
   has_many :favorites, dependent: :destroy
   has_many :favorite_users, through: :favorites, source: :user
 
+  USER_DETAILS = {user: [{ questions: :votes }, { given_answers: :votes }, :votes,
+    { comments: :votes }]}
+
   def self.detailed_all
-    self.includes(:user, :votes, :answers, :views, :tags, :favorites).all
+    self
+      .includes(USER_DETAILS, :votes, :answers, :views, :tags, :favorites).all
   end
 
   def self.detailed_find(id)
     self
-      .includes(:user, :votes, {answers: [:user, :votes, {comments: [:user, :votes]}]}, :views, :tags,
-        {comments: [:user, :votes]}, :favorites)
+      .includes(USER_DETAILS, :votes, {answers: [USER_DETAILS, :votes, {comments: [USER_DETAILS, :votes]}]}, :views, :tags,
+        {comments: [USER_DETAILS, :votes]}, :favorites)
       .find(id)
   end
 

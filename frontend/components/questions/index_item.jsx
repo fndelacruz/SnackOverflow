@@ -90,7 +90,7 @@ QuestionsIndexItem = React.createClass({
                   </span>
                 </div>
                 <div className='question-index-item-user-score'>
-                  over 9000!
+                  {question.user.reputation}
                 </div>
               </div>
             </div>

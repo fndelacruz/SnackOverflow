@@ -4,11 +4,16 @@ json.extract!(question,
 json.created_at_words "asked #{time_ago_in_words(question.created_at)} ago"
 json.updated_at_words "edited #{time_ago_in_words(question.updated_at)} ago"
 
+# json.user do
+#   json.id question.user.id
+#   json.display_name question.user.display_name
+#   # TODO: user score count, badges
+# end
+
 json.user do
-  json.id question.user.id
-  json.display_name question.user.display_name
-  # TODO: user score count, badges
+  json.partial!('/api/users/user', user: question.user, options: { stub: true })
 end
+
 json.owned question.user === current_user ? true : false
 
 json.tags question.tags, :id, :name
