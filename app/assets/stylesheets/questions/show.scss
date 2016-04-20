@@ -121,3 +121,25 @@
 #question-show-question {
   border-bottom: 0;
 }
+
+/* React transitions */ 
+
+.show-index-item-enter {
+  transform: translateY(500%);
+}
+
+.show-index-item-enter.show-index-item-enter-active {
+  transform: translateY(0);
+  transition: transform 500ms;
+}
+
+.show-index-item-leave {
+  opacity: 0.01;
+  transform: translateX(0);
+}
+
+.show-index-item-leave.show-index-item-leave-active {
+  opacity: 1;
+  transform: translateX(-500%);
+  transition: opacity 500ms, transform 500ms;
+}

@@ -2,6 +2,8 @@ module Votable
   extend ActiveSupport::Concern
 
   included do
+    # NOTE: used dependent delete_all instead of dependent destroy since votes
+    # have no child associations
     has_many :votes, as: :votable, dependent: :delete_all
   end
 

@@ -33,14 +33,14 @@ var QuestionsNew = React.createClass({
     }
   },
   render: function() {
-    var buttonClass = 'ask-submit-button';
+    var buttonClass;
 
     if (!this.state.title.length || !this.state.content.length) {
-      buttonClass += ' button-disabled';
+      buttonClass = 'button-disabled';
     }
     return (
       <div className='ask-double'>
-        <div className='ask-double-main'>
+        <div className='item-new-double-main'>
           <div className='ask-title-container group'>
             <div className='ask-title-label'>
               Title
@@ -57,14 +57,16 @@ var QuestionsNew = React.createClass({
             value={this.state.content}
             onFocus={this.handleFocus.bind(this, 'content')}
             onChange={this.handleChange.bind(this, 'content')}
-            className='ask-content-input' />
+            className='item-content-input' />
           <button
             className={buttonClass}
             onClick={this.handleSubmit}>
             Post Question
           </button>
         </div>
-        <QuestionsNewSidebar key='ask-double-sidebar-component'focus={this.state.focus} />
+        <QuestionsNewSidebar
+          key='ask-double-sidebar-component'
+          focus={this.state.focus} />
       </div>
     );
   }

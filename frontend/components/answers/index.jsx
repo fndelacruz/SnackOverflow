@@ -3,6 +3,7 @@ var SortNav = require('../shared/sort_nav');
 var QuestionStore = require('../../stores/question');
 var QuestionActions = require('../../actions/question');
 var ShowItem = require('../questions/show_item');
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 function answerHeader(answersLength) {
   return answersLength + ' Answer' + (answersLength === 1 ? '' : 's');
@@ -36,7 +37,12 @@ var AnswersIndex = React.createClass({
           active={this.props.answerSortBy}
           header={answerHeader(this.props.answers.length)}
           handleSortChange={this.handleSortChange} />
-        {AnswerIndexItems}
+        <ReactCSSTransitionGroup
+          transitionName={'show-index-item'}
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={500}>
+          {AnswerIndexItems}
+        </ReactCSSTransitionGroup>
       </div>
     );
   }

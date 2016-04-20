@@ -40,7 +40,9 @@ var QuestionsIndex = React.createClass({
       return (<div></div>);
     }
     var QuestionIndexItems = this.state.questions.map(function(question) {
-      return <QuestionIndexItem {...question} key={'question-' + question.id} />;
+      return (
+        <QuestionIndexItem {...question} key={'question-' + question.id} />
+      );
     });
     return (
       <div>

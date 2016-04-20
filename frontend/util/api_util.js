@@ -139,5 +139,19 @@ module.exports = {
         debugger
       }
     });
+  },
+  createAnswer: function(answer) {
+    $.ajax({
+      method: 'POST',
+      url: '/api/answers',
+      data: answer,
+      dataType: 'json',
+      success: function(question) {
+        QuestionActions.receiveQuestion(question);
+      },
+      error: function() {
+        debugger
+      }
+    });
   }
 };

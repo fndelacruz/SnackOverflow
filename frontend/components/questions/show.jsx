@@ -3,6 +3,7 @@ var ApiUtil = require('../../util/api_util');
 var QuestionStore = require('../../stores/question');
 var AnswersIndex = require('../answers/index');
 var ShowItem = require('./show_item');
+var AnswersNew = require('../answers/new');
 
 var _callbackId;
 var QuestionShow = React.createClass({
@@ -103,6 +104,7 @@ var QuestionShow = React.createClass({
             handleUserClick={this.handleUserClick}
             handleTagClick={this.handleTagClick}
             handleToolClick={this.handleToolClick} />
+          <AnswersNew questionId={question.id} />
         </div>
 
         <div className='content-double-sidebar'>

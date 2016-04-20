@@ -1,20 +1,7 @@
-.ask-double-main {
-  float: left;
-  width: 660px;
-  margin-top: 15px;
-}
-
-.ask-double-sidebar {
-  padding: 15px;
-  float: right;
-  width: 335px;
-  background: #ffd;
-  border: 1px solid #cc8;
-}
-
 .ask-title-container {
   position: relative;
 }
+
 .ask-title-label {
   font-weight: 700;
   width: 40px;
@@ -30,11 +17,12 @@
   float: right;
 }
 
-.ask-content-input {
-  margin: 20px 0;
-  padding: 10px;
-  width: 640px;
-  height: 200px;
+.ask-double-sidebar {
+  padding: 15px;
+  float: right;
+  width: 335px;
+  background: #ffd;
+  border: 1px solid #cc8;
 }
 
 .ask-double-sidebar-header {

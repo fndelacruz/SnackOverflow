@@ -261,6 +261,21 @@ button:hover {
   color: #0be;
 }
 
+/* For QuestionsNew and AnswersNew)*/
+
+.item-new-double-main {
+  float: left;
+  width: 660px;
+  margin-top: 15px;
+}
+
+.item-content-input {
+  margin: 20px 0;
+  padding: 10px;
+  width: 640px;
+  height: 200px;
+}
+
 /* For debugging */
 
 #dev-border {
