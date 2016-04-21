@@ -5,7 +5,7 @@ class ViewsController < ApplicationController
     if @view.save!
       render json: {}
     else
-      render json: status: :unprocessable_entity
+      render json: {}, status: :unprocessable_entity
     end
   end
 

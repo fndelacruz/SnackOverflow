@@ -13,5 +13,11 @@ module.exports = {
       action: sortBy,
       actionType: TagConstants.CHANGE_TAG_SORT
     });
+  },
+  changeTagSearchTerm: function(searchTerm) {
+    AppDispatcher.dispatch({
+      action: searchTerm,
+      actionType: TagConstants.CHANGE_TAG_SEARCH_TERM
+    });
   }
 };

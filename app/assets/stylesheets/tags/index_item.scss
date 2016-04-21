@@ -1,0 +1,22 @@
+.tags-index-item {
+  float: left;
+  padding: 5px;
+  margin: 0 10px 20px 0;
+  width: 245px;
+  font-size: 12px;
+  color: #777;
+  // outline: 1px solid green;
+  height: 100px;
+  border-bottom: 1px solid #ddd;
+}
+
+.tags-question-count {
+  display: inline-block;
+  float: left;
+  padding: 4px 0;
+  // outline: 1px solid red;
+}
+
+.tags-description-preview {
+  margin: 5px 0;
+}

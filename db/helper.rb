@@ -47,5 +47,5 @@ def random_vote(item)
 end
 
 def random_time_ago
-  rand(50000000).seconds.ago
+  rand(5000000).seconds.ago
 end

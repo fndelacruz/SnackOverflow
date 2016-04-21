@@ -84,7 +84,7 @@ QuestionStore.getQuestion = function(questionId) {
       sortAnswersByActive(answers);
       break;
     case 'oldest':
-      Util.sortBy(answers, 'created_at', true);
+      Util.sortBy(answers, 'created_at');
       break;
     case 'votes':
       Util.sortBy(answers, 'vote_count', true);

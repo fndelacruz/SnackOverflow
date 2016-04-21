@@ -9,6 +9,7 @@ var TagStore = new Store(AppDispatcher);
 // need to store by id
 var _tags = [];
 var _sortBy = 'popular';
+var _searchTerm = '';
 
 function resetTags(tags) {
   _tags = tags;
@@ -16,6 +17,10 @@ function resetTags(tags) {
 
 function resetTagSort(sortBy) {
   _sortBy = sortBy;
+}
+
+function resetTagSearchTerm(searchTerm) {
+    _searchTerm = searchTerm;
 }
 
 TagStore.all = function() {
@@ -30,7 +35,13 @@ TagStore.all = function() {
       Util.sortBy(_tags, 'created_at');
       break;
   }
-  return _tags.slice();
+  if (_searchTerm.length) {
+    return _tags.filter(function(tag) {
+      return tag.name.search(_searchTerm) !== -1;
+    }).slice();
+  } else {
+    return _tags.slice();
+  }
 };
 
 TagStore.getSortBy = function() {
@@ -44,6 +55,9 @@ TagStore.__onDispatch = function(payload) {
       break;
     case TagConstants.CHANGE_TAG_SORT:
       resetTagSort(payload.action);
+      break;
+    case TagConstants.CHANGE_TAG_SEARCH_TERM:
+      resetTagSearchTerm(payload.action);
       break;
   }
   this.__emitChange();

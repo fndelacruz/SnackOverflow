@@ -37,10 +37,9 @@ var TagsIndex = React.createClass({
     });
   },
   handleSearchChange: function(e) {
-    alert('TODO handleSearchChange');
-    // var searchValue = e.currentTarget.value;
-    // // UserActions.changeUserSearchTerm(searchValue);
-    // this.setState({ search: searchValue });
+    var searchValue = e.currentTarget.value;
+    TagActions.changeTagSearchTerm(searchValue);
+    this.setState({ search: searchValue });
   },
   render: function() {
     var tags = this.state.tags.map(function(tag) {

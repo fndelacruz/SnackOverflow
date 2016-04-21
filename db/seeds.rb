@@ -2,7 +2,16 @@ require_relative 'helper'
 
 # ActiveRecord::Base.transaction do
   # random tag creation
-  Tag.create!(50.times.map{ |idx| { name: "tag#{idx}" } })
+  50.times do
+    begin
+      Tag.create!(
+          name: FFaker::BaconIpsum.word,
+          description: FFaker::DizzleIpsum.sentence
+        )
+    rescue => e
+      debugger unless e.message == 'Validation failed: Name has already been taken'
+    end
+  end
 
   ann = User.create!(
     email: 'ann@ann.ann', display_name: 'ann', password: 'annann',
