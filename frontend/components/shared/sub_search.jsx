@@ -8,6 +8,7 @@ var SubSearch = React.createClass({
           Search:
         </div>
         <input
+          autoFocus
           type='text'
           value={this.props.search}
           onChange={this.props.handleSearchChange}

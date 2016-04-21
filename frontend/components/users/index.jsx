@@ -36,10 +36,7 @@ var UsersIndex = React.createClass({
   },
   handleSearchChange: function(e) {
     var searchValue = e.currentTarget.value;
-
-    if (searchValue.length > 2) {
-      console.error('UserSearch initiated');
-    }
+    UserActions.changeUserSearchTerm(searchValue);
     this.setState({ search: searchValue });
   },
   render: function() {

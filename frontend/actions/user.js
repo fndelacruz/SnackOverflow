@@ -13,5 +13,11 @@ module.exports = {
       action: sortBy,
       actionType: UserConstants.CHANGE_USER_SORT
     });
+  },
+  changeUserSearchTerm: function(searchTerm) {
+    AppDispatcher.dispatch({
+      action: searchTerm,
+      actionType: UserConstants.CHANGE_USER_SEARCH_TERM
+    });
   }
 };

@@ -7,6 +7,7 @@ var UserStore = new Store(AppDispatcher);
 
 var _users = {};
 var _sortBy = 'reputation';
+var _searchTerm = '';
 
 function resetUsers(users) {
   _users = {};
@@ -17,6 +18,18 @@ function resetUsers(users) {
 
 function resetSortBy(sortBy) {
   _sortBy = sortBy;
+}
+
+function resetSearchTerm(searchTerm) {
+  console.log('resetSearchTerm', searchTerm);
+  if (searchTerm.length >= 3) {
+    _searchTerm = searchTerm;
+    this.__emitChange();
+  } else if (searchTerm.length < 3 && _searchTerm !== '') {
+    _searchTerm = '';
+    this.__emitChange();
+  }
+  console.log('newSearchTerm:', _searchTerm);
 }
 
 function sortBy(users, sortType, isDescending) {
@@ -46,7 +59,14 @@ UserStore.all = function() {
       Util.sortBy(users, 'vote_count', true);
       break;
   }
-  return users;
+
+  if (_searchTerm.length) {
+    return users.filter(function(user) {
+      return user.display_name.toLowerCase().search(_searchTerm) !== -1;
+    });
+  } else {
+    return users;
+  }
 };
 
 UserStore.getSortBy = function() {
@@ -57,12 +77,16 @@ UserStore.__onDispatch = function(payload) {
   switch (payload.actionType) {
     case UserConstants.RECEIVE_USERS:
       resetUsers(payload.action);
+      this.__emitChange();
       break;
     case UserConstants.CHANGE_USER_SORT:
       resetSortBy(payload.action);
+      this.__emitChange();
+      break;
+    case UserConstants.CHANGE_USER_SEARCH_TERM:
+      resetSearchTerm.call(this, payload.action.toLowerCase());
       break;
   }
-  this.__emitChange();
 };
 
 module.exports = UserStore;

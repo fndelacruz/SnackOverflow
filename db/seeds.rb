@@ -1,4 +1,6 @@
-ActiveRecord::Base.transaction do
+require_relative 'helper'
+
+# ActiveRecord::Base.transaction do
   tag1 = Tag.create!(name: 'tag1')
   tag2 = Tag.create!(name: 'tag2')
   tag3 = Tag.create!(name: 'tag3')
@@ -6,35 +8,35 @@ ActiveRecord::Base.transaction do
 
   ann = User.create!(
     email: 'ann@ann.ann', display_name: 'ann', password: 'annann',
-    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
+    location: random_location
   )
   bob = User.create!(
     email: 'bob@bob.bob', display_name: 'bob', password: 'bobbob',
-    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
+    location: random_location
   )
   cal = User.create!(
     email: 'cal@cal.cal', display_name: 'cal', password: 'calcal',
-    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
+    location: random_location
   )
   dan = User.create!(
     email: 'dan@dan.dan', display_name: 'dan', password: 'dandan',
-    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
+    location: random_location
   )
   edd = User.create!(
     email: 'edd@edd.edd', display_name: 'edd', password: 'eddedd',
-    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
+    location: random_location
   )
   fry = User.create!(
     email: 'fry@fry.fry', display_name: 'fry', password: 'fryfry',
-    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
+    location: random_location
   )
   guy = User.create!(
     email: 'guy@guy.guy', display_name: 'guy', password: 'guyguy',
-    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
+    location: random_location
   )
   hal = User.create!(
     email: 'hal@hal.hal', display_name: 'hal', password: 'halhal',
-    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
+    location: random_location
   )
 
   ann_q1 = ann.questions.create!(
@@ -68,7 +70,17 @@ ActiveRecord::Base.transaction do
     tag_ids: [1, 4]
   )
 
-  20.times do
+  users = 100.times.map do
+    {
+      email: FFaker::Internet.email,
+      display_name: FFaker::Internet.user_name,
+      password: 'hunter2',
+      location: random_location,
+    }
+  end
+  User.create!(users)
+
+  50.times do
     dan.questions.create!(
       title: FFaker::BaconIpsum.sentence,
       content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
@@ -154,4 +166,32 @@ ActiveRecord::Base.transaction do
   View.create!(viewable: dan_q1, user: guy)
   View.create!(viewable: dan_q1, user: hal)
 
-end
+  # random question creation
+  50.times do
+    random_user.questions.create!(
+      title: FFaker::BaconIpsum.sentence,
+      content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
+    )
+  end
+
+  # random answer creation
+  50.times do
+    random_question.answers.create!(
+      user: random_user,
+      content: FFaker::BaconIpsum.sentences(rand(5) + 1).join(' ')
+    )
+  end
+
+  # random question votes
+  50.times do
+    random_vote(random_question)
+  end
+
+  # random answer votes
+  50.times do
+    random_vote(random_answer)
+  end
+
+# end
+
+# random_question.answers.create!(user: random_user, content: FFaker::BaconIpsum.sentences(rand(5) + rand(3)).join(' '))
