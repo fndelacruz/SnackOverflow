@@ -2,6 +2,7 @@ var React = require('react');
 var CommentsIndex = require('../comments/index');
 var CommentsForm = require('../comments/form');
 var TagStub = require('../tags/stub');
+var TagStubIndex = require('../tags/stub_index');
 
 function voteClass(userVote, type) {
   var className;
@@ -61,10 +62,11 @@ var ShowItem = React.createClass({ // used for question show and answers index i
   render: function() {
     var item = this.props.item, type = this.props.type, tags, id, tools;
     if (item.tags && item.tags.length) {
+      
       tags = (
-        <ul className='tags'>
-          {renderTagStubs.call(null, item.id, item.tags)}
-        </ul>
+
+        <TagStubIndex tags={item.tags} questionId={item.id} />
+
       );
     }
     if (this.props.type === 'Question') {

@@ -4,6 +4,7 @@ var ApiUtil = require('../../util/api_util');
 var QuestionIndexItem = require('./index_item');
 var SortNav = require('../shared/sort_nav');
 var QuestionActions = require('../../actions/question');
+var TagStub = require('../tags/stub');
 
 var _callbackId;
 
@@ -53,10 +54,11 @@ var QuestionsIndex = React.createClass({
         <QuestionIndexItem {...question} key={'question-' + question.id} />
       );
     });
-    var SortNavHeader = 'Questions', sidebarLabel = 'questions';
+    var SortNavHeader = 'Questions', sidebarLabel = 'questions', sidebarTag;
     if (this.props.params.tagName) {
       SortNavHeader = 'Tagged ' + SortNavHeader;
       sidebarLabel = 'tagged ' + sidebarLabel;
+      sidebarTag = <TagStub tagName={this.props.params.tagName} />;
     }
 
     return (
@@ -81,6 +83,7 @@ var QuestionsIndex = React.createClass({
           <div className='sidebar-label'>
             {sidebarLabel}
           </div>
+          {sidebarTag}
         </div>
       </div>
     );

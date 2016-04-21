@@ -51,7 +51,7 @@ html {
   font-family: 'Roboto', sans-serif;
 }
 
-ul {
+ul, li {
   list-style: none;
 }
 

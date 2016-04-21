@@ -1,6 +1,7 @@
 var React = require('react');
 var hashHistory = require('react-router').hashHistory;
 var TagStub = require('../tags/stub');
+var TagStubIndex = require('../tags/stub_index');
 
 function renderTagStubs(questionId, tags) {
   return tags.map(function(tag) {
@@ -36,9 +37,7 @@ QuestionsIndexItem = React.createClass({
     var question = this.props, tags;
     if (question.tags.length) {
       tags = (
-        <ul className='tags'>
-          {renderTagStubs.call(null, question.id, question.tags)}
-        </ul>
+        <TagStubIndex tags={question.tags} questionId={question.id} />
       );
     }
 
