@@ -183,7 +183,7 @@ module.exports = {
       }
     });
   },
-  fetchUsers: function(users) {
+  fetchUsers: function() {
     $.ajax({
       method: 'GET',
       url: '/api/users',

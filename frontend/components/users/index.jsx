@@ -44,9 +44,10 @@ var UsersIndex = React.createClass({
       return (
         <UsersIndexItem
           user={user}
+          sortBy={this.state.sortBy}
           key={'user-' + user.id}/>
       );
-    });
+    }.bind(this));
     return (
       <div className='users-index-container'>
         <SortNav

@@ -12,6 +12,7 @@ var _searchTerm = '';
 function resetUsers(users) {
   _users = {};
   users.forEach(function(user) {
+    user.created_at = new Date(user.created_at);
     _users[user.id] = user;
   });
 }
@@ -53,7 +54,7 @@ UserStore.all = function() {
       Util.sortBy(users, 'reputation', true);
       break;
     case 'new users':
-      Util.sortBy(users, 'id', true);
+      Util.sortBy(users, 'created_at', true);
       break;
     case 'voters':
       Util.sortBy(users, 'vote_count', true);

@@ -76,6 +76,7 @@ require_relative 'helper'
       display_name: FFaker::Internet.user_name,
       password: 'hunter2',
       location: random_location,
+      created_at: rand(50000000).seconds.ago 
     }
   end
   User.create!(users)
