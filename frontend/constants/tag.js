@@ -1,0 +1,4 @@
+module.exports = {
+  RECEIVE_TAGS: 'RECEIVE_TAGS',
+  CHANGE_TAG_SORT: 'CHANGE_TAG_SORT'
+};

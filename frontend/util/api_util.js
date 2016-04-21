@@ -2,9 +2,12 @@ var CurrentUserActions = require('../actions/current_user');
 var CurrentUserConstants = require('../constants/current_user');
 var QuestionActions = require('../actions/question');
 var UserActions = require('../actions/user');
+var TagActions = require('../actions/tag');
 var hashHistory = require('react-router').hashHistory;
 
 module.exports = {
+  // GETs
+
   fetchCurrentUser: function() {
     $.ajax({
       method: 'GET',
@@ -38,6 +41,20 @@ module.exports = {
       }
     });
   },
+  fetchTags: function() {
+    $.ajax({
+      method: 'GET',
+      url: 'api/tags/',
+      dataType: 'json',
+      success: TagActions.receiveTags,
+      error: function() {
+        debugger;
+      }
+    });
+  },
+
+  // POST and DELETE
+
   createVote: function(vote) {
     $.ajax({
       method: 'POST',
