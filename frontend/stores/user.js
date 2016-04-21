@@ -22,7 +22,6 @@ function resetSortBy(sortBy) {
 }
 
 function resetSearchTerm(searchTerm) {
-  console.log('resetSearchTerm', searchTerm);
   if (searchTerm.length >= 3) {
     _searchTerm = searchTerm;
     this.__emitChange();
@@ -30,7 +29,6 @@ function resetSearchTerm(searchTerm) {
     _searchTerm = '';
     this.__emitChange();
   }
-  console.log('newSearchTerm:', _searchTerm);
 }
 
 function sortBy(users, sortType, isDescending) {

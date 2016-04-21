@@ -159,7 +159,7 @@ module.exports = {
       method: 'DELETE',
       url: '/api/answers/' + answerId,
       dataType: 'json',
-      success: QuestionActions.receiveQuestion(question),
+      success: QuestionActions.receiveQuestion,
       error: function() {
         debugger;
       }
@@ -170,7 +170,7 @@ module.exports = {
       method: 'GET',
       url: '/api/users',
       dataType: 'json',
-      success: UserActions.receiveUsers(users),
+      success: UserActions.receiveUsers,
       error: function() {
         debugger
       }

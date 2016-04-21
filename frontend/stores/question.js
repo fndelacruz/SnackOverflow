@@ -3,6 +3,7 @@ var AppDispatcher = require('../dispatcher/dispatcher');
 var QuestionConstants = require('../constants/question');
 var QuestionStore = new Store(AppDispatcher);
 var Util = require('../util/util');
+var ApiUtil = require('../util/api_util');
 
 /* Questions */
 
@@ -100,12 +101,14 @@ QuestionStore.__onDispatch = function(payload) {
   switch (payload.actionType) {
     case QuestionConstants.RECEIVE_QUESTIONS:
       resetQuestions(payload.action);
+      ApiUtil.fetchCurrentUser();
       break;
     case QuestionConstants.CHANGE_QUESTION_SORT:
       changeQuestionSort(payload.action);
       break;
     case QuestionConstants.RECEIVE_QUESTION:
       resetQuestion(payload.action);
+      ApiUtil.fetchCurrentUser();
       break;
     case QuestionConstants.CHANGE_ANSWER_SORT:
       changeAnswerSort(payload.action);

@@ -8,22 +8,18 @@ var QuestionStore = require('../../stores/question');
 var HEADERS = ['questions', 'jobs', 'tags', 'users', 'badges', 'ask'];
 
 var _currentUserStoreCallbackId;
-// var _questionStoreStoreCallbackId;
 var NavBar = React.createClass({
   getInitialState: function() {
     return { currentUser: CurrentUserStore.fetch() };
   },
   componentDidMount: function() {
     _currentUserStoreCallbackId = CurrentUserStore.addListener(this.onChange);
-    // _questionStoreStoreCallbackId = QuestionStore.addListener(ApiUtil.fetchCurrentUser);
     ApiUtil.fetchCurrentUser();
   },
   componentWillUnmount: function() {
     _currentUserStoreCallbackId.remove();
-    // _questionStoreStoreCallbackId.remove();
   },
   onChange: function() {
-    // alert('NavBarOnChange');
     this.setState({ currentUser: CurrentUserStore.fetch() });
   },
   navigate: function(destination) {
