@@ -3,6 +3,7 @@ var SortNav = require('../shared/sort_nav');
 var UserStore = require('../../stores/user');
 var UserActions = require('../../actions/user');
 var ApiUtil = require('../../util/api_util');
+var UsersIndexItem = require('./index_item');
 
 var USER_SORT_TYPES = ['reputation', 'new users', 'voters'];
 
@@ -32,6 +33,13 @@ var UsersIndex = React.createClass({
     });
   },
   render: function() {
+    var users = this.state.users.map(function(user) {
+      return (
+        <UsersIndexItem
+          user={user}
+          key={'user-' + user.id}/>
+      );
+    });
     return (
       <div>
         <SortNav
@@ -39,17 +47,9 @@ var UsersIndex = React.createClass({
           active={this.state.sortBy}
           header='Users'
           handleSortChange={this.handleSortChange}/>
-        <ul>
-          {this.state.users.map(function(user) {
-            return (
-              <li key={'user-' + user.id}>
-                {user.id + ': ' + user.display_name +
-                  ', reputation: ' + user.reputation +
-                  ', vote_count: ' + user.vote_count}
-              </li>
-            );
-          })}
-        </ul>
+        <div className='users-index-item-container'>
+          {users}
+        </div>
       </div>
     );
   }

@@ -5,28 +5,36 @@ ActiveRecord::Base.transaction do
   tag4 = Tag.create!(name: 'tag4')
 
   ann = User.create!(
-    email: 'ann@ann.ann', display_name: 'ann', password: 'annann'
+    email: 'ann@ann.ann', display_name: 'ann', password: 'annann',
+    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
   )
   bob = User.create!(
-    email: 'bob@bob.bob', display_name: 'bob', password: 'bobbob'
+    email: 'bob@bob.bob', display_name: 'bob', password: 'bobbob',
+    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
   )
   cal = User.create!(
-    email: 'cal@cal.cal', display_name: 'cal', password: 'calcal'
+    email: 'cal@cal.cal', display_name: 'cal', password: 'calcal',
+    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
   )
   dan = User.create!(
-    email: 'dan@dan.dan', display_name: 'dan', password: 'dandan'
+    email: 'dan@dan.dan', display_name: 'dan', password: 'dandan',
+    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
   )
   edd = User.create!(
-    email: 'edd@edd.edd', display_name: 'edd', password: 'eddedd'
+    email: 'edd@edd.edd', display_name: 'edd', password: 'eddedd',
+    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
   )
   fry = User.create!(
-    email: 'fry@fry.fry', display_name: 'fry', password: 'fryfry'
+    email: 'fry@fry.fry', display_name: 'fry', password: 'fryfry',
+    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
   )
   guy = User.create!(
-    email: 'guy@guy.guy', display_name: 'guy', password: 'guyguy'
+    email: 'guy@guy.guy', display_name: 'guy', password: 'guyguy',
+    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
   )
   hal = User.create!(
-    email: 'hal@hal.hal', display_name: 'hal', password: 'halhal'
+    email: 'hal@hal.hal', display_name: 'hal', password: 'halhal',
+    location: "#{FFaker::AddressUS.city}, #{FFaker::AddressUS.state_and_territories_abbr}"
   )
 
   ann_q1 = ann.questions.create!(
