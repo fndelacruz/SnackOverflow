@@ -1,6 +1,7 @@
 var React = require('react');
 var CommentsIndex = require('../comments/index');
 var CommentsForm = require('../comments/form');
+var TagStub = require('../tags/stub');
 
 function voteClass(userVote, type) {
   var className;
@@ -27,14 +28,12 @@ function voteClass(userVote, type) {
   return className;
 }
 
-function liTagsMap(questionId, tags, handleTagClick) {
+function renderTagStubs(questionId, tags) {
   return tags.map(function(tag) {
     return (
-      <li
-        onClick={handleTagClick}
-        key={'question-' + questionId + '-tag-' + tag.id}>
-        {tag.name}
-      </li>
+      <TagStub
+        key={'question-' + questionId + '-tag-' + tag.id}
+        tagName={tag.name} />
     );
   });
 }
@@ -64,7 +63,7 @@ var ShowItem = React.createClass({ // used for question show and answers index i
     if (item.tags && item.tags.length) {
       tags = (
         <ul className='tags'>
-          {liTagsMap.call(null, item.id, item.tags, this.props.handleTagClick)}
+          {renderTagStubs.call(null, item.id, item.tags)}
         </ul>
       );
     }

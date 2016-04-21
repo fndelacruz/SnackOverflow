@@ -1,17 +1,17 @@
 var React = require('react');
 var hashHistory = require('react-router').hashHistory;
+var TagStub = require('../tags/stub');
 
-function liTagsMap(questionId, tags) {
+function renderTagStubs(questionId, tags) {
   return tags.map(function(tag) {
     return (
-      <li
-        onClick={this.handleTagClick}
-        key={'question-' + questionId + '-tag-' + tag.id}>
-        {tag.name}
-      </li>
+      <TagStub
+        key={'question-' + questionId + '-tag-' + tag.id}
+        tagName={tag.name} />
     );
-  }.bind(this));
+  });
 }
+
 
 var maxContentLength = 180;
 function handleContent(content) {
@@ -37,7 +37,7 @@ QuestionsIndexItem = React.createClass({
     if (question.tags.length) {
       tags = (
         <ul className='tags'>
-          {liTagsMap.call(this, question.id, question.tags)}
+          {renderTagStubs.call(null, question.id, question.tags)}
         </ul>
       );
     }

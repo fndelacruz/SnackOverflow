@@ -25,5 +25,11 @@ module.exports = {
       action: sortBy,
       actionType: QuestionConstants.CHANGE_ANSWER_SORT
     });
+  },
+  setTag: function(tagName) {
+    AppDispatcher.dispatch({
+      action: tagName,
+      actionType: QuestionConstants.SET_TAG_NAME
+    });
   }
 };

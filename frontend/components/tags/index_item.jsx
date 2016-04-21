@@ -1,6 +1,12 @@
 var React = require('react');
+// var hashHistory = require('react-router').hashHistory;
+var TagStub = require('../tags/stub');
 
 var TagsIndexItem = React.createClass({
+  navigateTo: function(tagName) {
+    var path = '/questions/tagged/' + tagName;
+    hashHistory.push(path);
+  },
   render: function() {
     var tag = this.props.tag, footer;
     var description = tag.description;
@@ -11,7 +17,9 @@ var TagsIndexItem = React.createClass({
       <div className='tags-index-item'>
         <div className='tags-index-item-header group'>
           <div className='tag-display-name-link'>
-            <ul className='tags'><li>{tag.name}</li></ul>
+            <ul className='tags'>
+              <TagStub tagName={tag.name} />
+            </ul>
           </div>
           <div className='tags-question-count'>
             {'× ' + tag.question_count}

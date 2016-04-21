@@ -9,6 +9,7 @@ var ApiUtil = require('../util/api_util');
 
 var _questions = {};
 var _questionSortBy = 'newest';
+var _tagName = null;
 
 function formatDateHelper(item) {
   item.created_at = new Date(item.created_at);
@@ -45,10 +46,24 @@ function resetQuestion(question) {
   _questions[question.id] = question;
 }
 
+function setTagName(tagName) {
+  _tagName = tagName.length ? tagName : null;
+}
+
 QuestionStore.allQuestions = function() {
   var questions = Object.keys(_questions).map(function(id) {
     return _questions[id];
   });
+
+  if (_tagName) {
+    questions = questions.filter(function(question) {
+      var tags = question.tags.map(function(tag) {
+        return tag.name;
+      });
+      return tags.indexOf(_tagName) !== -1;
+    });
+  }
+
   switch (_questionSortBy) {
     // TODO: DRY this enumeration of sort types. combine with the array literal
     // QuestionIndexItem. move to util constants?
@@ -112,6 +127,9 @@ QuestionStore.__onDispatch = function(payload) {
       break;
     case QuestionConstants.CHANGE_ANSWER_SORT:
       changeAnswerSort(payload.action);
+      break;
+    case QuestionConstants.SET_TAG_NAME:
+      setTagName(payload.action);
       break;
   }
   this.__emitChange();

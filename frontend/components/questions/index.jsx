@@ -14,14 +14,23 @@ var QuestionsIndex = React.createClass({
   getInitialState: function() {
     return {
       questions: QuestionStore.allQuestions(),
-      sortBy: QuestionStore.getQuestionSortBy()
+      sortBy: QuestionStore.getQuestionSortBy(),
+      tag: ''
     };
   },
   componentDidMount: function() {
     _callbackId = QuestionStore.addListener(this.onChange);
+    if (this.props.params.tagName) {
+      QuestionActions.setTag(this.props.params.tagName);
+    }
     ApiUtil.fetchQuestions();
   },
+  componentWillReceiveProps:function(newProps) {
+    // may receive tagName as this.props.params. handle if so
+    QuestionActions.setTag(newProps.params.tagName);
+  },
   componentWillUnmount: function() {
+    QuestionActions.setTag('');
     _callbackId.remove();
   },
   onChange: function() {
@@ -44,14 +53,23 @@ var QuestionsIndex = React.createClass({
         <QuestionIndexItem {...question} key={'question-' + question.id} />
       );
     });
+    var SortNavHeader = 'Questions', sidebarLabel = 'questions';
+    if (this.props.params.tagName) {
+      SortNavHeader = 'Tagged ' + SortNavHeader;
+      sidebarLabel = 'tagged ' + sidebarLabel;
+    }
+
     return (
       <div>
         <div className='content-double-main'>
           <SortNav
             links={QUESTION_SORT_TYPES}
             active={this.state.sortBy}
-            header='All Questions'
+            header={SortNavHeader}
             handleSortChange={this.handleSortChange}/>
+          <div>
+
+          </div>
           <div>
             {QuestionIndexItems}
           </div>
@@ -61,7 +79,7 @@ var QuestionsIndex = React.createClass({
             {this.state.questions.length}
           </div>
           <div className='sidebar-label'>
-            questions
+            {sidebarLabel}
           </div>
         </div>
       </div>

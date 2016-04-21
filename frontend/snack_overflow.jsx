@@ -2,6 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var Router = require('react-router').Router;
 var Route = require('react-router').Route;
+var Redirect = require('react-router').Redirect;
 var NavBar = require('./components/nav/nav_bar');
 var QuestionsIndex = require('./components/questions/index');
 var hashHistory = require('react-router').hashHistory;
@@ -14,6 +15,7 @@ var App = (
   <Router history={hashHistory}>
     <Route path='/' component={NavBar}>
       <Route path='questions' component={QuestionsIndex} />
+      <Route path='questions/tagged/:tagName' component={QuestionsIndex} />
       <Route path='questions/:questionId' component={QuestionShow} />
       <Route path='ask' component={QuestionsNew} />
       <Route path='users' component={UsersIndex} />
