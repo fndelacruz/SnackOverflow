@@ -3,22 +3,27 @@ var CurrentUserStore = require('../../stores/current_user');
 var ApiUtil = require('../../util/api_util');
 var hashHistory = require('react-router').hashHistory;
 var NavHeaderLink = require('./header_link');
+var QuestionStore = require('../../stores/question');
 
 var HEADERS = ['questions', 'jobs', 'tags', 'users', 'badges', 'ask'];
 
-var _callbackId;
+var _currentUserStoreCallbackId;
+// var _questionStoreStoreCallbackId;
 var NavBar = React.createClass({
   getInitialState: function() {
     return { currentUser: CurrentUserStore.fetch() };
   },
   componentDidMount: function() {
-    _callbackId = CurrentUserStore.addListener(this.onChange);
+    _currentUserStoreCallbackId = CurrentUserStore.addListener(this.onChange);
+    // _questionStoreStoreCallbackId = QuestionStore.addListener(ApiUtil.fetchCurrentUser);
     ApiUtil.fetchCurrentUser();
   },
   componentWillUnmount: function() {
-    _callbackId.remove();
+    _currentUserStoreCallbackId.remove();
+    // _questionStoreStoreCallbackId.remove();
   },
   onChange: function() {
+    // alert('NavBarOnChange');
     this.setState({ currentUser: CurrentUserStore.fetch() });
   },
   navigate: function(destination) {

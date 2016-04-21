@@ -85,6 +85,13 @@ var ShowItem = React.createClass({ // used for question show and answers index i
         </div>
       );
     }
+    var createdAt = item.created_at.toLocaleString();
+    if (type === 'Question') {
+      createdAt = 'asked ' + createdAt;
+    } else if (type === 'Answer') {
+      createdAt = 'answered ' + createdAt;
+    }
+    var updatedAt = 'edited ' + item.updated_at.toLocaleString();
     return (
       <div className='question-show-item-container group' id={id}>
         <div className='question-show-item-sidebar'>
@@ -113,7 +120,7 @@ var ShowItem = React.createClass({ // used for question show and answers index i
             {tools}
             <div className='stub-date-user-container stub-date-user-container-created-at'>
               <div className='stub-date'>
-                {item.created_at_words}
+                {createdAt}
               </div>
               <div className='question-index-item-user-container'>
                 <div
@@ -134,7 +141,7 @@ var ShowItem = React.createClass({ // used for question show and answers index i
 
             <div className='stub-date-user-container'>
               <div className='stub-date'>
-                {item.updated_at_words}
+                {updatedAt}
               </div>
               <div className='question-index-item-user-container'>
                 <div

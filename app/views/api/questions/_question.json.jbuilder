@@ -1,14 +1,9 @@
 json.extract!(question,
-  :id, :title, :content, :created_at, :vote_count, :answer_count, :view_count
+  :id, :title, :content, :updated_at, :created_at, :vote_count, :answer_count,
+    :view_count
 )
 json.created_at_words "asked #{time_ago_in_words(question.created_at)} ago"
 json.updated_at_words "edited #{time_ago_in_words(question.updated_at)} ago"
-
-# json.user do
-#   json.id question.user.id
-#   json.display_name question.user.display_name
-#   # TODO: user score count, badges
-# end
 
 json.user do
   json.partial!('/api/users/user', user: question.user, options: { stub: true })

@@ -14,6 +14,14 @@ def user_ids
   @user_ids ||= User.all.map(&:id)
 end
 
+def tag_ids
+  @tag_ids ||= Tag.all.map(&:id)
+end
+
+def comment_ids
+  @comment_ids ||= Comment.all.map(&:id)
+end
+
 def random_question
   Question.find(question_ids.sample)
 end
@@ -26,6 +34,18 @@ def random_user
   User.find(user_ids.sample)
 end
 
+def random_comment
+  Comment.find(comment_ids.sample)
+end
+
+def random_tags
+  tag_ids.sample(rand(6))
+end
+
 def random_vote(item)
   rand < 0.5 ? (item.upvote(random_user)) : (item.downvote(random_user))
+end
+
+def random_time_ago
+  rand(50000000).seconds.ago
 end

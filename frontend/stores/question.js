@@ -2,15 +2,35 @@ var Store = require('flux/utils').Store;
 var AppDispatcher = require('../dispatcher/dispatcher');
 var QuestionConstants = require('../constants/question');
 var QuestionStore = new Store(AppDispatcher);
+var Util = require('../util/util');
 
 /* Questions */
 
 var _questions = {};
 var _questionSortBy = 'newest';
 
+function formatDateHelper(item) {
+  item.created_at = new Date(item.created_at);
+  item.updated_at = new Date(item.updated_at);
+}
+
+function formatDates(question) {
+  formatDateHelper(question);
+
+  question.comments.forEach(formatDateHelper);
+  Util.sortBy(question.comments, 'created_at', true);
+
+  question.answers.forEach(function(answer) {
+    formatDateHelper(answer);
+    answer.comments.forEach(formatDateHelper);
+    Util.sortBy(answer.comments, 'created_at', true);
+  });
+}
+
 function resetQuestions(questions) {
   _questions = {};
   questions.forEach(function(question) {
+    formatDates(question);
     _questions[question.id] = question;
   });
 }
@@ -19,44 +39,8 @@ function changeQuestionSort(questionSortBy) {
   _questionSortBy = questionSortBy;
 }
 
-function sortQuestionsByNewest(questions) {
-  // NOTE: Sorting by id as proxy for created_at
-  questions.sort(function(a, b){
-    if (a.id < b.id) {
-      return 1;
-    } else if (a.id > b.id) {
-      return -1;
-    } else {
-      return 0;
-    }
-  });
-}
-
-function sortQuestionsByVotes(questions) {
-  questions.sort(function(a, b){
-    if (a.vote_count < b.vote_count) {
-      return 1;
-    } else if (a.vote_count > b.vote_count) {
-      return -1;
-    } else {
-      return 0;
-    }
-  });
-}
-
-function sortQuestionsByViews(questions) {
-  questions.sort(function(a, b){
-    if (a.view_count < b.view_count) {
-      return 1;
-    } else if (a.view_count > b.view_count) {
-      return -1;
-    } else {
-      return 0;
-    }
-  });
-}
-
 function resetQuestion(question) {
+  formatDates(question);
   _questions[question.id] = question;
 }
 
@@ -68,7 +52,7 @@ QuestionStore.allQuestions = function() {
     // TODO: DRY this enumeration of sort types. combine with the array literal
     // QuestionIndexItem. move to util constants?
     case 'newest':
-      sortQuestionsByNewest(questions);
+      Util.sortBy(questions, 'created_at', true);
       break;
     case 'featured':
       console.error('TODO');
@@ -77,13 +61,13 @@ QuestionStore.allQuestions = function() {
       console.error('TODO');
       break;
     case 'votes':
-      sortQuestionsByVotes(questions);
+      Util.sortBy(questions, 'vote_count', true);
       break;
     case 'active':
       console.error('TODO');
       break;
     case 'views':
-      sortQuestionsByViews(questions);
+      Util.sortBy(questions, 'view_count', true);
       break;
   }
   return questions;
@@ -94,17 +78,17 @@ QuestionStore.getQuestion = function(questionId) {
     return {};
   }
   var answers = _questions[questionId].answers;
-    switch (_sortAnswersBy) {
-      case 'active':
+  switch (_sortAnswersBy) {
+    case 'active':
       sortAnswersByActive(answers);
       break;
-      case 'oldest':
-      sortAnswersByOldest(answers);
+    case 'oldest':
+      Util.sortBy(answers, 'created_at', true);
       break;
-      case 'votes':
-      sortAnswersByVotes(answers);
+    case 'votes':
+      Util.sortBy(answers, 'vote_count', true);
       break;
-    }
+  }
   return $.extend({}, _questions[questionId]);
 };
 
@@ -136,31 +120,6 @@ var _sortAnswersBy = 'votes';
 
 function changeAnswerSort(sortAnswersBy) {
   _sortAnswersBy = sortAnswersBy;
-}
-
-function sortAnswersByOldest(answers) {
-  // NOTE: Sorting by id as proxy for created_at
-  answers.sort(function(a, b){
-    if (a.id > b.id) {
-      return 1;
-    } else if (a.id < b.id) {
-      return -1;
-    } else {
-      return 0;
-    }
-  });
-}
-
-function sortAnswersByVotes(answers) {
-  answers.sort(function(a, b){
-    if (a.vote_count < b.vote_count) {
-      return 1;
-    } else if (a.vote_count > b.vote_count) {
-      return -1;
-    } else {
-      return 0;
-    }
-  });
 }
 
 function sortAnswersByActive(answers) {

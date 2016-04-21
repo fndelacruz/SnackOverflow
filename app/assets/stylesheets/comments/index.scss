@@ -5,12 +5,12 @@
 /* React transitions */
 
 .comments-enter {
-  transform: translateY(48%);
+  opacity: 0.01;
 }
 
 .comments-enter.comments-enter-active {
-  transform: translateY(0);
-  transition: transform 500ms ease-in;
+  opacity: 1;
+  transition: opacity 500ms ease-in;
 }
 
 .comments-leave {
