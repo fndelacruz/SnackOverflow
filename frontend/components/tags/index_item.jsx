@@ -1,5 +1,4 @@
 var React = require('react');
-// var hashHistory = require('react-router').hashHistory;
 var TagStub = require('../tags/stub');
 
 var TagsIndexItem = React.createClass({

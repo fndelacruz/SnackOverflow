@@ -47,7 +47,7 @@ function resetQuestion(question) {
 }
 
 function setTagName(tagName) {
-  _tagName = tagName.length ? tagName : null;
+  _tagName = tagName;
 }
 
 QuestionStore.allQuestions = function() {

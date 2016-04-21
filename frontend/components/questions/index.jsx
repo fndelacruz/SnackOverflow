@@ -21,13 +21,11 @@ var QuestionsIndex = React.createClass({
   },
   componentDidMount: function() {
     _callbackId = QuestionStore.addListener(this.onChange);
-    if (this.props.params.tagName) {
-      QuestionActions.setTag(this.props.params.tagName);
-    }
+    console.log('componentDidMount', this.props.params.tagName);
+    QuestionActions.setTag(this.props.params.tagName);
     ApiUtil.fetchQuestions();
   },
   componentWillReceiveProps:function(newProps) {
-    // may receive tagName as this.props.params. handle if so
     QuestionActions.setTag(newProps.params.tagName);
   },
   componentWillUnmount: function() {
