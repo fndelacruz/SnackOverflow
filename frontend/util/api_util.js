@@ -10,9 +10,7 @@ module.exports = {
       method: 'GET',
       url: '/api/users/current',
       dataType: 'json',
-      success: function(currentUser) {
-        CurrentUserActions.receiveCurrentUser(currentUser);
-      },
+      success: CurrentUserActions.receiveCurrentUser,
       error: function() {
         debugger
       }
@@ -23,9 +21,7 @@ module.exports = {
       method: 'GET',
       url: 'api/questions',
       dataType: 'json',
-      success: function(questions) {
-        QuestionActions.receiveQuestions(questions);
-      },
+      success: QuestionActions.receiveQuestions,
       error: function() {
         debugger
       }
@@ -36,9 +32,7 @@ module.exports = {
       method: 'GET',
       url: 'api/questions/' + questionId,
       dataType: 'json',
-      success: function(question) {
-        QuestionActions.receiveQuestion(question);
-      },
+      success: QuestionActions.receiveQuestion,
       error: function() {
         debugger
       }
@@ -50,9 +44,7 @@ module.exports = {
       url: '/api/votes',
       data: vote,
       dataType: 'json',
-      success: function(question) {
-        QuestionActions.receiveQuestion(question);
-      },
+      success: QuestionActions.receiveQuestion,
       error: function() {
         debugger
       }
@@ -63,9 +55,7 @@ module.exports = {
       method: 'DELETE',
       url: '/api/votes/' + voteId,
       dataType: 'json',
-      success: function(question) {
-        QuestionActions.receiveQuestion(question);
-      },
+      success: QuestionActions.receiveQuestion,
       error: function() {
         debugger
       }
@@ -77,9 +67,7 @@ module.exports = {
       url: '/api/favorites',
       data: { 'favorite[question_id]': questionId },
       dataType: 'json',
-      success: function(question) {
-        QuestionActions.receiveQuestion(question);
-      },
+      success: QuestionActions.receiveQuestion,
       error: function() {
         debugger
       }
@@ -90,9 +78,7 @@ module.exports = {
       method: 'DELETE',
       url: '/api/favorites/' + favoriteId,
       dataType: 'json',
-      success: function(question) {
-        QuestionActions.receiveQuestion(question);
-      },
+      success: QuestionActions.receiveQuestion,
       error: function() {
         debugger
       }
@@ -118,15 +104,13 @@ module.exports = {
       method: 'DELETE',
       url: '/api/comments/' + commentId,
       dataType: 'json',
-      success: function(question) {
-        QuestionActions.receiveQuestion(question);
-      },
+      success: QuestionActions.receiveQuestion,
       error: function() {
         debugger
       }
     });
   },
-  createQuestion: function(question, callback) {
+  createQuestion: function(question) {
     $.ajax({
       method: 'POST',
       url: 'api/questions',
@@ -175,9 +159,7 @@ module.exports = {
       method: 'DELETE',
       url: '/api/answers/' + answerId,
       dataType: 'json',
-      success: function(question) {
-        QuestionActions.receiveQuestion(question);
-      },
+      success: QuestionActions.receiveQuestion(question),
       error: function() {
         debugger;
       }
@@ -188,9 +170,7 @@ module.exports = {
       method: 'GET',
       url: '/api/users',
       dataType: 'json',
-      success: function(users) {
-        UserActions.receiveUsers(users);
-      },
+      success: UserActions.receiveUsers(users),
       error: function() {
         debugger
       }
