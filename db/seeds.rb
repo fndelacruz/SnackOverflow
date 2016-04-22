@@ -5,8 +5,8 @@ require_relative 'helper'
   50.times do
     begin
       Tag.create!(
-          name: FFaker::BaconIpsum.word,
-          description: FFaker::DizzleIpsum.sentence
+          name: random_word,
+          description: FFaker::DizzleIpsum.sentences(3 + rand(2)).join(' ')
         )
     rescue => e
       debugger unless e.message == 'Validation failed: Name has already been taken'

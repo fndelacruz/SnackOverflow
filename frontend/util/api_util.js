@@ -52,6 +52,21 @@ module.exports = {
       }
     });
   },
+  fetchQuestionsTag: function(tagName) {
+    if (tagName) {
+      $.ajax({
+        method: 'GET',
+        url: 'api/tags/' + tagName,
+        dataType: 'json',
+        success: QuestionActions.receiveQuestionsTag,
+        error: function() {
+          debugger
+        }
+      });
+    } else {
+      QuestionActions.receiveQuestionsTag(tagName);
+    }
+  },
 
   // POST and DELETE
 

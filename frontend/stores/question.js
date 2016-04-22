@@ -9,7 +9,7 @@ var ApiUtil = require('../util/api_util');
 
 var _questions = {};
 var _questionSortBy = 'newest';
-var _tagName = null;
+var _tag = null;
 
 function formatDateHelper(item) {
   item.created_at = new Date(item.created_at);
@@ -46,21 +46,25 @@ function resetQuestion(question) {
   _questions[question.id] = question;
 }
 
-function setTagName(tagName) {
-  _tagName = tagName;
+function setQuestionsTag(tag) {
+  _tag = tag;
 }
+
+QuestionStore.getQuestionsTag = function() {
+  return $.extend({}, _tag);
+};
 
 QuestionStore.allQuestions = function() {
   var questions = Object.keys(_questions).map(function(id) {
     return _questions[id];
   });
-
-  if (_tagName) {
+  
+  if (_tag) {
     questions = questions.filter(function(question) {
       var tags = question.tags.map(function(tag) {
         return tag.name;
       });
-      return tags.indexOf(_tagName) !== -1;
+      return tags.indexOf(_tag.name) !== -1;
     });
   }
 
@@ -128,8 +132,8 @@ QuestionStore.__onDispatch = function(payload) {
     case QuestionConstants.CHANGE_ANSWER_SORT:
       changeAnswerSort(payload.action);
       break;
-    case QuestionConstants.SET_TAG_NAME:
-      setTagName(payload.action);
+    case QuestionConstants.RECEIVE_QUESTIONS_TAG:
+      setQuestionsTag(payload.action);
       break;
   }
   this.__emitChange();

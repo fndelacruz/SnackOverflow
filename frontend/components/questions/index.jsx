@@ -16,26 +16,26 @@ var QuestionsIndex = React.createClass({
     return {
       questions: QuestionStore.allQuestions(),
       sortBy: QuestionStore.getQuestionSortBy(),
-      tag: ''
+      tag: QuestionStore.getQuestionsTag()
     };
   },
   componentDidMount: function() {
     _callbackId = QuestionStore.addListener(this.onChange);
     console.log('componentDidMount', this.props.params.tagName);
-    QuestionActions.setTag(this.props.params.tagName);
+    ApiUtil.fetchQuestionsTag(this.props.params.tagName);
     ApiUtil.fetchQuestions();
   },
-  componentWillReceiveProps:function(newProps) {
-    QuestionActions.setTag(newProps.params.tagName);
+  componentWillReceiveProps: function(newProps) {
+    ApiUtil.fetchQuestionsTag(newProps.params.tagName);
   },
   componentWillUnmount: function() {
-    QuestionActions.setTag('');
     _callbackId.remove();
   },
   onChange: function() {
     this.setState({
       questions: QuestionStore.allQuestions(),
-      sortBy: QuestionStore.getQuestionSortBy()
+      sortBy: QuestionStore.getQuestionSortBy(),
+      tag: QuestionStore.getQuestionsTag()
     });
   },
   handleSortChange: function(sortBy) {
@@ -52,11 +52,23 @@ var QuestionsIndex = React.createClass({
         <QuestionIndexItem {...question} key={'question-' + question.id} />
       );
     });
-    var SortNavHeader = 'Questions', sidebarLabel = 'questions', sidebarTag;
+
+    var sortNavHeader = 'Questions', sidebarLabel = 'questions', sidebarTag;
     if (this.props.params.tagName) {
-      SortNavHeader = 'Tagged ' + SortNavHeader;
+      sortNavHeader = 'Tagged ' + sortNavHeader;
       sidebarLabel = 'tagged ' + sidebarLabel;
       sidebarTag = <TagStub tagName={this.props.params.tagName} />;
+    }
+
+    var tagDescription;
+    if (Object.keys(this.state.tag).length) {
+      console.log(this.state.tag.name);
+      tagDescription = (
+        <div className='question-index-tag-header'>
+          {sidebarTag}
+          {this.state.tag.description}
+        </div>
+      );
     }
 
     return (
@@ -65,11 +77,9 @@ var QuestionsIndex = React.createClass({
           <SortNav
             links={QUESTION_SORT_TYPES}
             active={this.state.sortBy}
-            header={SortNavHeader}
+            header={sortNavHeader}
             handleSortChange={this.handleSortChange}/>
-          <div>
-
-          </div>
+          {tagDescription}
           <div>
             {QuestionIndexItems}
           </div>

@@ -49,3 +49,7 @@ end
 def random_time_ago
   rand(5000000).seconds.ago
 end
+
+def random_word
+  FFaker::BaconIpsum.word.gsub(/[ \.]/, '_')
+end

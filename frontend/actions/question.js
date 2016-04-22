@@ -26,10 +26,10 @@ module.exports = {
       actionType: QuestionConstants.CHANGE_ANSWER_SORT
     });
   },
-  setTag: function(tagName) {
+  receiveQuestionsTag: function(tag) {
     AppDispatcher.dispatch({
-      action: tagName,
-      actionType: QuestionConstants.SET_TAG_NAME
+      action: tag,
+      actionType: QuestionConstants.RECEIVE_QUESTIONS_TAG
     });
   }
 };
