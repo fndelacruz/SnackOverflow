@@ -3,8 +3,12 @@ var hashHistory = require('react-router').hashHistory;
 
 var TagStub = React.createClass({
   handleClick: function() {
-    if (this.props.currentPathTagName !== this.props.tagName) {
-      var path = '/questions/tagged/' + this.props.tagName;
+    var path = '/questions/tagged/' + this.props.tagName;
+    if (!this.props.currentPathTagName) {
+      // if outside of /questions/ path, push immediately
+      hashHistory.push(path);
+    }
+    else if (this.props.currentPathTagName !== this.props.tagName) {
       if (this.props.tagPrePushCallback) {
         this.props.tagPrePushCallback();
         setTimeout(function() {

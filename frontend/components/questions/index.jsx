@@ -22,7 +22,6 @@ var QuestionsIndex = React.createClass({
   },
   componentDidMount: function() {
     _callbackId = QuestionStore.addListener(this.onChange);
-    console.log('componentDidMount', this.props.params.tagName);
     ApiUtil.fetchQuestionsTag(this.props.params.tagName);
     ApiUtil.fetchQuestions();
   },
