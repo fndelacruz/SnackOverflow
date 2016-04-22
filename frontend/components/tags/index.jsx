@@ -53,6 +53,7 @@ var TagsIndex = React.createClass({
     return (
       <div className='tags-index-container'>
         <SortNav
+          tabShift='right'
           links={TAG_SORT_TYPES}
           active={this.state.sortBy}
           header='Tags'

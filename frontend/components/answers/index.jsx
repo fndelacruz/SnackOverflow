@@ -33,6 +33,7 @@ var AnswersIndex = React.createClass({
     return (
       <div className='answers-index-container'>
         <SortNav
+          tabShift='right'
           links={ANSWER_SORT_TYPES}
           active={this.props.answerSortBy}
           header={answerHeader(this.props.answers.length)}

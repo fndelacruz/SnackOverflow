@@ -17,10 +17,16 @@ var SortNav = React.createClass({
       );
     }.bind(this));
 
+    var ulClass;
+    if (this.props.tabShift === 'left') {
+      ulClass = 'nav-left-container';
+    } else if (this.props.tabShift === 'right') {
+      ulClass = 'nav-right-container';
+    }
     return (
       <div className='subheader group'>
         <h1>{this.props.header}</h1>
-        <ul className='nav-right-container'>
+        <ul className={ulClass}>
           {liLinks}
         </ul>
       </div>

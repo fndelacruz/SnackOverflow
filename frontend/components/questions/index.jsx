@@ -87,6 +87,7 @@ var QuestionsIndex = React.createClass({
       <div>
         <div className='content-double-main'>
           <SortNav
+            tabShift='right'
             links={QUESTION_SORT_TYPES}
             active={this.state.sortBy}
             header={sortNavHeader}

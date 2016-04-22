@@ -51,6 +51,7 @@ var UsersIndex = React.createClass({
     return (
       <div className='users-index-container'>
         <SortNav
+          tabShift='right'
           links={USER_SORT_TYPES}
           active={this.state.sortBy}
           header='Users'
