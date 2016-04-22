@@ -1,25 +1,3 @@
 .comments-index-container {
   margin-top: 25px;
 }
-
-/* React transitions */
-
-.comments-enter {
-  opacity: 0.01;
-}
-
-.comments-enter.comments-enter-active {
-  opacity: 1;
-  transition: opacity 500ms ease-in;
-}
-
-.comments-leave {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.comments-leave.comments-leave-active {
-  opacity: 0.01;
-  transform: translateX(-100%);
-  transition: opacity 500ms, transform 500ms;
-}

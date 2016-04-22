@@ -19,7 +19,7 @@ var CommentsIndex = React.createClass({
     return (
       <div className='comments-index-container'>
         <ReactCSSTransitionGroup
-          transitionName='comments'
+          transitionName='fade-in-left-out'
           transitionEnterTimeout={500}
           transitionLeaveTimeout={500}>
           {comments}

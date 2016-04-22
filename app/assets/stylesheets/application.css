@@ -283,6 +283,27 @@ button:hover {
   width: 150px;
 }
 
+/* React transitions */
+
+.fade-in-left-out-enter {
+  opacity: 0.01;
+}
+
+.fade-in-left-out-enter.fade-in-left-out-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.fade-in-left-out-leave {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fade-in-left-out-leave.fade-in-left-out-leave-active {
+  opacity: 0.01;
+  transform: translateX(-100%);
+  transition: opacity 500ms, transform 500ms;
+}
 
 /* For debugging */
 

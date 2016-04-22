@@ -5,6 +5,7 @@ var QuestionIndexItem = require('./index_item');
 var SortNav = require('../shared/sort_nav');
 var QuestionActions = require('../../actions/question');
 var TagStub = require('../tags/stub');
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 var _callbackId;
 
@@ -62,7 +63,6 @@ var QuestionsIndex = React.createClass({
 
     var tagDescription;
     if (Object.keys(this.state.tag).length) {
-      console.log(this.state.tag.name);
       tagDescription = (
         <div className='question-index-tag-header'>
           {sidebarTag}
@@ -79,10 +79,13 @@ var QuestionsIndex = React.createClass({
             active={this.state.sortBy}
             header={sortNavHeader}
             handleSortChange={this.handleSortChange}/>
-          {tagDescription}
-          <div>
+            {tagDescription}
+          <ReactCSSTransitionGroup
+            transitionName='fade-in-left-out'
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={500}>
             {QuestionIndexItems}
-          </div>
+          </ReactCSSTransitionGroup>
         </div>
         <div className='content-double-sidebar'>
           <div className='sidebar-quantity'>
