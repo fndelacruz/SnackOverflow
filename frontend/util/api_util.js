@@ -67,6 +67,17 @@ module.exports = {
       QuestionActions.receiveQuestionsTag(tagName);
     }
   },
+  fetchUser: function(userId) {
+    $.ajax({
+      method: 'GET',
+      url: '/api/users/' + userId,
+      dataType: 'json',
+      success: UserActions.receiveUser,
+      error: function() {
+        debugger
+      }
+    });
+  },
 
   // POST and DELETE
 

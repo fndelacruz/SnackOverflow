@@ -3,6 +3,8 @@ if options[:stub]
     user,
     :id, :display_name, :reputation
   )
+elsif options[:show]
+  # TODO
 else
   json.extract!(
     user,

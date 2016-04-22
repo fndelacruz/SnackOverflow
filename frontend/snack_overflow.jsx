@@ -10,6 +10,7 @@ var QuestionShow = require('./components/questions/show');
 var QuestionsNew = require('./components/questions/new');
 var UsersIndex = require('./components/users/index');
 var TagsIndex = require('./components/tags/index');
+var UserShow = require('./components/users/show');
 
 var App = (
   <Router history={hashHistory}>
@@ -20,6 +21,7 @@ var App = (
       <Route path='ask' component={QuestionsNew} />
       <Route path='users' component={UsersIndex} />
       <Route path='tags' component={TagsIndex} />
+      <Route path='users/:userId' component={UserShow} />
     </Route>
   </Router>
 );

@@ -14,5 +14,9 @@ module.exports = {
           return 0;
         }
       });
+  },
+  formatDateHelper: function (item) {
+    item.created_at = new Date(item.created_at);
+    item.updated_at = new Date(item.updated_at);
   }
 };

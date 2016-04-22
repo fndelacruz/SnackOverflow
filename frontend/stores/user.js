@@ -17,6 +17,10 @@ function resetUsers(users) {
   });
 }
 
+function resetUser(user) {
+  _users[user.id] = user;
+}
+
 function resetSortBy(sortBy) {
   _sortBy = sortBy;
 }
@@ -42,6 +46,11 @@ function sortBy(users, sortType, isDescending) {
     }
   });
 }
+
+UserStore.getUser = function(userId) {
+  return $.extend({}, _users[userId]);
+};
+
 
 UserStore.all = function() {
   users = Object.keys(_users).map(function(userId) {
@@ -84,6 +93,10 @@ UserStore.__onDispatch = function(payload) {
       break;
     case UserConstants.CHANGE_USER_SEARCH_TERM:
       resetSearchTerm.call(this, payload.action.toLowerCase());
+      break;
+    case UserConstants.RECEIVE_USER:
+      resetUser(payload.action);
+      this.__emitChange();
       break;
   }
 };

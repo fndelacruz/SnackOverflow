@@ -11,20 +11,15 @@ var _questions = {};
 var _questionSortBy = 'newest';
 var _tag = null;
 
-function formatDateHelper(item) {
-  item.created_at = new Date(item.created_at);
-  item.updated_at = new Date(item.updated_at);
-}
-
 function formatDates(question) {
-  formatDateHelper(question);
+  Util.formatDateHelper(question);
 
-  question.comments.forEach(formatDateHelper);
+  question.comments.forEach(Util.formatDateHelper);
   Util.sortBy(question.comments, 'created_at', true);
 
   question.answers.forEach(function(answer) {
-    formatDateHelper(answer);
-    answer.comments.forEach(formatDateHelper);
+    Util.formatDateHelper(answer);
+    answer.comments.forEach(Util.formatDateHelper);
     Util.sortBy(answer.comments, 'created_at', true);
   });
 }
@@ -58,7 +53,7 @@ QuestionStore.allQuestions = function() {
   var questions = Object.keys(_questions).map(function(id) {
     return _questions[id];
   });
-  
+
   if (_tag) {
     questions = questions.filter(function(question) {
       var tags = question.tags.map(function(tag) {

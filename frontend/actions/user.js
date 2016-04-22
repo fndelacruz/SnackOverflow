@@ -19,5 +19,11 @@ module.exports = {
       action: searchTerm,
       actionType: UserConstants.CHANGE_USER_SEARCH_TERM
     });
+  },
+  receiveUser: function(user) {
+    AppDispatcher.dispatch({
+      action: user,
+      actionType: UserConstants.RECEIVE_USER
+    });
   }
 };
