@@ -62,16 +62,20 @@ var ShowItem = React.createClass({ // used for question show and answers index i
   render: function() {
     var item = this.props.item, type = this.props.type, tags, id, tools;
     if (item.tags && item.tags.length) {
-      
+
       tags = (
-
-        <TagStubIndex tags={item.tags} questionId={item.id} />
-
+        <TagStubIndex
+          tagPrePushCallback={this.props.tagPrePushCallback}
+          currentPathTagName={this.props.currentPathTagName}
+          tags={item.tags}
+          questionId={item.id} />
       );
     }
+
     if (this.props.type === 'Question') {
       id = 'question-show-question';
     }
+
     if (item.owned) {
       tools = (
         <div className='question-show-item-main-footer-tools'>

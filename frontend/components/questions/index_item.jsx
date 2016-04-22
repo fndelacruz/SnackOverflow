@@ -37,7 +37,11 @@ QuestionsIndexItem = React.createClass({
     var question = this.props, tags;
     if (question.tags.length) {
       tags = (
-        <TagStubIndex tags={question.tags} questionId={question.id} />
+        <TagStubIndex
+          tagPrePushCallback={this.props.tagPrePushCallback}
+          currentPathTagName={this.props.currentPathTagName}
+          tags={question.tags}
+          questionId={question.id} />
       );
     }
 

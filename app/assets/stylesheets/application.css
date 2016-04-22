@@ -305,8 +305,21 @@ button:hover {
   transition: opacity 500ms, transform 500ms;
 }
 
-/* For debugging */
 
-#dev-border {
-  outline: 1px solid black;
+.fade-in-fade-out-enter {
+  opacity: 0.01;
+}
+
+.fade-in-fade-out-enter.fade-in-fade-out-enter-active {
+  opacity: 1;
+  transition: opacity 250ms ease-in;
+}
+
+.fade-in-fade-out-leave {
+  opacity: 1;
+}
+
+.fade-in-fade-out-leave.fade-in-fade-out-leave-active {
+  opacity: 0.01;
+  transition: opacity 250ms ease-in;
 }

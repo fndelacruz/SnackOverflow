@@ -44,28 +44,40 @@ var QuestionsIndex = React.createClass({
       QuestionActions.changeQuestionSort(sortBy);
     }
   },
+  resetTag: function() {
+    this.setState({ tag: {} });
+  },
   render: function() {
     if (!this.state.questions.length) {
       return (<div></div>);
     }
     var QuestionIndexItems = this.state.questions.map(function(question) {
       return (
-        <QuestionIndexItem {...question} key={'question-' + question.id} />
+        <QuestionIndexItem
+          tagPrePushCallback={this.resetTag}
+          currentPathTagName={this.props.params.tagName}
+          {...question}
+          key={'question-' + question.id} />
       );
-    });
+    }.bind(this));
 
     var sortNavHeader = 'Questions', sidebarLabel = 'questions', sidebarTag;
     if (this.props.params.tagName) {
       sortNavHeader = 'Tagged ' + sortNavHeader;
       sidebarLabel = 'tagged ' + sidebarLabel;
-      sidebarTag = <TagStub tagName={this.props.params.tagName} />;
+      sidebarTag = (
+        <TagStub
+          isSidebar={true}
+          tagPrePushCallback={this.resetTag}
+          currentPathTagName={this.props.params.tagName}
+          tagName={this.props.params.tagName} />
+      );
     }
 
     var tagDescription;
     if (Object.keys(this.state.tag).length) {
       tagDescription = (
         <div className='question-index-tag-header'>
-          {sidebarTag}
           {this.state.tag.description}
         </div>
       );
@@ -79,7 +91,6 @@ var QuestionsIndex = React.createClass({
             active={this.state.sortBy}
             header={sortNavHeader}
             handleSortChange={this.handleSortChange}/>
-            {tagDescription}
           <ReactCSSTransitionGroup
             transitionName='fade-in-left-out'
             transitionEnterTimeout={500}
@@ -94,7 +105,15 @@ var QuestionsIndex = React.createClass({
           <div className='sidebar-label'>
             {sidebarLabel}
           </div>
-          {sidebarTag}
+          <ReactCSSTransitionGroup
+            transitionName='fade-in-fade-out'
+            transitionEnterTimeout={250}
+            transitionLeaveTimeout={250}>
+            <div className='group'>
+            {sidebarTag}
+            </div>
+            {tagDescription}
+          </ReactCSSTransitionGroup>
         </div>
       </div>
     );
