@@ -1,0 +1,137 @@
+.user-show-profile-container {
+  outline: 1px solid black;
+}
+
+.user-show-profile-header {
+  outline: 2px dashed #777;
+  height: 280px;
+}
+
+.user-show-profile-header > div {
+  margin-right: 4%;
+  height: 100%;
+  float: left;
+}
+
+.user-show-profile-header > div:last-child {
+  margin-right: 0;
+}
+
+// portrait panel
+
+.user-show-profile-header-portrait-container {
+  width: 21%;
+  outline: 1px solid red;
+}
+.user-show-profile-header-portrait-content {
+  margin: 30px 30px 0 30px ;
+  outline: 1px dashed red;
+  height: auto;
+}
+
+.user-show-profile-header-portrait-reputation-container {
+  text-align: center;
+  margin: 5px 0;
+}
+
+.user-show-profile-header-portrait-reputation-number {
+  font-size: 20px;
+}
+
+.user-show-profile-header-portrait-reputation-label {
+  font-size: 12px;
+  color: #888;
+  letter-spacing: 0.8px;
+}
+
+.user-show-profile-header-portrait-badges-container {
+  border: 1px dashed green;
+  text-align: center;
+}
+
+// bio panel
+
+.user-show-profile-header-bio-container {
+  outline: 1px solid green;
+  width: 45%;
+}
+
+.user-show-profile-header-bio-header {
+  margin: 10px 0;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.user-show-profile-header-bio-content {
+  font-size: 15px;
+}
+
+// stats panel
+
+.user-show-profile-header-stats-container {
+  outline: 1px solid blue;
+  width: 26%;
+}
+
+.user-show-profile-header-stats-header-group {
+  outline: 1px dashed red;
+  display: inline-block;
+  margin: 20px 27px 20px 0;
+}
+
+.user-show-profile-header-stats-header-group:last-child {
+  margin-right: 0;
+}
+
+.user-show-profile-header-stats-header-group-value {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.user-show-profile-header-stats-row {
+  margin-bottom: 15px;
+  outline: 1px dashed red;
+}
+
+.user-show-profile-header-stats-row > div {
+  float: left;
+  outline: 1px dashed green;
+}
+
+.user-show-profile-header-stats-row-content {
+  margin: 5px 0 5px 15px;
+}
+
+.icon-small {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-location {
+  background: url(image_path('location.png'));
+}
+
+.icon-clock {
+  background: url(image_path('clock.png'));
+}
+
+.icon-interface {
+  background: url(image_path('interface.png'));
+}
+
+.icon-time {
+  background: url(image_path('time.png'));
+}
+
+
+.user-show-profile-top-tags {
+  outline: 1px solid orange;
+}
+
+.user-show-profile-top-answers {
+  outline: 1px solid purple;
+}
+
+.user-show-profile-badges {
+  outline: 1px solid green;
+}

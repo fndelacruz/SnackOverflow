@@ -4,7 +4,14 @@ if options[:stub]
     :id, :display_name, :reputation
   )
 elsif options[:show]
-  # TODO
+  json.extract!(
+    user,
+    :id, :display_name, :email, :created_at, :updated_at, :vote_count, :bio,
+      :reputation, :location,
+      :questions,
+      :given_answers,
+      # :users_reached # TODO:
+  )
 else
   json.extract!(
     user,

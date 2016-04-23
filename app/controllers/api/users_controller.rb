@@ -1,6 +1,6 @@
 class Api::UsersController < ApplicationController
   def current
-    @user = User.detailed_find(current_user.id)
+    @user = User.current_user_find(current_user.id)
   end
 
   def index
@@ -8,6 +8,6 @@ class Api::UsersController < ApplicationController
   end
 
   def show
-    @user = User.detailed_find(params[:id])
+    @user = User.show_find(params[:id])
   end
 end

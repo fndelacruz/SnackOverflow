@@ -12,12 +12,13 @@ var _searchTerm = '';
 function resetUsers(users) {
   _users = {};
   users.forEach(function(user) {
-    user.created_at = new Date(user.created_at);
+    Util.formatDateHelper(user);
     _users[user.id] = user;
   });
 }
 
 function resetUser(user) {
+  Util.formatDateHelper(user);
   _users[user.id] = user;
 }
 

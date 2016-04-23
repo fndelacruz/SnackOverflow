@@ -2,6 +2,8 @@ var React = require('react');
 var UserStore = require('../../stores/user');
 var ApiUtil = require('../../util/api_util');
 var SortNav = require('../shared/sort_nav');
+var UserShowProfile = require('./show_profile');
+var UserShowActivity = require('./show_activity');
 
 var USER_SHOW_SORT_TYPES = ['Profile', 'Activity'];
 
@@ -10,7 +12,7 @@ var UserShow = React.createClass({
   getInitialState: function() {
     return {
       user: UserStore.getUser(this.props.params.userId),
-      sortBy: USER_SHOW_SORT_TYPES[0]
+      tab: USER_SHOW_SORT_TYPES[0]
     };
   },
   componentDidMount: function() {
@@ -27,8 +29,15 @@ var UserShow = React.createClass({
     this.setState({ user: UserStore.getUser(this.props.params.userId) });
   },
   handleSortChange: function(link) {
-    if (this.state.sortBy !== link) {
-      this.setState({ sortBy: link });
+    if (this.state.tab !== link) {
+      this.setState({ tab: link });
+    }
+  },
+  handleTab: function() {
+    if (this.state.tab === 'Profile') {
+      return (<UserShowProfile {...this.state.user} />);
+    } else if (this.state.tab === 'Activity') {
+      return (<UserShowActivity {...this.state.user} />);
     }
   },
   render: function() {
@@ -37,10 +46,10 @@ var UserShow = React.createClass({
         <SortNav
           tabShift='left'
           links={USER_SHOW_SORT_TYPES}
-          active={this.state.sortBy}
+          active={this.state.tab}
           handleSortChange={this.handleSortChange}/>
 
-        {JSON.stringify(this.state.user)}
+        {this.handleTab()}
       </div>
     );
   }

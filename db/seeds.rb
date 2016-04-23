@@ -17,10 +17,9 @@ require_relative 'helper'
     email: 'ann@ann.ann', display_name: 'ann', password: 'annann',
     location: random_location
   )
-  # bob = User.create!(
-  #   email: 'bob@bob.bob', display_name: 'bob', password: 'bobbob',
-  #   location: random_location
-  # )
+  bob = User.create!(
+    email: 'bob@bob.bob', display_name: 'bob', password: 'bobbob'
+  )
   # cal = User.create!(
   #   email: 'cal@cal.cal', display_name: 'cal', password: 'calcal',
   #   location: random_location
@@ -166,6 +165,7 @@ require_relative 'helper'
       location: random_location,
       updated_at: sometime,
       created_at: sometime,
+      bio: FFaker::BaconIpsum.sentences(rand(15)).join(' ')
     }
   end
   User.create!(users)

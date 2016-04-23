@@ -53,8 +53,7 @@ class User < ActiveRecord::Base
     user if user && user.is_password?(password)
   end
 
-  # NOTE: for UsersShow. Likely will need to expand the includes for more details
-  def self.detailed_find(userId)
+  def self.current_user_find(userId)
     User.includes({ questions: :votes }, { given_answers: :votes }, :votes,
         { comments: :votes })
       .find(userId)
@@ -65,6 +64,12 @@ class User < ActiveRecord::Base
     User.includes({ questions: :votes }, { given_answers: :votes }, :votes,
         { comments: :votes })
       .all
+  end
+
+  def self.show_find(userId)
+    User.includes({ questions: :votes }, { given_answers: :votes }, :votes,
+        { comments: :votes })
+      .find(userId)
   end
 
   def vote_count
