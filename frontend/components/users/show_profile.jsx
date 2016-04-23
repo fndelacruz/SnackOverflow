@@ -103,14 +103,15 @@ var UserShowProfile = React.createClass({
               <div className='user-show-profile-header-stats-row group'>
                 <div className='icon-small icon-interface' />
                 <div className='user-show-profile-header-stats-row-content'>
-                  {'1337' + ' profile views'}
+                  {this.props.view_count + ' profile view' +
+                    (this.props.view_count === 1 ? '' : 's')}
                 </div>
               </div>
 
               <div className='user-show-profile-header-stats-row group'>
                 <div className='icon-small icon-time' />
                 <div className='user-show-profile-header-stats-row-content'>
-                  {'last seen ' + this.props.updated_at.toLocaleDateString()}
+                  {this.props.updated_at_words}
                 </div>
               </div>
             </div>

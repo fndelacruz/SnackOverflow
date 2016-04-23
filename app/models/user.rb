@@ -68,7 +68,7 @@ class User < ActiveRecord::Base
 
   def self.show_find(userId)
     User.includes({ questions: :votes }, { given_answers: :votes }, :votes,
-        { comments: :votes })
+        { comments: :votes }, :views)
       .find(userId)
   end
 

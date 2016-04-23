@@ -10,8 +10,10 @@ elsif options[:show]
       :reputation, :location,
       :questions,
       :given_answers,
+      :view_count
       # :users_reached # TODO:
   )
+  json.updated_at_words "last seen #{time_ago_in_words(user.updated_at)} ago"
 else
   json.extract!(
     user,
