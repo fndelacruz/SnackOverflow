@@ -47,10 +47,11 @@ var QuestionsIndex = React.createClass({
     this.setState({ tag: {} });
   },
   render: function() {
-    if (!this.state.questions.length) {
-      return (<div></div>);
-    }
-    var QuestionIndexItems = this.state.questions.map(function(question) {
+    var questions = this.state.questions;
+    // if (!questions.length) {
+    //   return (<div />);
+    // }
+    var QuestionIndexItems = questions.map(function(question) {
       return (
         <QuestionIndexItem
           tagPrePushCallback={this.resetTag}
@@ -60,7 +61,9 @@ var QuestionsIndex = React.createClass({
       );
     }.bind(this));
 
-    var sortNavHeader = 'Questions', sidebarLabel = 'questions', sidebarTag;
+    var sortNavHeader = 'Questions', sidebarTag;
+    var sidebarLabel = questions.length === 1 ? 'question' : 'questions';
+
     if (this.props.params.tagName) {
       sortNavHeader = 'Tagged ' + sortNavHeader;
       sidebarLabel = 'tagged ' + sidebarLabel;
@@ -100,7 +103,7 @@ var QuestionsIndex = React.createClass({
         </div>
         <div className='content-double-sidebar'>
           <div className='sidebar-quantity'>
-            {this.state.questions.length}
+            {questions.length}
           </div>
           <div className='sidebar-label'>
             {sidebarLabel}

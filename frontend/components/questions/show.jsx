@@ -76,9 +76,6 @@ var QuestionShow = React.createClass({
       }
     }
   },
-  handleUserClick: function(userId) {
-    alert('TODO handleUserClick');
-  },
   render: function() {
     var question = this.state.question, tags;
     if (Object.keys(question).length === 0) {
@@ -96,16 +93,12 @@ var QuestionShow = React.createClass({
             type='Question'
             item={question}
             handleVote={this.handleVote}
-            handleUserClick={this.handleUserClick}
             handleFavorite={this.handleFavorite}
-            handleTagClick={this.handleTagClick}
             handleToolClick={this.handleToolClick} />
           <AnswersIndex
             answers={question.answers}
             answerSortBy={this.state.answerSortBy}
             handleVote={this.handleVote}
-            handleUserClick={this.handleUserClick}
-            handleTagClick={this.handleTagClick}
             handleToolClick={this.handleToolClick} />
           <AnswersNew question={question} />
         </div>

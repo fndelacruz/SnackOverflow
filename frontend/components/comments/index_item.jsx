@@ -1,5 +1,6 @@
 var React = require('react');
 var ApiUtil = require('../../util/api_util');
+var UserLinkStub = require('../users/link_stub');
 
 function commentVoteClass(userVote, type) {
   var className;
@@ -27,9 +28,6 @@ function commentVoteClass(userVote, type) {
 }
 
 var CommentsIndexItem = React.createClass({
-  handleUserClick: function(userId) {
-    alert('TODO handleUserClick');
-  },
   handleDeleteComment: function() {
     ApiUtil.destroyComment(this.props.comment.id);
   },
@@ -58,11 +56,7 @@ var CommentsIndexItem = React.createClass({
         </div>
         <div className='comment-index-item-main'>
           <span>{comment.content + ' - '}</span>
-          <span
-            className='user-display-name-link'
-            onClick={this.handleUserClick.bind(null, comment.user.id)}>
-          {comment.user.display_name}
-          </span>
+          <UserLinkStub {...comment.user} />
           <span>{' ' + comment.created_at_words + ' '}</span>
           {commentDelete}
         </div>

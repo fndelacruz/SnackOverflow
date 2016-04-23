@@ -3,6 +3,8 @@ var CommentsIndex = require('../comments/index');
 var CommentsForm = require('../comments/form');
 var TagStub = require('../tags/stub');
 var TagStubIndex = require('../tags/stub_index');
+var UserLinkStub = require('../users/link_stub');
+var hashHistory = require('react-router').hashHistory;
 
 function voteClass(userVote, type) {
   var className;
@@ -59,6 +61,10 @@ function renderFavoriteContainer(item) {
 }
 
 var ShowItem = React.createClass({ // used for question show and answers index item
+  handleUserClick: function() {
+    var path = '/users/' + this.props.item.user.id;
+    hashHistory.push(path);
+  },
   render: function() {
     var item = this.props.item, type = this.props.type, tags, id, tools;
     if (item.tags && item.tags.length) {
@@ -130,13 +136,9 @@ var ShowItem = React.createClass({ // used for question show and answers index i
               <div className='question-index-item-user-container'>
                 <div
                   className='question-index-item-user-pic'
-                  onClick={this.props.handleUserClick} />
+                  onClick={this.handleUserClick} />
                 <div className='question-index-item-user-display-name-container'>
-                  <span
-                    className='user-display-name-link'
-                    onClick={this.props.handleUserClick}>
-                    {item.user.display_name}
-                  </span>
+                  <UserLinkStub {...item.user} />
                 </div>
                 <div className='question-index-item-user-score'>
                   {item.user.reputation}
@@ -151,13 +153,9 @@ var ShowItem = React.createClass({ // used for question show and answers index i
               <div className='question-index-item-user-container'>
                 <div
                   className='question-index-item-user-pic'
-                  onClick={this.props.handleUserClick} />
+                  onClick={this.handleUserClick} />
                 <div className='question-index-item-user-display-name-container'>
-                  <span
-                    className='user-display-name-link'
-                    onClick={this.props.handleUserClick}>
-                    {item.user.display_name}
-                  </span>
+                  <UserLinkStub {...item.user} />
                 </div>
                 <div className='question-index-item-user-score'>
                   {item.user.reputation}

@@ -24,8 +24,6 @@ var AnswersIndex = React.createClass({
           type='Answer'
           item={answer}
           handleVote={this.props.handleVote}
-          handleUserClick={this.props.handleUserClick}
-          handleTagClick={this.props.handleTagClick}
           handleToolClick={this.props.handleToolClick} />
       );
 

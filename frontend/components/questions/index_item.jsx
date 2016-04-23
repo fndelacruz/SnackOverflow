@@ -2,6 +2,7 @@ var React = require('react');
 var hashHistory = require('react-router').hashHistory;
 var TagStub = require('../tags/stub');
 var TagStubIndex = require('../tags/stub_index');
+var UserLinkStub = require('../users/link_stub');
 
 function renderTagStubs(questionId, tags) {
   return tags.map(function(tag) {
@@ -86,11 +87,7 @@ QuestionsIndexItem = React.createClass({
                   className='question-index-item-user-pic'
                   onClick={this.handleUserClick} />
                 <div className='question-index-item-user-display-name-container'>
-                  <span
-                    className='user-display-name-link'
-                    onClick={this.handleUserClick}>
-                    {question.user.display_name}
-                  </span>
+                  <UserLinkStub {...question.user} />
                 </div>
                 <div className='question-index-item-user-score'>
                   {question.user.reputation}
