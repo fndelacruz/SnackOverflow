@@ -8,7 +8,7 @@ var UserLinkStub = React.createClass({
   },
   render: function() {
     return (
-      <span className='user-display-name-link' onClick={this.handleClick}>
+      <span className='link' onClick={this.handleClick}>
         {this.props.display_name}
       </span>
     );

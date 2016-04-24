@@ -38,7 +38,6 @@ class User < ActiveRecord::Base
 
   has_many :given_answers, class_name: 'Answer'
   has_many :answer_receivers, -> { distinct }, through: :given_answers, source: :user
-  has_many :answer_tags, through: :given_answers, source: :associated_tags
 
   has_many :favorites
   has_many :favorite_questions, through: :favorites, source: :question
@@ -46,6 +45,9 @@ class User < ActiveRecord::Base
   has_many :votes
 
   has_many :comments
+
+  has_many :answer_tags, through: :given_answers, source: :associated_tags
+  has_many :question_tags, through: :questions, source: :tags
 
   include Viewable
 
@@ -61,9 +63,9 @@ class User < ActiveRecord::Base
   end
 
   # NOTE: for UsersIndex
-  def self.basic_all
+  def self.index_all
     User.includes({ questions: :votes }, { given_answers: :votes }, :votes,
-        { comments: :votes }, :answer_tags)
+        { comments: :votes }, :answer_tags, :question_tags)
       .all
   end
 
@@ -73,11 +75,12 @@ class User < ActiveRecord::Base
       .find(userId)
   end
 
-  def answer_tags_sorted
+  def associated_tags_sorted
     tag_counts = Hash.new { |hash, key| hash[key] = 0 }
     answer_tags.each { |tag| tag_counts[tag] += 1 }
+    question_tags.each { |tag| tag_counts[tag] += 1 }
     tag_counts.sort_by { |key, val| -val }.each do |tag|
-      tag << tag[1] / answer_tags.length
+      tag << tag[1] / answer_tags.length.to_f
     end
   end
 

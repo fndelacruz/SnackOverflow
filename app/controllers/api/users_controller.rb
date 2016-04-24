@@ -4,7 +4,7 @@ class Api::UsersController < ApplicationController
   end
 
   def index
-    @users = User.basic_all
+    @users = User.index_all
   end
 
   def show

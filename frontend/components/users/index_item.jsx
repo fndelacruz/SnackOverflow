@@ -15,16 +15,16 @@ var UsersIndexItem = React.createClass({
     hashHistory.push(path);
   },
   handleTagList: function() {
-    var answer_tags_sorted = this.props.user.answer_tags_sorted;
-    if (answer_tags_sorted) {
+    var associated_tags_sorted = this.props.user.associated_tags_sorted;
+    if (associated_tags_sorted) {
       return (
         <TagLinkIndex
           userId={this.props.user.id}
-          tags={answer_tags_sorted} />
+          tags={associated_tags_sorted} />
       );
       return (
         <div>
-          {answer_tags_sorted.map(function(tag, idx) {
+          {associated_tags_sorted.map(function(tag, idx) {
             var path = '/questions/tagged/' + tag[0].name;
             return (
               <span key={'user-' + this.props.user.id + '-tag-' + tag[0].id}>
@@ -74,7 +74,7 @@ var UsersIndexItem = React.createClass({
           <div
             onClick={this.handleUserClick}
             className='users-index-item-user-pic' />
-          <div className='user-display-name-link-container'>
+          <div className='link-container'>
             <UserLinkStub {...user} />
           </div>
           <div className='user-location'>{userLocation}</div>

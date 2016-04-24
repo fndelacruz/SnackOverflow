@@ -109,7 +109,7 @@ var UserShowProfile = React.createClass({
               </div>
 
               <div className='user-show-profile-header-stats-row group'>
-                <div className='icon-small icon-time' />
+                <div className='icon-small icon-clock' />
                 <div className='user-show-profile-header-stats-row-content'>
                   {this.props.updated_at_words}
                 </div>
@@ -119,7 +119,24 @@ var UserShowProfile = React.createClass({
         </div>
 
         <div className='user-show-profile-top-tags'>
-          top-tags placeholder
+          <div className='user-show-profile-top-tags-header'>
+            <span className='user-show-profile-top-tags-header-label'>
+              {'Top Tags' + ' '}
+            </span>
+            <span className='user-show-profile-top-tags-header-count'>
+              {'(' + this.props.associated_tags_sorted.length +')'}
+            </span>
+          </div>
+
+          <div className='user-show-profile-top-tags-main'>
+
+          </div>
+
+          <div className='user-show-profile-top-tags-footer'>
+            <span className='link'>
+              View all tags →
+            </span>
+          </div>
         </div>
 
         <div className='user-show-profile-top-answers'>

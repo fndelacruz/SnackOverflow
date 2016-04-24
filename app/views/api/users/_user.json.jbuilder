@@ -7,10 +7,11 @@ elsif options[:show]
   json.extract!(
     user,
     :id, :display_name, :email, :created_at, :updated_at, :vote_count, :bio,
-      :reputation, :location,
+      :reputation, :location, :associated_tags_sorted,
       :questions,
       :given_answers,
-      :view_count
+      :view_count,
+
       # :users_reached # TODO:
   )
   json.updated_at_words "last seen #{time_ago_in_words(user.updated_at)} ago"
@@ -18,7 +19,7 @@ elsif options[:index]
   json.extract!(
     user,
     :id, :display_name, :email, :created_at, :updated_at, :vote_count,
-    :reputation, :location, :answer_tags_sorted
+    :reputation, :location, :associated_tags_sorted
   )
 
 else

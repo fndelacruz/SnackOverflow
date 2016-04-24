@@ -233,14 +233,14 @@ button:hover {
   margin-bottom: 4px;
 }
 
-/* For user display name links */
+/* For clickable links */
 
-.user-display-name-link{
+.link{
   color: #06e;
   cursor: pointer;
 }
 
-.user-display-name-link:hover {
+.link:hover {
   color: #0be;
 }
 
