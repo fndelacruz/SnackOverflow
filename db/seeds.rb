@@ -186,7 +186,7 @@ require_relative 'helper'
   end
 
   # random answer creation
-  100.times do
+  300.times do
     sometime = random_time_ago
     random_question.answers.create!(
       user: random_user,
@@ -208,7 +208,7 @@ require_relative 'helper'
   end
 
   # random answer comment creation
-  200.times do
+  400.times do
     sometime = random_time_ago
     random_answer.comments.create!(
       user: random_user,
@@ -219,7 +219,7 @@ require_relative 'helper'
   end
 
   # random question votes
-  200.times do
+  250.times do
     begin
       random_vote(random_question)
     rescue => e
@@ -228,7 +228,7 @@ require_relative 'helper'
   end
 
   # random answer votes
-  400.times do
+  800.times do
     begin
       random_vote(random_answer)
     rescue => e
@@ -237,7 +237,7 @@ require_relative 'helper'
   end
 
   # random comment votes
-  800.times do
+  1600.times do
     begin
       random_vote(random_comment)
     rescue => e

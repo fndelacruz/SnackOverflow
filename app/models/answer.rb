@@ -15,6 +15,7 @@ class Answer < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :question
+  has_many :associated_tags, through: :question, source: :tags
 
   include Commentable
   include Votable
