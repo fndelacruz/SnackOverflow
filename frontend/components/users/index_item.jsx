@@ -22,21 +22,6 @@ var UsersIndexItem = React.createClass({
           userId={this.props.user.id}
           tags={associated_tags_sorted} />
       );
-      return (
-        <div>
-          {associated_tags_sorted.map(function(tag, idx) {
-            var path = '/questions/tagged/' + tag[0].name;
-            return (
-              <span key={'user-' + this.props.user.id + '-tag-' + tag[0].id}>
-                {handleAnswerTagsComma(idx)}
-                <span onClick={hashHistory.push.bind(null, path)} >
-                  {tag[0].name}
-                </span>
-              </span>
-            );
-          }.bind(this))}
-        </div>
-      );
     }
   },
   render: function() {

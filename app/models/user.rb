@@ -79,8 +79,8 @@ class User < ActiveRecord::Base
     tag_counts = Hash.new { |hash, key| hash[key] = 0 }
     answer_tags.each { |tag| tag_counts[tag] += 1 }
     question_tags.each { |tag| tag_counts[tag] += 1 }
-    tag_counts.sort_by { |key, val| -val }.each do |tag|
-      tag << tag[1] / answer_tags.length.to_f
+    tag_counts.sort_by { |key, val| -val }.map do |tag|
+      { object: tag[0], post_count: tag[1] }
     end
   end
 

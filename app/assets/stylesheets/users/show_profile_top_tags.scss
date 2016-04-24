@@ -1,0 +1,170 @@
+.user-show-profile-top-tags {
+  margin: 40px 0 40px 25%;
+}
+
+.user-show-profile-top-tags-header {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+.user-show-profile-top-tags-header-label {
+  font-weight: 700;
+}
+
+.user-show-profile-top-tags-header-count {
+  color: #777;
+}
+
+.user-show-profile-top-tags-main-inactive {
+  background: orange; // TODO: styling. temporarily orange for now.
+}
+
+.user-show-profile-top-tags-main-element {
+  height: 60px;
+  float: left;
+  margin-bottom: 5px;
+  background: rgba(0,0,255,0.04);
+  line-height: 60px;
+}
+
+.user-show-profile-top-tags-main-element-tag {
+  margin-left: 8px;
+  background: #e2e2ff;
+  padding: 0 8px;
+  cursor: pointer;
+  color: #00f;
+}
+
+.user-show-profile-top-tags-main-element-tag:hover {
+  background: #ccf;
+}
+
+.user-show-profile-top-tags-main-element:nth-child(1) {
+  font-size: 18px;
+  width: 795px;
+}
+.user-show-profile-top-tags-main-element:nth-child(1)
+.user-show-profile-top-tags-main-element-tag {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.user-show-profile-top-tags-main-element:nth-child(1)
+.user-show-profile-top-tags-main-element-stats-value {
+  font-size: 24px;
+}
+
+
+.user-show-profile-top-tags-main-element:nth-child(2) {
+  margin-right: 5px;
+}
+.user-show-profile-top-tags-main-element:nth-child(2),
+.user-show-profile-top-tags-main-element:nth-child(3) {
+  width: 395px;
+  font-size: 16px;
+}
+.user-show-profile-top-tags-main-element:nth-child(2)
+.user-show-profile-top-tags-main-element-stats-value,
+.user-show-profile-top-tags-main-element:nth-child(3)
+.user-show-profile-top-tags-main-element-stats-value {
+  font-size: 18px;
+}
+.user-show-profile-top-tags-main-element:nth-child(2)
+.user-show-profile-top-tags-main-element-tag,
+.user-show-profile-top-tags-main-element:nth-child(3)
+.user-show-profile-top-tags-main-element-tag, {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.user-show-profile-top-tags-main-element:nth-child(4),
+.user-show-profile-top-tags-main-element:nth-child(5),
+.user-show-profile-top-tags-main-element:nth-child(6) {
+  width: 261.66px;
+}
+.user-show-profile-top-tags-main-element:nth-child(4),
+.user-show-profile-top-tags-main-element:nth-child(5) {
+  margin-right: 5px;
+}
+.user-show-profile-top-tags-main-element:nth-child(4)
+.user-show-profile-top-tags-main-element-stats,
+.user-show-profile-top-tags-main-element:nth-child(5)
+.user-show-profile-top-tags-main-element-stats,
+.user-show-profile-top-tags-main-element:nth-child(6)
+.user-show-profile-top-tags-main-element-stats, {
+  position: relative;
+  width: 130px;
+  height: 60px;
+}
+.user-show-profile-top-tags-main-element:nth-child(4)
+.user-show-profile-top-tags-main-element-stats-element:nth-child(1),
+.user-show-profile-top-tags-main-element:nth-child(5)
+.user-show-profile-top-tags-main-element-stats-element:nth-child(1),
+.user-show-profile-top-tags-main-element:nth-child(6)
+.user-show-profile-top-tags-main-element-stats-element:nth-child(1), {
+  position: absolute;
+  top: -8px;
+  right: 0;
+}
+.user-show-profile-top-tags-main-element:nth-child(4)
+.user-show-profile-top-tags-main-element-stats-element:nth-child(2),
+.user-show-profile-top-tags-main-element:nth-child(5)
+.user-show-profile-top-tags-main-element-stats-element:nth-child(2),
+.user-show-profile-top-tags-main-element:nth-child(6)
+.user-show-profile-top-tags-main-element-stats-element:nth-child(2), {
+  position: absolute;
+  top: 8px;
+  right: 0;
+}
+
+.user-show-profile-top-tags-main-element:nth-child(4)
+.user-show-profile-top-tags-main-element-stats-value,
+.user-show-profile-top-tags-main-element:nth-child(5)
+.user-show-profile-top-tags-main-element-stats-value,
+.user-show-profile-top-tags-main-element:nth-child(6)
+.user-show-profile-top-tags-main-element-stats-value {
+  font-size: 10px;
+  font-weight: 700;
+}
+.user-show-profile-top-tags-main-element:nth-child(4)
+.user-show-profile-top-tags-main-element-tag,
+.user-show-profile-top-tags-main-element:nth-child(5)
+.user-show-profile-top-tags-main-element-tag,
+.user-show-profile-top-tags-main-element:nth-child(6)
+.user-show-profile-top-tags-main-element-tag, {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.user-show-profile-top-tags-main-element-stats {
+  float: right;
+  margin-right: 8px;
+}
+
+.user-show-profile-top-tags-main-element-stats > div {
+  float: left;
+}
+
+.user-show-profile-top-tags-main-element-stats-label {
+  color: #999;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+  margin-right: 6px;
+}
+
+.user-show-profile-top-tags-main-element-stats-element > div {
+  float: left;
+}
+
+.user-show-profile-top-tags-main-element-stats-element:nth-child(2) {
+  margin-left: 20px;
+}
+
+.user-show-profile-top-tags-footer {
+  outline: 1px dashed red;
+  height: 50px;
+  text-align: right;
+}
+
+.user-show-profile-top-tags-footer span {
+  line-height: 50px;
+}
