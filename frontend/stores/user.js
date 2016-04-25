@@ -9,6 +9,7 @@ var _users = {};
 var _sortBy = 'reputation';
 var _searchTerm = '';
 var _postsSortBy = 'Votes';
+var _postsSelect = 'All';
 
 function resetUsers(users) {
   _users = {};
@@ -35,6 +36,10 @@ function resetSortBy(sortBy) {
   _sortBy = sortBy;
 }
 
+function resetPostsSelect(select) {
+  _postsSelect = select;
+}
+
 function resetSearchTerm(searchTerm) {
   if (searchTerm.length >= 3) {
     _searchTerm = searchTerm;
@@ -44,6 +49,10 @@ function resetSearchTerm(searchTerm) {
     this.__emitChange();
   }
 }
+
+UserStore.getPostsSelect = function() {
+  return _postsSelect;
+};
 
 UserStore.getUser = function(userId) {
   if (!Object.keys(_users).length) {
@@ -55,6 +64,18 @@ UserStore.getUser = function(userId) {
     // NOTE: if ApiUtil.fetchUser did not yet succeed, do not yet deal with
     // sorting objects that don't exist here yet
     return $.extend({}, _users[userId]);
+  }
+  switch (_postsSelect) {
+    case 'All':
+      _users[userId].posts = _users[userId].questions
+        .concat(_users[userId].given_answers);
+      break;
+    case 'Questions':
+      _users[userId].posts = _users[userId].questions;
+      break;
+    case 'Answers':
+      _users[userId].posts = _users[userId].given_answers;
+      break;
   }
   switch (_postsSortBy) {
     case 'Votes':
@@ -119,6 +140,10 @@ UserStore.__onDispatch = function(payload) {
       break;
     case UserConstants.CHANGE_USER_POSTS_SORT:
       resetPostsSortBy(payload.action);
+      this.__emitChange();
+      break;
+    case UserConstants.CHANGE_USER_POSTS_SELECT:
+      resetPostsSelect(payload.action);
       this.__emitChange();
       break;
   }

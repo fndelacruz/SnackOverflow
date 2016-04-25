@@ -9,7 +9,7 @@ var hashHistory = require('react-router').hashHistory;
 var _callbackId;
 var QuestionShow = React.createClass({
   getInitialState: function() {
-    return { question: QuestionStore.getQuestion(this.props.params.questionId) };
+    return { question: {} };
   },
   componentDidMount: function() {
     _callbackId = QuestionStore.addListener(this.onChange);

@@ -156,7 +156,7 @@ require_relative 'helper'
   # View.create!(viewable: dan_q1, user: hal)
 
   # random user creation
-  users = 100.times.map do
+  users = 25.times.map do
     sometime = random_time_ago
     {
       email: FFaker::Internet.email,
@@ -174,7 +174,7 @@ require_relative 'helper'
   # create an answer before joining the site). Will fix this for deployment.
 
   # random question creation
-  25.times do
+  50.times do
     sometime = random_time_ago
     random_user.questions.create!(
       title: FFaker::BaconIpsum.sentence,

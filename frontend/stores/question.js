@@ -10,6 +10,7 @@ var ApiUtil = require('../util/api_util');
 var _questions = {};
 var _questionSortBy = 'newest';
 var _tag = null;
+var _indexLoaded = false;
 
 function formatDates(question) {
   Util.formatDateHelper(question);
@@ -30,6 +31,7 @@ function resetQuestions(questions) {
     formatDates(question);
     _questions[question.id] = question;
   });
+  _indexLoaded = true;
 }
 
 function changeQuestionSort(questionSortBy) {

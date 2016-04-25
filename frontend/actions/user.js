@@ -31,5 +31,11 @@ module.exports = {
       action: sortBy,
       actionType: UserConstants.CHANGE_USER_POSTS_SORT
     });
+  },
+  changeUserPostsSelect: function(select) {
+    AppDispatcher.dispatch({
+      action: select,
+      actionType: UserConstants.CHANGE_USER_POSTS_SELECT
+    });
   }
 };

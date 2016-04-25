@@ -1,0 +1,40 @@
+.mini-nav-container {
+  font-size: 12px;
+  float: right;
+  padding: 0 10px;
+}
+
+.mini-nav-container:last-child {
+  border-right: 1px solid #777;
+}
+
+.mini-nav-link {
+  float: left;
+  cursor: pointer;
+  padding: 0 5px;
+  color: #777;
+  margin-right: 10px;
+}
+
+.mini-nav-link:hover {
+  color: #000;
+}
+
+.mini-nav-link:last-child {
+  margin-right: 0;
+}
+
+.mini-nav-link-active {
+  color: #000;
+  position: relative;
+}
+
+.mini-nav-link-active:after {
+  content: '';
+  width: 100%;
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom: 2px solid #ea1;
+}

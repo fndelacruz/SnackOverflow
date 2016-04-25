@@ -1,14 +1,30 @@
 var React = require('react');
 var UserStore = require('../../stores/user');
+var hashHistory = require('react-router').hashHistory;
+var MiniNav = require('../shared/mini_nav');
+var UserActions = require('../../actions/user');
 
 var SHOW_PROFILE_TOP_POSTS_SELECTORS = ['All', 'Questions', 'Answers'];
+var SHOW_PROFILE_TOP_POSTS_SORT_TYPES = ['Votes', 'Newest'];
 
 var ShowProfileTopPosts = React.createClass({
   getInitialState: function() {
     return {
-      select: SHOW_PROFILE_TOP_POSTS_SELECTORS[0],
+      select: UserStore.getPostsSelect(),
       sortBy: UserStore.getPostsSortBy()
     };
+  },
+  handlePostClick: function(questionId) {
+    path = '/questions/' + questionId;
+    hashHistory.push(path);
+  },
+  handleSelectClick: function(select) {
+    UserActions.changeUserPostsSelect(select);
+    this.setState({ select: select });
+  },
+  handleSortByClick: function(sortBy) {
+    UserActions.changeUserPostsSortBy(sortBy);
+    this.setState({ sortBy: sortBy });
   },
   handleHeaderLabel: function() {
     return this.state.select === 'All' ? 'Posts' : this.state.select;
@@ -28,34 +44,45 @@ var ShowProfileTopPosts = React.createClass({
     }
   },
   renderTopPosts: function() {
-    var posts;
-    switch (this.state.select) {
-      case 'All':
-        posts = this.props.posts;
-        break;
-      case 'Questions':
-        posts = this.props.posts.filter(function(post) {
-          return post.type === 'Question';
-        });
-        break;
-      case 'Answers':
-        posts = this.props.posts.filter(function(post) {
-          return post.type === 'Answer';
-        });
-        break;
+    var posts = this.props.posts;
+    if (!posts.length) {
+      var message = 'This user has not ';
+      switch (this.state.select) {
+        case 'All':
+          message += ' posted yet.';
+          break;
+        case 'Questions':
+          message += ' asked any questions yet.';
+          break;
+        case 'Answers':
+          message += ' posted any answers yet.';
+          break;
+      }
+      return (<div className='user-show-empty-content'>{message}</div>);
     }
     return (
       <div className='user-show-profile-top-posts-main'>
-        {posts.map(function(post) {
+        {posts.slice(0,10).map(function(post) {
           return (
             <div
-              className='user-show-profile-top-posts-main-element'
+              onClick={this.handlePostClick.bind(null, post.question_id)}
+              className='user-show-profile-top-posts-main-element group'
               key={post.type + '-' + post.id}>
-              {post.type + ' ' + post.vote_score + ' ' + post.title + ' ' +
-                post.created_at.toLocaleDateString()}
+              <div className='user-show-profile-top-posts-main-element-type'>
+                {post.type === 'Answer' ? 'A:' : 'Q:'}
+              </div>
+              <div className='user-show-profile-top-posts-main-element-vote-count'>
+                <span>{post.vote_count}</span>
+              </div>
+              <div className='user-show-profile-top-posts-main-element-post-title'>
+                {post.title}
+              </div>
+              <div className='user-show-profile-top-posts-main-element-create-date'>
+                {post.created_at.toLocaleDateString()}
+              </div>
             </div>
           );
-        })}
+        }.bind(this))}
       </div>
     );
   },
@@ -69,9 +96,27 @@ var ShowProfileTopPosts = React.createClass({
           <span className='user-show-profile-main-header-count'>
             {'(' + this.handleHeaderCount() + ')'}
           </span>
+          <MiniNav
+            links={SHOW_PROFILE_TOP_POSTS_SORT_TYPES}
+            handleClick={this.handleSortByClick}
+            active={this.state.sortBy}/>
+          <MiniNav
+            links={SHOW_PROFILE_TOP_POSTS_SELECTORS}
+            handleClick={this.handleSelectClick}
+            active={this.state.select}/>
         </div>
-
         {this.renderTopPosts()}
+        <div className='user-show-profile-main-footer'>
+          {'View all '}
+          <span className='link'>
+            questions
+          </span>
+          {' and '}
+          <span className='link'>
+            answers
+          </span>
+          {' →'}
+        </div>
       </div>
     );
   }

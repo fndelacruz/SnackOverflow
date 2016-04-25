@@ -3,7 +3,6 @@
 }
 
 .user-show-profile-header {
-  outline: 2px dashed #777;
   height: 280px;
 }
 
@@ -52,7 +51,6 @@
 // bio panel
 
 .user-show-profile-header-bio-container {
-  outline: 1px solid green;
   width: 45%;
 }
 
@@ -69,12 +67,10 @@
 // stats panel
 
 .user-show-profile-header-stats-container {
-  outline: 1px solid blue;
   width: 26%;
 }
 
 .user-show-profile-header-stats-header-group {
-  outline: 1px dashed red;
   display: inline-block;
   margin: 20px 27px 20px 0;
 }
@@ -88,18 +84,21 @@
   font-weight: 700;
 }
 
+.user-show-profile-header-stats-header-group-label {
+  color: #666;
+}
+
 .user-show-profile-header-stats-row {
   margin-bottom: 15px;
-  outline: 1px dashed red;
 }
 
 .user-show-profile-header-stats-row > div {
   float: left;
-  outline: 1px dashed green;
 }
 
 .user-show-profile-header-stats-row-content {
   margin: 5px 0 5px 15px;
+  color: #666;
 }
 
 .icon-small {

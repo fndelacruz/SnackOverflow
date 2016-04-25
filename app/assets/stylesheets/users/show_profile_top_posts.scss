@@ -1,8 +1,43 @@
 .user-show-profile-top-posts {
-  outline: 1px solid purple;
 }
 
 .user-show-profile-top-posts-main-element {
-  padding: 15px 0;
+  height: 50px;
+  position: relative;
   border-top: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.user-show-profile-top-posts-main-element:hover
+.user-show-profile-top-posts-main-element-post-title {
+  color: #0be;
+}
+
+.user-show-profile-top-posts-main-element > div {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.user-show-profile-top-posts-main-element-type {
+  left: 0;
+}
+
+.user-show-profile-top-posts-main-element-vote-count {
+  border: 1px solid #777;
+  border-radius: 3px;
+  left: 20px;
+  padding: 2px 0;
+  width: 30px;
+  text-align: center;
+}
+
+.user-show-profile-top-posts-main-element-post-title {
+  left: 60px;
+  color: #06e;
+}
+
+.user-show-profile-top-posts-main-element-create-date {
+  right: 0;
+  color: #777;
 }
