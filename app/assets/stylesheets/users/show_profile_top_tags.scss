@@ -1,17 +1,5 @@
 .user-show-profile-top-tags {
-  margin: 40px 0 40px 25%;
-}
-
-.user-show-profile-top-tags-header {
-  margin-bottom: 10px;
-  font-size: 16px;
-}
-.user-show-profile-top-tags-header-label {
-  font-weight: 700;
-}
-
-.user-show-profile-top-tags-header-count {
-  color: #777;
+  outline: 1px solid orange;
 }
 
 .user-show-profile-top-tags-main-inactive {
@@ -157,14 +145,4 @@
 
 .user-show-profile-top-tags-main-element-stats-element:nth-child(2) {
   margin-left: 20px;
-}
-
-.user-show-profile-top-tags-footer {
-  outline: 1px dashed red;
-  height: 50px;
-  text-align: right;
-}
-
-.user-show-profile-top-tags-footer span {
-  line-height: 50px;
 }

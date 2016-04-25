@@ -8,6 +8,7 @@ var UserStore = new Store(AppDispatcher);
 var _users = {};
 var _sortBy = 'reputation';
 var _searchTerm = '';
+var _postsSortBy = 'Votes';
 
 function resetUsers(users) {
   _users = {};
@@ -19,7 +20,15 @@ function resetUsers(users) {
 
 function resetUser(user) {
   Util.formatDateHelper(user);
+  user.questions.forEach(Util.formatDateHelper);
+  user.given_answers.forEach(Util.formatDateHelper);
+  user.posts = user.questions.concat(user.given_answers);
+  Util.sortBy(user.posts, 'vote_score', true); // by default, sorts by vote_count
   _users[user.id] = user;
+}
+
+function resetPostsSortBy(sortBy) {
+  _postsSortBy = sortBy;
 }
 
 function resetSortBy(sortBy) {
@@ -36,22 +45,31 @@ function resetSearchTerm(searchTerm) {
   }
 }
 
-function sortBy(users, sortType, isDescending) {
-  users.sort(function(a, b) {
-    if (a.reputation < b.reputation) {
-      return -1;
-    } else if (a.reputation > b.reputation) {
-      return 1;
-    } else if (a.reputation === b.reputation) {
-      return 0;
-    }
-  });
-}
-
 UserStore.getUser = function(userId) {
+  if (!Object.keys(_users).length) {
+    // NOTE: if ApiUti.fetchUsers did not yet succeed, do not attempt to fetch
+    // a user
+    return {};
+  }
+  if (typeof _users[userId].posts === 'undefined') {
+    // NOTE: if ApiUtil.fetchUser did not yet succeed, do not yet deal with
+    // sorting objects that don't exist here yet
+    return $.extend({}, _users[userId]);
+  }
+  switch (_postsSortBy) {
+    case 'Votes':
+      Util.sortBy(_users[userId].posts, 'vote_count', true);
+      break;
+    case 'Newest':
+      Util.sortBy(_users[userId].posts, 'created_at', true);
+      break;
+  }
   return $.extend({}, _users[userId]);
 };
 
+UserStore.getPostsSortBy = function() {
+  return _postsSortBy;
+};
 
 UserStore.all = function() {
   users = Object.keys(_users).map(function(userId) {
@@ -97,6 +115,10 @@ UserStore.__onDispatch = function(payload) {
       break;
     case UserConstants.RECEIVE_USER:
       resetUser(payload.action);
+      this.__emitChange();
+      break;
+    case UserConstants.CHANGE_USER_POSTS_SORT:
+      resetPostsSortBy(payload.action);
       this.__emitChange();
       break;
   }

@@ -1,5 +1,6 @@
 var React = require('react');
 var ShowProfileTopTags = require('./show_profile_top_tags');
+var ShowProfileTopPosts = require('./show_profile_top_posts');
 
 function handleBio(bio) {
   if (bio) {
@@ -119,17 +120,15 @@ var UserShowProfile = React.createClass({
           </div>
         </div>
 
-        <ShowProfileTopTags
-
-          userId={this.props.id}
-          tags={this.props.associated_tags_sorted_by_answer_score} />
-
-        <div className='user-show-profile-top-answers'>
-          top-answers placeholder
-        </div>
-
-        <div className='user-show-profile-badges'>
-          badges placeholder
+        <div className='user-show-profile-main'>
+          <ShowProfileTopTags
+            userId={this.props.id}
+            tags={this.props.associated_tags_sorted_by_answer_score} />
+          <ShowProfileTopPosts
+            posts={this.props.posts} />
+          <div className='user-show-profile-badges'>
+            badges placeholder
+          </div>
         </div>
       </div>
     );

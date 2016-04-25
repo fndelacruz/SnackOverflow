@@ -124,13 +124,30 @@
   background: url(image_path('time.png'));
 }
 
-
-.user-show-profile-top-tags {
-  outline: 1px solid orange;
+.user-show-profile-main > div {
+  margin: 40px 0 40px 25%;
 }
 
-.user-show-profile-top-answers {
-  outline: 1px solid purple;
+.user-show-profile-main-header {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+.user-show-profile-main-header-label {
+  font-weight: 700;
+}
+
+.user-show-profile-main-header-count {
+  color: #777;
+}
+
+.user-show-profile-main-footer {
+  outline: 1px dashed red;
+  height: 50px;
+  text-align: right;
+}
+
+.user-show-profile-main-footer span {
+  line-height: 50px;
 }
 
 .user-show-profile-badges {

@@ -25,5 +25,11 @@ module.exports = {
       action: user,
       actionType: UserConstants.RECEIVE_USER
     });
+  },
+  changeUserPostsSortBy: function(sortBy) {
+    AppDispatcher.dispatch({
+      action: sortBy,
+      actionType: UserConstants.CHANGE_USER_POSTS_SORT
+    });
   }
 };

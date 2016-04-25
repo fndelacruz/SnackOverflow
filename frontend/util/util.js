@@ -16,7 +16,11 @@ module.exports = {
       });
   },
   formatDateHelper: function (item) {
-    item.created_at = new Date(item.created_at);
-    item.updated_at = new Date(item.updated_at);
+    if (item.created_at) {
+      item.created_at = new Date(item.created_at);
+    }
+    if (item.updated_at) {
+      item.updated_at = new Date(item.updated_at);
+    }
   }
 };

@@ -28,6 +28,39 @@ module Votable
   def vote_count
     votes.map(&:value).sum
   end
+  REPUTATION_SCHEME = {
+    receive_question_upvote: 10,
+    receive_answer_upvote: 20,
+    receive_question_downvote: -4,
+    receive_answer_downvote: -4,
+    give_answer_downvote: -2,
+    receive_comment_upvote: 1,
+    receive_comment_downvote: -1
+  }
+
+  def vote_score
+    votes.inject(0) do |sum, vote|
+      if vote.value === 1
+        case self.class.to_s
+        when 'Answer'
+          sum += User::REPUTATION_SCHEME[:receive_answer_upvote]
+        when 'Comment'
+          sum += User::REPUTATION_SCHEME[:receive_comment_upvote]
+        when 'Question'
+          sum += User::REPUTATION_SCHEME[:receive_question_upvote]
+        end
+      elsif vote.value === -1
+        case self.class.to_s
+        when 'Answer'
+          sum += User::REPUTATION_SCHEME[:receive_answer_upvote]
+        when 'Comment'
+          sum += User::REPUTATION_SCHEME[:receive_comment_upvote]
+        when 'Question'
+          sum += User::REPUTATION_SCHEME[:receive_question_upvote]
+        end
+      end
+    end
+  end
 
   def user_vote(user)
     votes.find { |vote| vote.user_id == user.id}
