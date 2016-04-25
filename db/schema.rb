@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160421195425) do
+ActiveRecord::Schema.define(version: 20160425211548) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,26 @@ ActiveRecord::Schema.define(version: 20160421195425) do
 
   add_index "answers", ["question_id"], name: "index_answers_on_question_id", using: :btree
   add_index "answers", ["user_id"], name: "index_answers_on_user_id", using: :btree
+
+  create_table "badges", force: :cascade do |t|
+    t.string   "name",        null: false
+    t.string   "rank",        null: false
+    t.text     "description", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "badges", ["name", "rank"], name: "index_badges_on_name_and_rank", unique: true, using: :btree
+
+  create_table "badgings", force: :cascade do |t|
+    t.integer  "user_id",    null: false
+    t.integer  "badge_id",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "badgings", ["badge_id"], name: "index_badgings_on_badge_id", using: :btree
+  add_index "badgings", ["user_id"], name: "index_badgings_on_user_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.integer  "user_id",          null: false

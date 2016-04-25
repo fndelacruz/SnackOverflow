@@ -85,6 +85,21 @@ viewable_type   | string    | not null, indexed
 viewable_id     | integer   | not null, indexed
 created_at      | datetime  | not null
 
+## badges
+column name     | data type | details
+----------------|-----------|-----------------------
+id              | integer   | not null, primary key
+name            | string    | not null, unique
+description     | text      | not null, indexed
+
+## badgings
+column name     | data type | details
+----------------|-----------|-----------------------
+id              | integer   | not null, primary key
+user_id         | integer   | not null, foreign key (ref: users), indexed
+badge_id        | integer   | not null, foreign key (ref: badges), indexed
+created_at      | datetime  | not null
+
 ## Bonus content
 
 ## tag_subscriptions
