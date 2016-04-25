@@ -120,8 +120,9 @@ var UserShowProfile = React.createClass({
         </div>
 
         <ShowProfileTopTags
+
           userId={this.props.id}
-          tags={this.props.associated_tags_sorted} />
+          tags={this.props.associated_tags_sorted_by_answer_score} />
 
         <div className='user-show-profile-top-answers'>
           top-answers placeholder

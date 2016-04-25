@@ -49,6 +49,7 @@ class User < ActiveRecord::Base
   has_many :answer_tags, through: :given_answers, source: :associated_tags
   has_many :question_tags, through: :questions, source: :tags
 
+
   include Viewable
 
   def self.find_by_credentials(email, password)
@@ -75,13 +76,90 @@ class User < ActiveRecord::Base
       .find(userId)
   end
 
-  def associated_tags_sorted
+  def associated_tags_votes
+    question_tag_ids = question_tags.map(&:id).uniq
+    answer_tag_ids = answer_tags.map(&:id).uniq
+    Vote.find_by_sql (
+      [<<-SQL, user_id: id, question_tag_ids: question_tag_ids, answer_tag_ids: answer_tag_ids]
+        SELECT
+          votes.*,
+          COALESCE (t1.tag_id, t2.tag_id) AS tag_id
+        FROM
+          votes
+        LEFT JOIN
+          questions AS q1
+            ON (votes.votable_id = q1.id AND votes.votable_type = 'Question')
+        LEFT JOIN
+          answers ON (votes.votable_id = answers.id AND votes.votable_type = 'Answer')
+        LEFT JOIN
+          questions AS q2 ON answers.question_id = q2.id
+        LEFT JOIN
+          taggings AS t1 ON q1.id = t1.question_id
+        LEFT JOIN
+          taggings AS t2 ON q2.id = t2.question_id
+        WHERE
+          (q1.user_id = :user_id AND t1.tag_id IN (:question_tag_ids)) OR
+          (answers.user_id = :user_id AND t2.tag_id IN (:answer_tag_ids))
+        GROUP BY
+          votes.id, q1.id, answers.id, q2.id, t1.id, t2.id
+      SQL
+    )
+  end
+
+  def associated_tags_score
+    @associated_tags_score || (
+      tag_score = {
+        questions: Hash.new { |hash, key| hash[key] = 0 },
+        answers: Hash.new { |hash, key| hash[key] = 0 },
+      }
+      associated_tags_votes.each do |vote|
+        if vote.votable_type === 'Question'
+          if vote.value === 1
+            tag_score[:questions][vote.tag_id] +=
+              User::REPUTATION_SCHEME[:receive_question_upvote]
+          elsif vote.value === -1
+            tag_score[:questions][vote.tag_id] +=
+              User::REPUTATION_SCHEME[:receive_question_downvote]
+          end
+        elsif vote.votable_type === 'Answer'
+          if vote.value === 1
+            tag_score[:answers][vote.tag_id] +=
+              User::REPUTATION_SCHEME[:receive_answer_upvote]
+          elsif vote.value === -1
+            tag_score[:answers][vote.tag_id] +=
+              User::REPUTATION_SCHEME[:receive_answer_downvote]
+          end
+        end
+      end
+      @associated_tags_score = tag_score
+    )
+  end
+
+  def associated_tags_sorted_by_answer_score
     tag_counts = Hash.new { |hash, key| hash[key] = 0 }
-    answer_tags.each { |tag| tag_counts[tag] += 1 }
-    question_tags.each { |tag| tag_counts[tag] += 1 }
-    tag_counts.sort_by { |key, val| -val }.map do |tag|
-      { object: tag[0], post_count: tag[1] }
+    answer_tag_counts = Hash.new { |hash, key| hash[key] = 0 }
+    question_tag_counts = Hash.new { |hash, key| hash[key] = 0 }
+
+    answer_tags.each do |tag|
+      tag_counts[tag] += 1
+      answer_tag_counts[tag] += 1
     end
+
+    question_tags.each do |tag|
+      tag_counts[tag] += 1
+      question_tag_counts[tag] += 1
+    end
+
+    tag_counts.map do |tag, post_count|
+      {
+        object: tag,
+        post_count: post_count,
+        answer_count: answer_tag_counts[tag],
+        question_count: question_tag_counts[tag],
+        answer_score: associated_tags_score[:answers][tag.id],
+        question_score: associated_tags_score[:questions][tag.id],
+      }
+    end.sort { |a, b| b[:answer_score] <=> a[:answer_score] }
   end
 
   def vote_count

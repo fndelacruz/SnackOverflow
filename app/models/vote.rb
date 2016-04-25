@@ -18,4 +18,21 @@ class Vote < ActiveRecord::Base
   validates :value, inclusion: [-1, 1]
   belongs_to :user
   belongs_to :votable, polymorphic: true
+
+  belongs_to :answer,
+    -> { where(votes: {votable_type: 'Answer'}) },
+    foreign_key: :votable_id
+
+  belongs_to :question,
+    -> { where(votes: {votable_type: 'Question'}) },
+    foreign_key: :votable_id
+
+  # def self.score_by_user_and_tag_id(user, tag_ids)
+  #   votes = Vote.includes(answer: {question: :tags}, question: :tags)
+  #     .where(answer: {user: user})
+  #     .where(question: {user: user})
+  #     .where('')
+  #
+  # end
+
 end

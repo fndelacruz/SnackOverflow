@@ -15,12 +15,12 @@ var UsersIndexItem = React.createClass({
     hashHistory.push(path);
   },
   handleTagList: function() {
-    var associated_tags_sorted = this.props.user.associated_tags_sorted;
-    if (associated_tags_sorted) {
+    var associated_tags_sorted_by_answer_score = this.props.user.associated_tags_sorted_by_answer_score;
+    if (associated_tags_sorted_by_answer_score) {
       return (
         <TagLinkIndex
           userId={this.props.user.id}
-          tags={associated_tags_sorted} />
+          tags={associated_tags_sorted_by_answer_score} />
       );
     }
   },

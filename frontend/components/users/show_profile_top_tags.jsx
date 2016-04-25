@@ -5,6 +5,21 @@ function handleClick(userId, tagName) {
   alert('TODO clickOverride');
 }
 
+function handleTitle(tag) {
+  var title = [];
+  var questionWord = tag.question_count === 1 ? 'question' : 'questions';
+  var answerWord = tag.answer_count === 1 ? 'answer' : 'answers';
+  if (tag.question_count) {
+    title.push('Asked ' + tag.question_count + ' ' + questionWord +
+      ' with a total score of ' + tag.question_score + '.');
+  }
+  if (tag.answer_count) {
+    title.push('Gave ' + tag.answer_count + ' ' + answerWord +
+      ' with a total score of ' + tag.answer_score + '.');
+  }
+  return title.join(' ');
+}
+
 var ShowProfleTopTags = React.createClass({
 
   renderTopTags: function() {
@@ -20,9 +35,11 @@ var ShowProfleTopTags = React.createClass({
         {this.props.tags.slice(0, 6).map(function(tag) {
           return (
             <div
+              title={handleTitle(tag)}
               className='user-show-profile-top-tags-main-element'
               key={'tag-' + tag.object.id}>
               <span
+                title=''
                 onClick={handleClick.bind(null, this.props.userId, tag.object.name)}
                 className='user-show-profile-top-tags-main-element-tag'>
                 {tag.object.name}
@@ -33,7 +50,7 @@ var ShowProfleTopTags = React.createClass({
                     SCORE
                   </div>
                   <div className='user-show-profile-top-tags-main-element-stats-value'>
-                    1337
+                    {tag.answer_score}
                   </div>
                 </div>
 
@@ -60,7 +77,7 @@ var ShowProfleTopTags = React.createClass({
             {'Top Tags' + ' '}
           </span>
           <span className='user-show-profile-top-tags-header-count'>
-            {'(' + this.props.tags.length +')'}
+            {'(' + this.props.tags.length + ')'}
           </span>
         </div>
 

@@ -7,7 +7,7 @@ elsif options[:show]
   json.extract!(
     user,
     :id, :display_name, :email, :created_at, :updated_at, :vote_count, :bio,
-      :reputation, :location, :associated_tags_sorted,
+      :reputation, :location, :associated_tags_sorted_by_answer_score,
       :questions,
       :given_answers,
       :view_count,
@@ -19,7 +19,7 @@ elsif options[:index]
   json.extract!(
     user,
     :id, :display_name, :email, :created_at, :updated_at, :vote_count,
-    :reputation, :location, :associated_tags_sorted
+    :reputation, :location
   )
 
 else

@@ -15,4 +15,5 @@ class Tagging < ActiveRecord::Base
     uniqueness: { scope: :tag, message: "already has this Tag" }
   belongs_to :question
   belongs_to :tag
+
 end
