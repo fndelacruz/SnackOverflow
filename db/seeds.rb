@@ -35,7 +35,7 @@ ActiveRecord::Base.transaction do
 
   25.times { create_random_user! }
 
-  7.times { |x| Vote.create!(user: User.find(x + 2), votable: ann_q1_a1, value: 1 )}
+  7.times { |x| Vote.create!(user: User.find(x + 2), votable: ann_q1, value: 1 )}
 
   # Vote.create!(user: bob, votable: ann_q1, value: 1)
 

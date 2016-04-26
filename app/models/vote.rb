@@ -35,71 +35,41 @@ class Vote < ActiveRecord::Base
     badging = Badging.includes(:badge)
       .find_by_badgeable_type_and_badgeable_id(votable_type, votable_id)
     if votable_type == 'Question'
-      handle_question_vote_badges(badging)
+      item_votes = Badge.question_votes
+      handle_question_and_answer_vote_badges(badging, item_votes)
     elsif votable_type == 'Answer'
-      handle_answer_vote_badges(badging)
+      item_votes = Badge.answer_votes
+      handle_question_and_answer_vote_badges(badging, item_votes)
     end
   end
 
-  def handle_question_vote_badges(badging)
+  def handle_question_and_answer_vote_badges(badging, item_votes)
     votable.reload
     if badging
       if badging.badge.rank == 'silver' && votable.vote_count ==
-          Badge.question_votes[:gold][:criteria]
+          item_votes[:gold][:criteria]
         ActiveRecord::Base.transaction do
           badging.destroy!
           Badging.create!(user: votable.user, badgeable_id: votable_id,
             badgeable_type: votable_type, created_at: created_at, badge: Badge
-            .find_by_name(Badge.question_votes[:gold][:label])
+            .find_by_name(item_votes[:gold][:label])
           )
         end
       elsif badging.badge.rank == 'bronze' && votable.vote_count ==
-          Badge.question_votes[:silver][:criteria]
+          item_votes[:silver][:criteria]
         ActiveRecord::Base.transaction do
           badging.destroy!
           Badging.create!(user: votable.user, badgeable_id: votable_id,
             badgeable_type: votable_type, created_at: created_at, badge: Badge
-            .find_by_name(Badge.question_votes[:silver][:label])
+            .find_by_name(item_votes[:silver][:label])
           )
         end
       end
     else
-      if votable.vote_count == Badge.question_votes[:bronze][:criteria]
+      if votable.vote_count == item_votes[:bronze][:criteria]
         Badging.create!(user: votable.user, badgeable_id: votable_id,
           badgeable_type: votable_type, created_at: created_at, badge: Badge
-          .find_by_name(Badge.question_votes[:bronze][:label])
-        )
-      end
-    end
-  end
-
-  def handle_answer_vote_badges(badging)
-    votable.reload
-    if badging
-      if badging.badge.rank == 'silver' && votable.vote_count ==
-          Badge.answer_votes[:gold][:criteria]
-        ActiveRecord::Base.transaction do
-          badging.destroy!
-          Badging.create!(user: votable.user, badgeable_id: votable_id,
-            badgeable_type: votable_type, created_at: created_at, badge: Badge
-            .find_by_name(Badge.answer_votes[:gold][:label])
-          )
-        end
-      elsif badging.badge.rank == 'bronze' && votable.vote_count ==
-          Badge.answer_votes[:silver][:criteria]
-        ActiveRecord::Base.transaction do
-          badging.destroy!
-          Badging.create!(user: votable.user, badgeable_id: votable_id,
-            badgeable_type: votable_type, created_at: created_at, badge: Badge
-            .find_by_name(Badge.answer_votes[:silver][:label])
-          )
-        end
-      end
-    else
-      if votable.vote_count == Badge.answer_votes[:bronze][:criteria]
-        Badging.create!(user: votable.user, badgeable_id: votable_id,
-          badgeable_type: votable_type, created_at: created_at, badge: Badge
-          .find_by_name(Badge.answer_votes[:bronze][:label])
+          .find_by_name(item_votes[:bronze][:label])
         )
       end
     end
