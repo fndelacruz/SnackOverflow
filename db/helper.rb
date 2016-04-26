@@ -84,6 +84,14 @@ def create_badges!
     )
   end
 
+  Badge.SCHEMA[:answers][:votes].keys.each do |rank|
+    Badge.create!(
+      name: Badge.SCHEMA[:answers][:votes][rank][:label],
+      rank: rank,
+      description: "Answer with score of #{Badge.SCHEMA[:answers][:votes][rank][:criteria]} or more."
+    )
+  end
+
 
   Badge.create!([
     # NOTE: Questions#favorites
@@ -98,40 +106,13 @@ def create_badges!
     }, {
       name: 'ultimate_question',
       rank: 'gold',
-      description: 'Question favorited by 100 users.'
-
-    # NOTE: Questions#vote_count
-    # }, {
-    #   name: 'nice_question',
-    #   rank: 'bronze',
-    #   description: 'Question score of 10 or more.'
-    # }, {
-    #   name: 'good_question',
-    #   rank: 'silver',
-    #   description: 'Question score of 25 or more.'
-    # }, {
-    #   name: 'great_question',
-    #   rank: 'gold',
-    #   description: 'Question score of 100 or more.'
+      description: 'Question favorited by 50 users.'
 
     # NOTE: Answers
     }, {
       name: 'eager_answerer',
       rank: 'bronze',
       description: 'First to answer a question.'
-
-    }, {
-      name: 'nice_answer',
-      rank: 'bronze',
-      description: 'Answer score of 10 or higher.'
-    }, {
-      name: 'good_answer',
-      rank: 'silver',
-      description: 'Answer score of 25 or higher.'
-    }, {
-      name: 'great_answer',
-      rank: 'gold',
-      description: 'Answer score of 100 or higher.'
 
     }, {
       name: 'necromancer',

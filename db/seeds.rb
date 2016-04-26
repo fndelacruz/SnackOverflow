@@ -28,10 +28,14 @@ ActiveRecord::Base.transaction do
     content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
     tag_ids: [1, 2]
   )
+  ann_q1_a1 = ann_q1.answers.create!(
+    user: bob,
+    content: FFaker::BaconIpsum.sentences(rand(3) + 1).join(' '),
+  )
 
   25.times { create_random_user! }
 
-  20.times { |x| Vote.create!(user: User.find(x + 2), votable: ann_q1, value: 1 )}
+  7.times { |x| Vote.create!(user: User.find(x + 2), votable: ann_q1_a1, value: 1 )}
 
   # Vote.create!(user: bob, votable: ann_q1, value: 1)
 

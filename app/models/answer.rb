@@ -11,12 +11,13 @@
 #
 
 class Answer < ActiveRecord::Base
+  include Commentable
+  include Votable
+
   validates :user, :question, :content, presence: true
 
   belongs_to :user
   belongs_to :question
   has_many :associated_tags, through: :question, source: :tags
 
-  include Commentable
-  include Votable
 end
