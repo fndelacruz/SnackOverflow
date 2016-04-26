@@ -49,6 +49,8 @@ class User < ActiveRecord::Base
   has_many :answer_tags, through: :given_answers, source: :associated_tags
   has_many :question_tags, through: :questions, source: :tags
 
+  has_many :badgings
+  has_many :badges, through: :badgings, source: :badge
 
   include Viewable
 

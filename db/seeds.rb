@@ -23,6 +23,14 @@ ActiveRecord::Base.transaction do
     email: 'bob@bob.bob', display_name: 'bob', password: 'bobbob'
   )
 
+  ann_q1 = ann.questions.create!(
+    title: FFaker::BaconIpsum.sentence,
+    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
+    tag_ids: [1, 2]
+  )
+
+  Vote.create!(user: bob, votable: ann_q1, value: 1)
+
   # generate_fixed_content!
   # generate_random_content!
 

@@ -38,13 +38,17 @@ ActiveRecord::Schema.define(version: 20160425211548) do
   add_index "badges", ["name", "rank"], name: "index_badges_on_name_and_rank", unique: true, using: :btree
 
   create_table "badgings", force: :cascade do |t|
-    t.integer  "user_id",    null: false
-    t.integer  "badge_id",   null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "user_id",        null: false
+    t.integer  "badge_id",       null: false
+    t.string   "badgeable_type"
+    t.integer  "badgeable_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   add_index "badgings", ["badge_id"], name: "index_badgings_on_badge_id", using: :btree
+  add_index "badgings", ["badgeable_id"], name: "index_badgings_on_badgeable_id", using: :btree
+  add_index "badgings", ["badgeable_type"], name: "index_badgings_on_badgeable_type", using: :btree
   add_index "badgings", ["user_id"], name: "index_badgings_on_user_id", using: :btree
 
   create_table "comments", force: :cascade do |t|

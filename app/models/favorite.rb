@@ -16,4 +16,12 @@ class Favorite < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :question
+
+  after_create :handle_badges
+
+  private
+
+  def handle_badges
+    # TODO:
+  end
 end

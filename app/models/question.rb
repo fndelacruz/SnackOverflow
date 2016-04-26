@@ -14,6 +14,7 @@ class Question < ActiveRecord::Base
   include Commentable
   include Votable
   include Viewable
+  include Badgeable
 
   validates :user, :title, :content, presence: true
   # validate tag_ids?

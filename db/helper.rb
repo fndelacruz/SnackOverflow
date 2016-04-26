@@ -55,8 +55,15 @@ def random_word
 end
 
 def create_badges!
+  Badge.SCHEMA[:questions][:views].keys.each do |rank|
+    Badge.create!(
+      name: Badge.SCHEMA[:questions][:views][rank][:label],
+      rank: rank,
+      description: "Question with #{Badge.SCHEMA[:questions][:views][rank][:criteria]} views or more."
+    )
+  end
   Badge.create!([
-    # NOTE: Questions
+    # NOTE: Questions#favorites
     {
       name: 'favorite_question',
       rank: 'bronze',
@@ -70,6 +77,7 @@ def create_badges!
       rank: 'gold',
       description: 'Question favorited by 100 users.'
 
+    # NOTE: Questions#vote_count
     }, {
       name: 'nice_question',
       rank: 'bronze',
@@ -83,21 +91,7 @@ def create_badges!
       rank: 'gold',
       description: 'Question score of 100 or more.'
 
-    }, {
-      name: 'popular_question',
-      rank: 'bronze',
-      description: 'Question with 1000 views or more.'
-    }, {
-      name: 'notable_question',
-      rank: 'silver',
-      description: 'Question with 2000 views or more.'
-    }, {
-      name: 'famous_question',
-      rank: 'gold',
-      description: 'Question with 5000 views or more.'
-
     # NOTE: Answers
-
     }, {
       name: 'eager_answerer',
       rank: 'bronze',

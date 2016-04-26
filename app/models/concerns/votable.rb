@@ -29,7 +29,7 @@ module Votable
     votes.map(&:value).sum
   end
 
-  def vote_score
+  def vote_reputation
     votes.inject(0) do |sum, vote|
       if vote.value === 1
         case self.class.to_s

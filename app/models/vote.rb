@@ -27,12 +27,17 @@ class Vote < ActiveRecord::Base
     -> { where(votes: {votable_type: 'Question'}) },
     foreign_key: :votable_id
 
-  # def self.score_by_user_and_tag_id(user, tag_ids)
-  #   votes = Vote.includes(answer: {question: :tags}, question: :tags)
-  #     .where(answer: {user: user})
-  #     .where(question: {user: user})
-  #     .where('')
-  #
-  # end
+  after_create :handle_badges
 
+  def handle_badges
+    # TODO: do this after doing the more simpler view badges
+    # case votable_type
+    # when 'Question'
+    #   return unless badgeable =
+    #     Badging.find_by_badgeable_type_and_badgeable_id(votable_type, votable_id)
+    #   if badgeable.rank votable.vote_count == 500
+    # when 'Answer'
+    #
+    # end
+  end
 end
