@@ -84,6 +84,14 @@ def create_badges!
     )
   end
 
+  Badge.SCHEMA[:questions][:favorites].keys.each do |rank|
+    Badge.create!(
+      name: Badge.SCHEMA[:questions][:favorites][rank][:label],
+      rank: rank,
+      description: "Question favorited by #{Badge.SCHEMA[:questions][:favorites][rank][:criteria]} or more users."
+    )
+  end
+
   Badge.SCHEMA[:answers][:votes].keys.each do |rank|
     Badge.create!(
       name: Badge.SCHEMA[:answers][:votes][rank][:label],
@@ -92,24 +100,23 @@ def create_badges!
     )
   end
 
-
   Badge.create!([
     # NOTE: Questions#favorites
-    {
-      name: 'favorite_question',
-      rank: 'bronze',
-      description: 'Question favorited by 5 users.'
-    }, {
-      name: 'stellar_question',
-      rank: 'silver',
-      description: 'Question favorited by 25 users.'
-    }, {
-      name: 'ultimate_question',
-      rank: 'gold',
-      description: 'Question favorited by 50 users.'
+    # {
+    #   name: 'favorite_question',
+    #   rank: 'bronze',
+    #   description: 'Question favorited by 5 users.'
+    # }, {
+    #   name: 'stellar_question',
+    #   rank: 'silver',
+    #   description: 'Question favorited by 25 users.'
+    # }, {
+    #   name: 'ultimate_question',
+    #   rank: 'gold',
+    #   description: 'Question favorited by 50 users.'
 
     # NOTE: Answers
-    }, {
+    {
       name: 'eager_answerer',
       rank: 'bronze',
       description: 'First to answer a question.'

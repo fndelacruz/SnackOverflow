@@ -95,4 +95,8 @@ class Badge < ActiveRecord::Base
   def self.answer_votes
     SCHEMA[:answers][:votes]
   end
+
+  def self.question_favorites
+    SCHEMA[:questions][:favorites]
+  end
 end
