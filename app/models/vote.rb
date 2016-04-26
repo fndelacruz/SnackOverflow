@@ -32,13 +32,29 @@ class Vote < ActiveRecord::Base
   private
 
   def handle_badges
-    badging = Badging.includes(:badge)
-      .find_by_badgeable_type_and_badgeable_id(votable_type, votable_id)
     if votable_type == 'Question'
       item_votes = Badge.question_votes
+      badging = Badging.joins(:badge)
+        .where(badgeable_type: votable_type, badgeable_id: votable_id,
+          badges: { name: [
+            Badge.SCHEMA[:questions][:votes][:bronze][:label],
+            Badge.SCHEMA[:questions][:votes][:silver][:label],
+            Badge.SCHEMA[:questions][:votes][:gold][:label]
+          ]}
+        ).first
+
       handle_question_and_answer_vote_badges(badging, item_votes)
     elsif votable_type == 'Answer'
       item_votes = Badge.answer_votes
+      badging = Badging.joins(:badge)
+        .where(badgeable_type: votable_type, badgeable_id: votable_id,
+          badges: { name: [
+            Badge.SCHEMA[:answers][:votes][:bronze][:label],
+            Badge.SCHEMA[:answers][:votes][:silver][:label],
+            Badge.SCHEMA[:answers][:votes][:gold][:label]
+          ]}
+        ).first
+
       handle_question_and_answer_vote_badges(badging, item_votes)
     end
   end

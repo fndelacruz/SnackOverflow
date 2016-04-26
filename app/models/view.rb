@@ -21,14 +21,21 @@ class View < ActiveRecord::Base
   private
 
   def handle_badges
-    badging = Badging.includes(:badge)
-      .find_by_badgeable_type_and_badgeable_id(viewable_type, viewable_id)
+    badging = Badging.joins(:badge)
+      .where(badgeable_type: viewable_type, badgeable_id: viewable_id,
+        badges: { name: [
+          Badge.SCHEMA[:questions][:views][:bronze][:label],
+          Badge.SCHEMA[:questions][:views][:silver][:label],
+          Badge.SCHEMA[:questions][:views][:gold][:label]
+        ]}
+      ).first
     if viewable_type == 'Question'
       handle_question_view_badges(badging)
     end
   end
 
   def handle_question_view_badges(badging)
+    reload
     if badging
       if badging.badge.rank == 'silver' && viewable.view_count ==
           Badge.question_views[:gold][:criteria]
