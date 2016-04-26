@@ -67,12 +67,11 @@ class Question < ActiveRecord::Base
   end
 
   # NOTE: ajax may eliminate the need for #add/remove_favorite on this model
-  # TODO: remove user argument after implementing current_user
+  # NOTE: #add_favorite and #remove_favorite are only used for seeding
   def add_favorite(user)
     Favorite.create!(user: user, question: self)
   end
 
-  # TODO: remove user argument after implementing current_user
   def remove_favorite(user)
     favorite = Favorite.find_by_user_id_and_question_id(user, id)
     if favorite

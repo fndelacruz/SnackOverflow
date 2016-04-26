@@ -54,6 +54,19 @@ def random_word
   FFaker::BaconIpsum.word.gsub(/[ \.]/, '_')
 end
 
+def create_random_user!
+  sometime = random_time_ago
+  User.create(
+    email: FFaker::Internet.email,
+    display_name: FFaker::Internet.user_name,
+    password: 'hunter2',
+    location: random_location,
+    updated_at: sometime,
+    created_at: sometime,
+    bio: FFaker::BaconIpsum.sentences(rand(15)).join(' ')
+  )
+end
+
 def create_badges!
   Badge.SCHEMA[:questions][:views].keys.each do |rank|
     Badge.create!(
@@ -62,6 +75,16 @@ def create_badges!
       description: "Question with #{Badge.SCHEMA[:questions][:views][rank][:criteria]} views or more."
     )
   end
+
+  Badge.SCHEMA[:questions][:votes].keys.each do |rank|
+    Badge.create!(
+      name: Badge.SCHEMA[:questions][:votes][rank][:label],
+      rank: rank,
+      description: "Question with score of #{Badge.SCHEMA[:questions][:votes][rank][:criteria]} or more."
+    )
+  end
+
+
   Badge.create!([
     # NOTE: Questions#favorites
     {
@@ -78,18 +101,18 @@ def create_badges!
       description: 'Question favorited by 100 users.'
 
     # NOTE: Questions#vote_count
-    }, {
-      name: 'nice_question',
-      rank: 'bronze',
-      description: 'Question score of 10 or more.'
-    }, {
-      name: 'good_question',
-      rank: 'silver',
-      description: 'Question score of 25 or more.'
-    }, {
-      name: 'great_question',
-      rank: 'gold',
-      description: 'Question score of 100 or more.'
+    # }, {
+    #   name: 'nice_question',
+    #   rank: 'bronze',
+    #   description: 'Question score of 10 or more.'
+    # }, {
+    #   name: 'good_question',
+    #   rank: 'silver',
+    #   description: 'Question score of 25 or more.'
+    # }, {
+    #   name: 'great_question',
+    #   rank: 'gold',
+    #   description: 'Question score of 100 or more.'
 
     # NOTE: Answers
     }, {
@@ -261,19 +284,7 @@ end
 
 def generate_random_content!
   # random user creation
-  users = 25.times.map do
-    sometime = random_time_ago
-    {
-      email: FFaker::Internet.email,
-      display_name: FFaker::Internet.user_name,
-      password: 'hunter2',
-      location: random_location,
-      updated_at: sometime,
-      created_at: sometime,
-      bio: FFaker::BaconIpsum.sentences(rand(15)).join(' ')
-    }
-  end
-  User.create!(users)
+  25.times { create_random_user! }
 
   # NOTE: the following dates as used DO NOT respect reality (ex: a user can
   # create an answer before joining the site). Will fix this for deployment.

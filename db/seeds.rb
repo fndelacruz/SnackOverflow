@@ -29,7 +29,11 @@ ActiveRecord::Base.transaction do
     tag_ids: [1, 2]
   )
 
-  Vote.create!(user: bob, votable: ann_q1, value: 1)
+  25.times { create_random_user! }
+
+  20.times { |x| Vote.create!(user: User.find(x + 2), votable: ann_q1, value: 1 )}
+
+  # Vote.create!(user: bob, votable: ann_q1, value: 1)
 
   # generate_fixed_content!
   # generate_random_content!

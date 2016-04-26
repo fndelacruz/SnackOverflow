@@ -17,4 +17,9 @@ class Badging < ActiveRecord::Base
   belongs_to :user
   belongs_to :badge
   belongs_to :badgeable, polymorphic: true
+
+  # NOTE: Users DO NOT lose badgings if another user action would cause a
+  # prior badging's criteria to fail. ex: canceling a vote on a question with a
+  # vote_count of 5 will not cause the question owner to lose the respective
+  # bronze badge.
 end

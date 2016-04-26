@@ -34,8 +34,8 @@ class View < ActiveRecord::Base
           Badge.question_views[:gold][:criteria]
         ActiveRecord::Base.transaction do
           badging.destroy!
-          Badging.create!(user: user, badgeable_id: viewable_id,
-            badgeable_type: viewable_type, badge: Badge
+          Badging.create!(user: viewable.user, badgeable_id: viewable_id,
+            badgeable_type: viewable_type, created_at: created_at, badge: Badge
             .find_by_name(Badge.question_views[:gold][:label])
           )
         end
@@ -43,16 +43,16 @@ class View < ActiveRecord::Base
           Badge.question_views[:silver][:criteria]
         ActiveRecord::Base.transaction do
           badging.destroy!
-          Badging.create!(user: user, badgeable_id: viewable_id,
-            badgeable_type: viewable_type, badge: Badge
+          Badging.create!(user: viewable.user, badgeable_id: viewable_id,
+            badgeable_type: viewable_type, created_at: created_at, badge: Badge
             .find_by_name(Badge.question_views[:silver][:label])
           )
         end
       end
     else
       if viewable.view_count == Badge.question_views[:bronze][:criteria]
-        Badging.create!(user: user, badgeable_id: viewable_id,
-          badgeable_type: viewable_type, badge: Badge
+        Badging.create!(user: viewable.user, badgeable_id: viewable_id,
+          badgeable_type: viewable_type, created_at: created_at, badge: Badge
           .find_by_name(Badge.question_views[:bronze][:label])
         )
       end
