@@ -33,7 +33,7 @@ ActiveRecord::Base.transaction do
     content: FFaker::BaconIpsum.sentences(rand(3) + 1).join(' '),
   )
 
-  25.times { create_random_user! }
+  # 25.times { create_random_user! }
 
   # 12.times { |x| View.create!(user: User.find(x + 2), viewable: ann_q1 )}
   # 20.times { |x| Vote.create!(user: User.find(x + 2), votable: ann_q1, value: 1 )}
@@ -42,6 +42,6 @@ ActiveRecord::Base.transaction do
   # Vote.create!(user: bob, votable: ann_q1, value: 1)
 
   # generate_fixed_content!
-  # generate_random_content!
+  generate_random_content!
 
 end

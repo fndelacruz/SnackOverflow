@@ -67,6 +67,88 @@ def create_random_user!
   )
 end
 
+def create_random_question!
+  sometime = random_time_ago
+  random_user.questions.create!(
+    title: FFaker::BaconIpsum.sentence,
+    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
+    updated_at: sometime,
+    created_at: sometime,
+    tag_ids: random_tags
+  )
+end
+
+def create_random_answer!
+  sometime = random_time_ago
+  random_question.answers.create!(
+    user: random_user,
+    content: FFaker::BaconIpsum.sentences(rand(6) + 1).join(' '),
+    updated_at: sometime,
+    created_at: sometime,
+  )
+end
+
+def create_random_question_comment!
+  sometime = random_time_ago
+  random_question.comments.create!(
+    user: random_user,
+    content: FFaker::BaconIpsum.sentences(rand(2) + 1).join(' '),
+    updated_at: sometime,
+    created_at: sometime,
+  )
+end
+
+def create_random_answer_comment!
+  sometime = random_time_ago
+  random_answer.comments.create!(
+    user: random_user,
+    content: FFaker::BaconIpsum.sentences(rand(2) + 1).join(' '),
+    updated_at: sometime,
+    created_at: sometime,
+  )
+end
+
+def create_random_vote!(votable)
+  begin
+    random_vote(votable)
+  rescue => e
+   debugger unless e.message == "Validation failed: User already voted on this!"
+  end
+end
+
+def create_random_question_vote!
+  begin
+    random_vote(random_question)
+  rescue => e
+   debugger unless e.message == "Validation failed: User already voted on this!"
+  end
+end
+
+def create_random_answer_vote!
+  begin
+    random_vote(random_answer)
+  rescue => e
+    debugger unless e.message == "Validation failed: User already voted on this!"
+  end
+end
+
+def create_random_comment_vote!
+  begin
+    random_vote(random_comment)
+  rescue => e
+    debugger unless e.message == "Validation failed: User already voted on this!"
+  end
+end
+
+def create_random_view!(viewable)
+  sometime = random_time_ago
+  View.create!(
+    user: random_user, viewable: viewable, created_at: sometime,
+    updated_at: sometime
+  )
+end
+
+
 def create_badges!
   Badge.SCHEMA[:questions][:views].keys.each do |rank|
     Badge.create!(
@@ -100,37 +182,24 @@ def create_badges!
     )
   end
 
-  Badge.create!([
-    # NOTE: Questions#favorites
-    # {
-    #   name: 'favorite_question',
-    #   rank: 'bronze',
-    #   description: 'Question favorited by 5 users.'
-    # }, {
-    #   name: 'stellar_question',
-    #   rank: 'silver',
-    #   description: 'Question favorited by 25 users.'
-    # }, {
-    #   name: 'ultimate_question',
-    #   rank: 'gold',
-    #   description: 'Question favorited by 50 users.'
-
-    # NOTE: Answers
-    {
-      name: 'eager_answerer',
-      rank: 'bronze',
-      description: 'First to answer a question.'
-
-    }, {
-      name: 'necromancer',
-      rank: 'silver',
-      description: 'Answer score of 5 or higher to a question asked 1 month ago or longer.'
-
-    # NOTE: Tag badges must be dynamically generated when a tag is created!
-    # TODO: bronze awarded every 100 tag answer score
-    # TODO: silver awarded every 500 tag answer score
-    # TODO: gold awarded every 1000 tag answer score
-  }])
+  # TODO: may revisit this after confirm basic badges working
+  # Badge.create!([
+  #   # NOTE: Answers
+  #   {
+  #     name: 'eager_answerer',
+  #     rank: 'bronze',
+  #     description: 'First to answer a question.'
+  #
+  #   }, {
+  #     name: 'necromancer',
+  #     rank: 'silver',
+  #     description: 'Answer score of 5 or higher to a question asked 1 month ago or longer.'
+  #
+  #   # NOTE: Tag badges must be dynamically generated when a tag is created!
+  #   # TODO: bronze awarded every 100 tag answer score
+  #   # TODO: silver awarded every 500 tag answer score
+  #   # TODO: gold awarded every 1000 tag answer score
+  # }])
 end
 
 def generate_fixed_content!
@@ -271,81 +340,19 @@ def generate_fixed_content!
 end
 
 def generate_random_content!
-  # random user creation
   25.times { create_random_user! }
 
   # NOTE: the following dates as used DO NOT respect reality (ex: a user can
   # create an answer before joining the site). Will fix this for deployment.
 
-  # random question creation
-  50.times do
-    sometime = random_time_ago
-    random_user.questions.create!(
-      title: FFaker::BaconIpsum.sentence,
-      content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
-      updated_at: sometime,
-      created_at: sometime,
-      tag_ids: random_tags
-    )
-  end
+  50.times { create_random_question! }
+  300.times { create_random_answer! }
+  50.times { create_random_question_comment! }
+  400.times { create_random_answer_comment! }
 
-  # random answer creation
-  300.times do
-    sometime = random_time_ago
-    random_question.answers.create!(
-      user: random_user,
-      content: FFaker::BaconIpsum.sentences(rand(6) + 1).join(' '),
-      updated_at: sometime,
-      created_at: sometime,
-    )
-  end
+  2000.times { create_random_vote!(random_question) }
+  6400.times { create_random_vote!(random_answer) }
+  1600.times { create_random_vote!(random_comment) }
 
-  # random question comment creation
-  50.times do
-    sometime = random_time_ago
-    random_question.comments.create!(
-      user: random_user,
-      content: FFaker::BaconIpsum.sentences(rand(2) + 1).join(' '),
-      updated_at: sometime,
-      created_at: sometime,
-    )
-  end
-
-  # random answer comment creation
-  400.times do
-    sometime = random_time_ago
-    random_answer.comments.create!(
-      user: random_user,
-      content: FFaker::BaconIpsum.sentences(rand(2) + 1).join(' '),
-      updated_at: sometime,
-      created_at: sometime,
-    )
-  end
-
-  # random question votes
-  250.times do
-    begin
-      random_vote(random_question)
-    rescue => e
-     debugger unless e.message == "Validation failed: User already voted on this!"
-    end
-  end
-
-  # random answer votes
-  800.times do
-    begin
-      random_vote(random_answer)
-    rescue => e
-      debugger unless e.message == "Validation failed: User already voted on this!"
-    end
-  end
-
-  # random comment votes
-  1600.times do
-    begin
-      random_vote(random_comment)
-    rescue => e
-      debugger unless e.message == "Validation failed: User already voted on this!"
-    end
-  end
+  6000.times { create_random_view!(random_question) }
 end
