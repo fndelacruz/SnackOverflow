@@ -78,7 +78,7 @@ def create_random_question!
     content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
     updated_at: sometime,
     created_at: sometime,
-    tag_ids: random_tags
+    associated_tag_ids: random_tags
   )
 end
 

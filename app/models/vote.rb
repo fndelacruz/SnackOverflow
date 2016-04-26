@@ -18,15 +18,7 @@ class Vote < ActiveRecord::Base
   validates :value, inclusion: [-1, 1]
   belongs_to :user
   belongs_to :votable, polymorphic: true
-
-  belongs_to :answer,
-    -> { where(votes: {votable_type: 'Answer'}) },
-    foreign_key: :votable_id
-
-  belongs_to :question,
-    -> { where(votes: {votable_type: 'Question'}) },
-    foreign_key: :votable_id
-
+  
   after_create :handle_badges
 
   private

@@ -11,9 +11,10 @@ end
 
 json.owned question.user === current_user ? true : false
 
-json.tags question.tags, :id, :name
+json.tags question.associated_tags, :id, :name
 
 json.user_vote question.user_vote(current_user)
+
 json.favorite_count question.favorite_count
 json.favorite question.owned_favorite(current_user)
 

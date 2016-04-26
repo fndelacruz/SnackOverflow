@@ -47,10 +47,13 @@ class User < ActiveRecord::Base
   has_many :comments
 
   has_many :answer_tags, through: :given_answers, source: :associated_tags
-  has_many :question_tags, through: :questions, source: :tags
+  has_many :question_tags, through: :questions, source: :associated_tags
 
   has_many :badgings
   has_many :badges, through: :badgings, source: :badge
+
+  has_many :received_answer_votes, through: :given_answers, source: :votes
+  has_many :received_question_votes, through: :questions, source: :votes
 
   include Viewable
 
@@ -60,52 +63,43 @@ class User < ActiveRecord::Base
   end
 
   def self.current_user_find(userId)
-    User.includes({ questions: :votes }, { given_answers: :votes }, :votes,
-        { comments: :votes })
+    User.includes(
+      { questions: [:votes, :tags] },
+      { given_answers: :votes },
+      :votes,
+      { comments: :votes },
+      received_answer_votes: { votable: :associated_tags },
+      received_question_votes: { votable: :associated_tags })
       .find(userId)
   end
 
   # NOTE: for UsersIndex
   def self.index_all
-    User.includes({ questions: :votes }, { given_answers: :votes }, :votes,
-        { comments: :votes }, :answer_tags, :question_tags)
+    User.includes(
+      { questions: [:votes] },
+      { given_answers: :votes },
+      :votes,
+      { comments: :votes },
+      :answer_tags,
+      :question_tags,
+      received_answer_votes: { votable: :associated_tags },
+      received_question_votes: { votable: :associated_tags })
       .all
   end
 
   def self.show_find(userId)
-    User.includes({ questions: :votes }, { given_answers: [:votes, :question] },
-        :votes, { comments: :votes }, :views, badgings: :badge)
+    User.includes(
+        { questions: :votes },
+        { given_answers: [:votes, :question] },
+        :votes,
+        { comments: :votes },
+        :views,
+        { badgings: :badge },
+        :answer_tags,
+        :question_tags,
+        received_answer_votes: { votable: :associated_tags },
+        received_question_votes: { votable: :associated_tags })
       .find(userId)
-  end
-
-  def associated_tags_votes
-    question_tag_ids = question_tags.map(&:id).uniq
-    answer_tag_ids = answer_tags.map(&:id).uniq
-    Vote.find_by_sql (
-      [<<-SQL, user_id: id, question_tag_ids: question_tag_ids, answer_tag_ids: answer_tag_ids]
-        SELECT
-          votes.*,
-          COALESCE (t1.tag_id, t2.tag_id) AS tag_id
-        FROM
-          votes
-        LEFT JOIN
-          questions AS q1
-            ON (votes.votable_id = q1.id AND votes.votable_type = 'Question')
-        LEFT JOIN
-          answers ON (votes.votable_id = answers.id AND votes.votable_type = 'Answer')
-        LEFT JOIN
-          questions AS q2 ON answers.question_id = q2.id
-        LEFT JOIN
-          taggings AS t1 ON q1.id = t1.question_id
-        LEFT JOIN
-          taggings AS t2 ON q2.id = t2.question_id
-        WHERE
-          (q1.user_id = :user_id AND t1.tag_id IN (:question_tag_ids)) OR
-          (answers.user_id = :user_id AND t2.tag_id IN (:answer_tag_ids))
-        GROUP BY
-          votes.id, q1.id, answers.id, q2.id, t1.id, t2.id
-      SQL
-    )
   end
 
   def associated_tags_score
@@ -114,25 +108,31 @@ class User < ActiveRecord::Base
         questions: Hash.new { |hash, key| hash[key] = 0 },
         answers: Hash.new { |hash, key| hash[key] = 0 },
       }
-      associated_tags_votes.each do |vote|
-        if vote.votable_type === 'Question'
+
+      received_answer_votes.each do |vote|
+        vote.votable.associated_tags.each do |tag|
           if vote.value === 1
-            tag_score[:questions][vote.tag_id] +=
-              User::REPUTATION_SCHEME[:receive_question_upvote]
-          elsif vote.value === -1
-            tag_score[:questions][vote.tag_id] +=
-              User::REPUTATION_SCHEME[:receive_question_downvote]
-          end
-        elsif vote.votable_type === 'Answer'
-          if vote.value === 1
-            tag_score[:answers][vote.tag_id] +=
+            tag_score[:answers][tag.id] +=
               User::REPUTATION_SCHEME[:receive_answer_upvote]
           elsif vote.value === -1
-            tag_score[:answers][vote.tag_id] +=
+            tag_score[:answers][tag.id] +=
               User::REPUTATION_SCHEME[:receive_answer_downvote]
           end
         end
       end
+
+      received_question_votes.each do |vote|
+        vote.votable.associated_tags.each do |tag|
+          if vote.value === 1
+            tag_score[:questions][tag.id] +=
+              User::REPUTATION_SCHEME[:receive_question_upvote]
+          elsif vote.value === -1
+            tag_score[:questions][tag.id] +=
+              User::REPUTATION_SCHEME[:receive_question_downvote]
+          end
+        end
+      end
+
       @associated_tags_score = tag_score
     )
   end

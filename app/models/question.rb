@@ -25,6 +25,7 @@ class Question < ActiveRecord::Base
   has_many :responders, -> { distinct }, through: :answers, source: :user
 
   has_many :taggings, dependent: :destroy
+  has_many :associated_tags, through: :taggings, source: :tag
   has_many :tags, through: :taggings, source: :tag
 
   has_many :favorites, dependent: :destroy
@@ -35,12 +36,12 @@ class Question < ActiveRecord::Base
 
   def self.detailed_all
     self
-      .includes(USER_DETAILS, :votes, :answers, :views, :tags, :favorites).all
+      .includes(USER_DETAILS, :votes, :answers, :views, :associated_tags, :favorites).all
   end
 
   def self.detailed_find(id)
     self
-      .includes(USER_DETAILS, :votes, {answers: [USER_DETAILS, :votes, {comments: [USER_DETAILS, :votes]}]}, :views, :tags,
+      .includes(USER_DETAILS, :votes, {answers: [USER_DETAILS, :votes, {comments: [USER_DETAILS, :votes]}]}, :views, :associated_tags,
         {comments: [USER_DETAILS, :votes]}, :favorites)
       .find(id)
   end

@@ -22,4 +22,5 @@ class Comment < ActiveRecord::Base
   def question
     commentable_type == 'Question' ? commentable : commentable.question
   end
+
 end
