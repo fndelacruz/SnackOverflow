@@ -7,16 +7,24 @@ module Votable
     has_many :votes, as: :votable, dependent: :delete_all
   end
 
-  # TODO: remove user argument after implementing current_user
   # TODO: prevent user from upvoting own items
-  def upvote(user)
-    votes.create!(user: user, value: 1)
+  # NOTE: time argument is only used for seeding
+  def upvote(user, time=nil)
+    if time
+      votes.create!(user: user, value: 1, created_at: time, updated_at: time)
+    else
+      votes.create!(user: user, value: 1)
+    end
   end
 
-  # TODO: remove user argument after implementing current_user
   # TODO: prevent user from downvoting own items
-  def downvote(user)
-    votes.create!(user: user, value: -1)
+  # NOTE: time argument is only used for seeding
+  def downvote(user, time=nil)
+    if time
+      votes.create!(user: user, value: -1, created_at: time, updated_at: time)
+    else
+      votes.create!(user: user, value: -1)
+    end
   end
 
   # TODO: remove user argument after implementing current_user

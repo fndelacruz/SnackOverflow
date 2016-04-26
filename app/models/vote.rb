@@ -66,26 +66,38 @@ class Vote < ActiveRecord::Base
           item_votes[:gold][:criteria]
         ActiveRecord::Base.transaction do
           badging.destroy!
-          Badging.create!(user: votable.user, badgeable_id: votable_id,
-            badgeable_type: votable_type, created_at: created_at, badge: Badge
-            .find_by_name(item_votes[:gold][:label])
+          Badging.create!(
+            user: votable.user,
+            badgeable_id: votable_id,
+            badgeable_type: votable_type,
+            badge: Badge.find_by_name(item_votes[:gold][:label]),
+            created_at: created_at,
+            updated_at: updated_at
           )
         end
       elsif badging.badge.rank == 'bronze' && votable.vote_count ==
           item_votes[:silver][:criteria]
         ActiveRecord::Base.transaction do
           badging.destroy!
-          Badging.create!(user: votable.user, badgeable_id: votable_id,
-            badgeable_type: votable_type, created_at: created_at, badge: Badge
-            .find_by_name(item_votes[:silver][:label])
+          Badging.create!(
+            user: votable.user,
+            badgeable_id: votable_id,
+            badgeable_type: votable_type,
+            badge: Badge.find_by_name(item_votes[:silver][:label]),
+            created_at: created_at,
+            updated_at: updated_at
           )
         end
       end
     else
       if votable.vote_count == item_votes[:bronze][:criteria]
-        Badging.create!(user: votable.user, badgeable_id: votable_id,
-          badgeable_type: votable_type, created_at: created_at, badge: Badge
-          .find_by_name(item_votes[:bronze][:label])
+        Badging.create!(
+          user: votable.user,
+          badgeable_id: votable_id,
+          badgeable_type: votable_type,
+          badge: Badge.find_by_name(item_votes[:bronze][:label]),
+          created_at: created_at,
+          updated_at: updated_at
         )
       end
     end

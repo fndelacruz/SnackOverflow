@@ -43,7 +43,11 @@ def random_tags
 end
 
 def random_vote(item)
-  rand < 0.5 ? (item.upvote(random_user)) : (item.downvote(random_user))
+  if rand < 0.5
+    item.upvote(random_user, random_time_ago)
+  else
+    item.downvote(random_user, random_time_ago)
+  end
 end
 
 def random_time_ago
