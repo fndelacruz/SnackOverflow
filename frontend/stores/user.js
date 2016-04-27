@@ -23,6 +23,7 @@ function resetUser(user) {
   Util.formatDateHelper(user);
   user.questions.forEach(Util.formatDateHelper);
   user.given_answers.forEach(Util.formatDateHelper);
+  user.badgings.forEach(Util.formatDateHelper);
   user.posts = user.questions.concat(user.given_answers);
   Util.sortBy(user.posts, 'vote_reputation', true); // by default, sorts by vote_count
   _users[user.id] = user;

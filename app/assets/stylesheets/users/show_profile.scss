@@ -1,5 +1,4 @@
 .user-show-profile-container {
-  outline: 1px solid black;
 }
 
 .user-show-profile-header {
@@ -171,7 +170,6 @@
 }
 
 .user-show-profile-main-container > div {
-  // margin: 40px 0 40px 25%;
   margin: 0 0 40px 0;
   width: 75%;
   float: right;
@@ -180,8 +178,6 @@
 #user-show-profile-left-container {
   float: left;
   width: 21%;
-  outline: 1px dashed blue;
-  height: 100px;
 }
 
 .user-show-profile-main-header {
@@ -197,15 +193,10 @@
 }
 
 .user-show-profile-main-footer {
-  outline: 1px dashed red;
   height: 50px;
   text-align: right;
 }
 
 .user-show-profile-main-footer span {
   line-height: 50px;
-}
-
-.user-show-profile-badges {
-  outline: 1px solid green;
 }

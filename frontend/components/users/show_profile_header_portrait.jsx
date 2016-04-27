@@ -37,14 +37,6 @@ var ShowProfileHeaderPortrait = React.createClass({
         }.bind(this))}
       </div>
     );
-
-    // return (
-    //   <div className='user-show-profile-header-portrait-badges-container'>
-    //     <div className='portrait-badge portrait-badge-bronze'>{bronze}</div>
-    //     <div className='portrait-badge portrait-badge-silver'>{silver}</div>
-    //     <div className='portrait-badge portrait-badge-gold'>{gold}</div>
-    //   </div>
-    // );
   },
   render: function() {
     return (

@@ -1,0 +1,31 @@
+.badge-stub-container {
+  padding: 3px 8px 4px 5px;
+  cursor: pointer;
+  color: #fff;
+  background: #333;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  transition: background 200ms;
+}
+
+.badge-stub-container:before {
+  content: '● ';
+  font-size: 16px;
+}
+
+.badge-stub-gold:before {
+  color: #FFD700;
+}
+
+.badge-stub-silver:before {
+  color: #C0C0C0;
+}
+
+.badge-stub-bronze:before {
+  color: #dca570;
+}
+
+.badge-stub-container:hover {
+  transition: background 0ms;
+  background: #000;
+}

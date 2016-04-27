@@ -1,0 +1,73 @@
+.user-show-profile-badges {
+}
+
+.user-show-profile-badges-element-container {
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  // margin-bottom: 30px;
+}
+
+.user-show-profile-badges-element-container:last-child {
+  border-bottom: 1px solid #ddd;
+}
+
+.user-show-profile-badges-element-header {
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+}
+
+.badge-header-gold {
+  border: 1px solid #FFD700;
+  background: #FAFAD2;
+}
+
+.badge-header-silver {
+  border: 1px solid #C0C0C0;
+  background: #f5f5f5;
+}
+
+.badge-header-bronze {
+  border: 1px solid #dca570;
+  background: #FFD8B1;
+}
+
+.user-show-profile-badges-element-header-label {
+  color: #999;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.user-show-profile-badges-element-header-value {
+  font-size: 24px;
+  margin-top: 5px;
+}
+
+.user-show-profile-badges-element-main {
+
+}
+
+.user-show-profile-badges-element-main-header {
+  font-weight: 700;
+}
+
+.user-show-profile-badges-element-main-badges-element {
+  margin: 10px 0;
+  position: relative;
+  font-size: 13px;
+}
+
+.user-show-profile-badges-element-main-badges-element .badge-stub-container {
+  float: left;
+}
+
+.user-show-profile-badges-element-main-badges-element-created-date {
+  position: absolute;
+  color: #777;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}

@@ -22,5 +22,10 @@ module.exports = {
     if (item.updated_at) {
       item.updated_at = new Date(item.updated_at);
     }
+  },
+  snakeCaseToCamelSpace: function(string) {
+    words = string.split('_');
+    words = words.map(this.capitalize);
+    return words.join(' ');
   }
 };
