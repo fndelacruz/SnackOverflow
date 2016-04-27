@@ -5,7 +5,7 @@ var hashHistory = require('react-router').hashHistory;
 var NavHeaderLink = require('./header_link');
 var QuestionStore = require('../../stores/question');
 
-var HEADERS = ['questions', 'jobs', 'tags', 'users', 'badges', 'ask'];
+var HEADERS = ['questions', 'tags', 'users', 'badges', 'ask'];
 
 var _currentUserStoreCallbackId;
 var NavBar = React.createClass({
