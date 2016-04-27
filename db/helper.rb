@@ -153,11 +153,12 @@ def create_random_view!(viewable)
 end
 
 
-def create_badges!
+def create_nontag_badges!
   Badge.SCHEMA[:questions][:views].keys.each do |rank|
     Badge.create!(
       name: Badge.SCHEMA[:questions][:views][rank][:label],
       rank: rank,
+      category: 'Question',
       description: "Question with #{Badge.SCHEMA[:questions][:views][rank][:criteria]} views or more."
     )
   end
@@ -166,6 +167,7 @@ def create_badges!
     Badge.create!(
       name: Badge.SCHEMA[:questions][:votes][rank][:label],
       rank: rank,
+      category: 'Question',
       description: "Question with score of #{Badge.SCHEMA[:questions][:votes][rank][:criteria]} or more."
     )
   end
@@ -174,6 +176,7 @@ def create_badges!
     Badge.create!(
       name: Badge.SCHEMA[:questions][:favorites][rank][:label],
       rank: rank,
+      category: 'Question',
       description: "Question favorited by #{Badge.SCHEMA[:questions][:favorites][rank][:criteria]} or more users."
     )
   end
@@ -182,6 +185,7 @@ def create_badges!
     Badge.create!(
       name: Badge.SCHEMA[:answers][:votes][rank][:label],
       rank: rank,
+      category: 'Answer',
       description: "Answer with score of #{Badge.SCHEMA[:answers][:votes][rank][:criteria]} or more."
     )
   end
@@ -359,4 +363,5 @@ def generate_random_content!
   1600.times { create_random_vote!(random_comment) }
 
   6000.times { create_random_view!(random_question) }
+  1000.times { create_random_view!(random_user) }
 end

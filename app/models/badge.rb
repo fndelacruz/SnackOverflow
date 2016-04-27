@@ -3,11 +3,12 @@
 # Table name: badges
 #
 #  id          :integer          not null, primary key
-#  name        :string           not nullo
+#  name        :string           not null
 #  rank        :string           not null
 #  description :text             not null
 #  created_at  :datetime
 #  updated_at  :datetime
+#  category    :string           not null
 #
 
 SCHEMA = {
@@ -77,7 +78,9 @@ class Badge < ActiveRecord::Base
   validates :name, :description, presence: true
   validates :name, uniqueness: { scope: [:rank] }
   validates :rank, inclusion: ['bronze', 'silver', 'gold']
+  validates :category, inclusion: ['Question', 'Answer', 'Tag']
 
+  has_many :badgings
   has_many :users, through: :badgings, source: :user
 
   def self.SCHEMA
@@ -98,5 +101,9 @@ class Badge < ActiveRecord::Base
 
   def self.question_favorites
     SCHEMA[:questions][:favorites]
+  end
+
+  def badgings_count
+    badgings.length
   end
 end

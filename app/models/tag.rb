@@ -23,15 +23,18 @@ class Tag < ActiveRecord::Base
       {
         name: "#{name}",
         rank: 'bronze',
-        description: "Awarded for every 100 reputation earned from answers in the #{name} tag."
+        category: 'Tag',
+        description: "Awarded for every 100 reputation earned from answers in the #{name} tag.",
       }, {
         name: "#{name}",
         rank: 'silver',
-        description: "Awarded for every 500 reputation earned from answers in the #{name} tag."
+        category: 'Tag',
+        description: "Awarded for every 500 reputation earned from answers in the #{name} tag.",
       }, {
         name: "#{name}",
         rank: 'gold',
-        description: "Awarded for every 1000 reputation earned from answers in the #{name} tag."
+        category: 'Tag',
+        description: "Awarded for every 1000 reputation earned from answers in the #{name} tag.",
       }
     ])
   end

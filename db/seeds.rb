@@ -1,6 +1,8 @@
 require_relative 'helper'
 
 ActiveRecord::Base.transaction do
+  create_nontag_badges!
+
   # random tag creation
   50.times do
     begin
@@ -13,7 +15,6 @@ ActiveRecord::Base.transaction do
     end
   end
 
-  create_badges!
 
   ann = User.create!(
     email: 'ann@ann.ann', display_name: 'ann', password: 'annann',

@@ -3,6 +3,7 @@ var CurrentUserConstants = require('../constants/current_user');
 var QuestionActions = require('../actions/question');
 var UserActions = require('../actions/user');
 var TagActions = require('../actions/tag');
+var BadgeActions = require('../actions/badge');
 var hashHistory = require('react-router').hashHistory;
 
 module.exports = {
@@ -76,6 +77,14 @@ module.exports = {
       error: function() {
         debugger
       }
+    });
+  },
+  fetchBadges: function() {
+    $.ajax({
+      method: 'GET',
+      url: '/api/badges',
+      dataType: 'json',
+      success: BadgeActions.receiveBadges
     });
   },
 

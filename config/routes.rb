@@ -15,5 +15,6 @@ Rails.application.routes.draw do
     resources :comments, only: [:create, :destroy]
     resources :answers, only: [:create, :destroy]
     resources :tags, only: [:index, :show]
+    resources :badges, only: [:index, :show]
   end
 end
