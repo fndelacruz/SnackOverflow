@@ -24,16 +24,19 @@ class Tag < ActiveRecord::Base
         name: "#{name}",
         rank: 'bronze',
         category: 'Tag',
+        subcategory: id,
         description: "Awarded for every 100 reputation earned from answers in the #{name} tag.",
       }, {
         name: "#{name}",
         rank: 'silver',
         category: 'Tag',
+        subcategory: id,
         description: "Awarded for every 500 reputation earned from answers in the #{name} tag.",
       }, {
         name: "#{name}",
         rank: 'gold',
         category: 'Tag',
+        subcategory: id,
         description: "Awarded for every 1000 reputation earned from answers in the #{name} tag.",
       }
     ])

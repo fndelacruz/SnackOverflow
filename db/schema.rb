@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160427075917) do
+ActiveRecord::Schema.define(version: 20160427163421) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20160427075917) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "category",    null: false
+    t.string   "subcategory", null: false
   end
 
   add_index "badges", ["name", "rank"], name: "index_badges_on_name_and_rank", unique: true, using: :btree

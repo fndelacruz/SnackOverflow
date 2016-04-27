@@ -159,6 +159,7 @@ def create_nontag_badges!
       name: Badge.SCHEMA[:questions][:views][rank][:label],
       rank: rank,
       category: 'Question',
+      subcategory: 'views',
       description: "Question with #{Badge.SCHEMA[:questions][:views][rank][:criteria]} views or more."
     )
   end
@@ -168,6 +169,7 @@ def create_nontag_badges!
       name: Badge.SCHEMA[:questions][:votes][rank][:label],
       rank: rank,
       category: 'Question',
+      subcategory: 'votes',
       description: "Question with score of #{Badge.SCHEMA[:questions][:votes][rank][:criteria]} or more."
     )
   end
@@ -177,6 +179,7 @@ def create_nontag_badges!
       name: Badge.SCHEMA[:questions][:favorites][rank][:label],
       rank: rank,
       category: 'Question',
+      subcategory: 'favorites',
       description: "Question favorited by #{Badge.SCHEMA[:questions][:favorites][rank][:criteria]} or more users."
     )
   end
@@ -186,6 +189,7 @@ def create_nontag_badges!
       name: Badge.SCHEMA[:answers][:votes][rank][:label],
       rank: rank,
       category: 'Answer',
+      subcategory: 'votes',
       description: "Answer with score of #{Badge.SCHEMA[:answers][:votes][rank][:criteria]} or more."
     )
   end

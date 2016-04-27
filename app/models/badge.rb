@@ -9,6 +9,7 @@
 #  created_at  :datetime
 #  updated_at  :datetime
 #  category    :string           not null
+#  subcategory :string
 #
 
 SCHEMA = {
@@ -75,7 +76,7 @@ SCHEMA = {
 }
 
 class Badge < ActiveRecord::Base
-  validates :name, :description, presence: true
+  validates :name, :description, :subcategory, presence: true
   validates :name, uniqueness: { scope: [:rank] }
   validates :rank, inclusion: ['bronze', 'silver', 'gold']
   validates :category, inclusion: ['Question', 'Answer', 'Tag']

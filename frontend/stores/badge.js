@@ -20,9 +20,28 @@ function resetBadgeSelect(select) {
 
 BadgeStore.all = function() {
   if (_badges) {
-    var badges = [];
+    var badges = { Tag: {} };
     Object.keys(_badges).forEach(function(badgeId) {
-      badges.push(_badges[badgeId]);
+      var badge = _badges[badgeId];
+      var category = badge.category;
+      var subcategory = badge.subcategory;
+
+      if (category !== 'Tag') {
+        if (typeof badges[category] === 'undefined') {
+          badges[category] = {};
+        }
+
+        if (typeof badges[category][subcategory] === 'undefined') {
+          badges[category][subcategory] = [];
+        }
+
+        badges[category][subcategory].push(badge);
+      } else {
+        if (typeof badges.Tag[subcategory] === 'undefined') {
+          badges.Tag[subcategory] = [];
+        }
+        badges.Tag[subcategory].push(badge);
+      }
     });
 
     return badges;
