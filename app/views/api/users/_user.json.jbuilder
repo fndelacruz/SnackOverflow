@@ -24,6 +24,12 @@ elsif options[:show]
     end
   end
 
+  json.badgings do
+    json.array!(user.badgings) do |badging|
+      json.partial!('/api/badgings/badging', badging: badging)
+    end
+  end
+
   json.updated_at_words "last seen #{time_ago_in_words(user.updated_at)} ago"
 elsif options[:index]
   json.extract!(

@@ -1,6 +1,8 @@
 var React = require('react');
+var ShowProfileHeaderPortrait = require('./show_profile_header_portrait');
 var ShowProfileTopTags = require('./show_profile_top_tags');
 var ShowProfileTopPosts = require('./show_profile_top_posts');
+var ShowProfileBadges = require('./show_profile_badges');
 
 function handleBio(bio) {
   if (bio) {
@@ -31,27 +33,12 @@ var UserShowProfile = React.createClass({
     }
 
     return (
-      <div className='user-show-profile-container'>
+      <div className='user-show-profile-container group'>
         <div className='user-show-profile-header group'>
-          <div className='user-show-profile-header-portrait-container'>
-            <div className='user-show-profile-header-portrait-content'>
-              <img
-                className=''
-                src={'https://robohash.org/' + this.props.id + '?bgset=any'}
-                alt='user-pic' />
-              <div className='user-show-profile-header-portrait-reputation-container'>
-                <span className='user-show-profile-header-portrait-reputation-number'>
-                  {this.props.reputation + ' '}
-                </span>
-                <span className='user-show-profile-header-portrait-reputation-label'>
-                  REPUTATION
-                </span>
-              </div>
-              <div className='user-show-profile-header-portrait-badges-container'>
-                BADGES PLACEHOLDER
-              </div>
-            </div>
-          </div>
+          <ShowProfileHeaderPortrait
+            badgings={this.props.badgings}
+            reputation={this.props.reputation}
+            id={this.props.id} />
 
           <div className='user-show-profile-header-bio-container'>
             <div className='user-show-profile-header-bio-header'>
@@ -120,15 +107,13 @@ var UserShowProfile = React.createClass({
           </div>
         </div>
 
-        <div className='user-show-profile-main'>
+        <div className='user-show-profile-main-container group'>
+          <ShowProfileBadges badgings={this.props.badgings} />
           <ShowProfileTopTags
             userId={this.props.id}
             tags={this.props.associated_tags_sorted_by_answer_score} />
           <ShowProfileTopPosts
             posts={this.props.posts} />
-          <div className='user-show-profile-badges'>
-            badges placeholder
-          </div>
         </div>
       </div>
     );

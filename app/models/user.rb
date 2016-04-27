@@ -14,6 +14,8 @@
 #
 
 class User < ActiveRecord::Base
+  include Viewable
+
   REPUTATION_SCHEME = {
     receive_question_upvote: 10,
     receive_answer_upvote: 20,
@@ -54,8 +56,6 @@ class User < ActiveRecord::Base
 
   has_many :received_answer_votes, through: :given_answers, source: :votes
   has_many :received_question_votes, through: :questions, source: :votes
-
-  include Viewable
 
   def self.find_by_credentials(email, password)
     user = User.find_by_email(email)
