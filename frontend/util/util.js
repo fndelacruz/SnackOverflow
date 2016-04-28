@@ -4,14 +4,26 @@ module.exports = {
   },
 
   // NOTE: defaults to ascending
-  sortBy: function(items, sortType, isDescending) {
+  sortBy: function(items, sortType, isDescending, sortType2, isDescending2) {
       items.sort(function(a, b) {
         if (a[sortType] < b[sortType]) {
           return isDescending ? 1 : -1;
         } else if (a[sortType] > b[sortType]) {
           return isDescending ? -1 : 1;
         } else if (a[sortType] === b[sortType]) {
-          return 0;
+
+          if (sortType2) {
+            if (a[sortType2] < b[sortType2]) {
+              return isDescending2 ? 1 : -1;
+            } else if (a[sortType2] > b[sortType2]) {
+              return isDescending2 ? -1 : 1;
+            } else if (a[sortType2] === b[sortType2]) {
+              return 0;
+            }
+
+          } else {
+            return 0;
+          }
         }
       });
   },

@@ -8,7 +8,7 @@ var SubSearch = require('../shared/sub_search');
 var TagStore = require('../../stores/tag');
 var TagActions = require('../../actions/tag');
 
-var TAG_SORT_TYPES = ['popular', 'name', 'new'];
+var TAG_SORT_TYPES = ['popular', 'name'];
 
 var _callbackId;
 

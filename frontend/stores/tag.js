@@ -13,6 +13,7 @@ var _searchTerm = '';
 var _indexLoaded;
 
 function resetTags(tags) {
+  Util.sortBy(tags, 'question_count', true, 'id');
   _indexLoaded = true;
   _tags = tags;
 }
@@ -22,7 +23,7 @@ function resetTagSort(sortBy) {
 }
 
 function resetTagSearchTerm(searchTerm) {
-    _searchTerm = searchTerm;
+  _searchTerm = searchTerm;
 }
 
 TagStore.getIndexLoaded = function() {
@@ -32,14 +33,15 @@ TagStore.getIndexLoaded = function() {
 TagStore.all = function() {
   switch (_sortBy) {
     case 'popular':
-      Util.sortBy(_tags, 'question_count', true);
+      Util.sortBy(_tags, 'question_count', true, 'id');
       break;
     case 'name':
       Util.sortBy(_tags, 'name');
       break;
-    case 'new':
-      Util.sortBy(_tags, 'created_at');
-      break;
+    // TODO: Revisit this in future versions
+    // case 'new':
+    //   Util.sortBy(_tags, 'created_at');
+    //   break;
   }
   if (_searchTerm.length) {
     return _tags.filter(function(tag) {

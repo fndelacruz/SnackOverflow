@@ -23,8 +23,6 @@ var QuestionsIndex = React.createClass({
     };
   },
   componentDidMount: function() {
-    console.log('QuestionsIndex mount ON!');
-
     _callbackId = QuestionStore.addListener(this.onChange);
     if (this.props.params.tagName) {
       ApiUtil.fetchQuestionsTag(this.props.params.tagName);
@@ -37,7 +35,6 @@ var QuestionsIndex = React.createClass({
     }
   },
   componentWillUnmount: function() {
-    console.log('QuestionsIndex mount OFF!');
     if (this.props.params.tagName) {
       QuestionActions.receiveQuestionsTag(null);
     }
