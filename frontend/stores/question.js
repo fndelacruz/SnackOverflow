@@ -39,6 +39,9 @@ function changeQuestionSort(questionSortBy) {
 }
 
 function resetQuestion(question) {
+  if (!_questions) {
+    _questions = {};
+  }
   formatDates(question);
   _questions[question.id] = question;
 }

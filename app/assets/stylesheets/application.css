@@ -259,30 +259,6 @@ button:hover {
   height: 200px;
 }
 
-/* For sub-search bar (user and tag search) */
-
-.sub-search-container {
-  display: inline-block;
-  margin: 20px 0 15px 0;
-}
-
-.sub-search-container {
-  position: relative;
-}
-
-.sub-search-input-label {
-  padding: 10px 10px 10px 0;
-  float: left;
-}
-
-.sub-search-input {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  padding: 0 8px;
-  width: 150px;
-}
-
 /* React transitions */
 
 .fade-in-left-out-enter {

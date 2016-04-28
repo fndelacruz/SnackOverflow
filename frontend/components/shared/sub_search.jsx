@@ -17,5 +17,6 @@ var SubSearch = React.createClass({
     );
   }
 });
+// <div className='sub-search-loading'>loadingPlaceHolder</div>
 
 module.exports = SubSearch;
