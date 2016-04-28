@@ -25,11 +25,14 @@ var NavBar = React.createClass({
   navigate: function(destination) {
     hashHistory.push(destination);
   },
+  handleCurrentUserClick: function() {
+    hashHistory.push('/users/' + this.state.currentUser.id);
+  },
   render: function() {
-    var currentUser = this.state.currentUser, currentUserSnippet;
-    if (Object.keys(this.state.currentUser).length) {
-      currentUserSnippet =
-        currentUser.display_name + ' ' + currentUser.reputation;
+    var currentUser = this.state.currentUser, currentUserDisplayName, currentUserReputation;
+    if (Object.keys(currentUser).length) {
+      currentUserDisplayName = currentUser.display_name;
+      currentUserReputation = currentUser.reputation;
     }
     var NavHeaderLinks = HEADERS.map(function(name) {
       return (
@@ -49,10 +52,20 @@ var NavBar = React.createClass({
               <li>Notifications</li>
             </ul>
             <ul className='nav-right-container base'>
-              <li>
-                {currentUserSnippet}
+              <li
+                title={currentUser.display_name}
+                className='nav-current-user-container'
+                onClick={this.handleCurrentUserClick}>
+                <div className='current-user-display-name'>
+                  {currentUserDisplayName}
+                </div>
+                <img
+                  className='nav-current-user-icon'
+                  src={'https://robohash.org/' + currentUser.id + '?bgset=any'}/>
+                <div className='current-user-reputation'>
+                  {currentUserReputation}
+                </div>
               </li>
-              <li>help</li>
               <li id='nav-search-container'>
                 <input className='nav-search' type='text' placeholder="? Search"/>
               </li>

@@ -2,10 +2,12 @@
   color: #fff;
   background: #000;
   font-size: 14px;
+  height: 34px;
 }
 
 .base > li {
-  padding: 9px 5px;
+  padding: 0 5px;
+  margin: 9px 0;
 }
 
 .base > li:hover {
@@ -14,7 +16,15 @@
 
 #nav-search-container {
   cursor: default;
-  padding: 5px 0 5px 20px;
+  position: relative;
+  top: -4px;
+  padding-left: 20px;
+  // padding: 5px 0 5px 20px;
+}
+
+#nav-search-container input {
+  width: 220px;
+  padding: 0 5px;
 }
 
 #nav-search-container:hover {
@@ -45,4 +55,31 @@ div.nav-header {
 
 #header-nav-active {
   background: #ea1;
+}
+
+.nav-right-container > .nav-current-user-container {
+  margin: 0;
+  padding: 0 5px;
+  position: relative;
+}
+
+.nav-current-user-icon {
+  position:relative;
+  display: inline-block;
+  top: 1px;
+  margin: 2px 5px 2px 5px;
+  width: 26px;
+  height: 26px;
+}
+
+.current-user-display-name {
+  position: relative;
+  display: inline-block;
+  top: -8px;
+}
+
+.current-user-reputation {
+  position: relative;
+  display: inline-block;
+  top: -7px;
 }
