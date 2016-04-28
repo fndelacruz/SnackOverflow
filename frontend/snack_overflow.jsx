@@ -25,7 +25,7 @@ var App = (
       <Route path='ask' component={QuestionsNew} />
       <Route path='users' component={UsersIndex} />
       <Route path='tags' component={TagsIndex} />
-      <Route path='users/:userId' component={UserShow} />
+      <Route path='users/:userId(/:tab)' component={UserShow} />
       <Route path='badges' component={BadgesIndex} />
     </Route>
   </Router>

@@ -18,3 +18,27 @@
   height: 50px;
   line-height: 50px;
 }
+
+.user-show-common-header {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+.user-show-common-header-label {
+  font-weight: 700;
+}
+
+.user-show-common-header-label:after {
+  content: ' ';
+}
+
+.user-show-common-header-count {
+  color: #777;
+}
+
+.user-show-common-header-count:before {
+  content: '('
+}
+
+.user-show-common-header-count:after {
+  content: ')'
+}

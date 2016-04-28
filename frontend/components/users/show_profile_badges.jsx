@@ -68,12 +68,12 @@ var ShowProfileBadges = React.createClass({
       <div
         className='user-show-profile-badges'
         id='user-show-profile-left-container'>
-        <div className='user-show-profile-main-header'>
-          <span className='user-show-profile-main-header-label'>
-            {'Badges '}
+        <div className='user-show-common-header'>
+          <span className='user-show-common-header-label'>
+            Badges
           </span>
-          <span className='user-show-profile-main-header-count'>
-            {'(' + this.props.badgings.length + ')'}
+          <span className='user-show-common-header-count'>
+            {this.props.badgings.length}
           </span>
         </div>
         <div className='user-show-profile-badges-element-container-container'>

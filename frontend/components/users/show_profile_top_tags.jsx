@@ -72,12 +72,10 @@ var ShowProfleTopTags = React.createClass({
   render: function() {
     return (
       <div className='user-show-profile-top-tags'>
-        <div className='user-show-profile-main-header'>
-          <span className='user-show-profile-main-header-label'>
-            {'Top Tags' + ' '}
-          </span>
-          <span className='user-show-profile-main-header-count'>
-            {'(' + this.props.tags.length + ')'}
+        <div className='user-show-common-header'>
+          <span className='user-show-common-header-label'>Top Tags</span>
+          <span className='user-show-common-header-count'>
+            {this.props.tags.length}
           </span>
         </div>
 

@@ -89,12 +89,12 @@ var ShowProfileTopPosts = React.createClass({
   render: function() {
     return (
       <div className='user-show-profile-top-posts'>
-        <div className='user-show-profile-main-header'>
-          <span className='user-show-profile-main-header-label'>
-            {'Top ' + this.handleHeaderLabel() + ' '}
+        <div className='user-show-common-header'>
+          <span className='user-show-common-header-label'>
+            {'Top ' + this.handleHeaderLabel()}
           </span>
-          <span className='user-show-profile-main-header-count'>
-            {'(' + this.handleHeaderCount() + ')'}
+          <span className='user-show-common-header-count'>
+            {this.handleHeaderCount()}
           </span>
           <MiniNav
             links={SHOW_PROFILE_TOP_POSTS_SORT_TYPES}
