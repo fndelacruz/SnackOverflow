@@ -7,9 +7,9 @@ var ApiUtil = require('../util/api_util');
 
 /* Questions */
 
-var _questions = {};
+var _questions;
 var _questionSortBy = 'newest';
-var _tag = null;
+var _tag;
 var _indexLoaded = false;
 
 function formatDates(question) {
@@ -48,10 +48,15 @@ function setQuestionsTag(tag) {
 }
 
 QuestionStore.getQuestionsTag = function() {
-  return $.extend({}, _tag);
+  if (_tag) {
+    return $.extend({}, _tag);
+  }
 };
 
 QuestionStore.allQuestions = function() {
+  if (!_questions) {
+    return;
+  }
   var questions = Object.keys(_questions).map(function(id) {
     return _questions[id];
   });

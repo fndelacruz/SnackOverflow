@@ -17,16 +17,21 @@ var QuestionsIndex = React.createClass({
     return {
       questions: QuestionStore.allQuestions(),
       sortBy: QuestionStore.getQuestionSortBy(),
-      tag: QuestionStore.getQuestionsTag()
+      tag: QuestionStore.getQuestionsTag(),
+      loaded: false
     };
   },
   componentDidMount: function() {
     _callbackId = QuestionStore.addListener(this.onChange);
-    ApiUtil.fetchQuestionsTag(this.props.params.tagName);
+    if (this.props.params.tagName) {
+      ApiUtil.fetchQuestionsTag(this.props.params.tagName);
+    }
     ApiUtil.fetchQuestions();
   },
   componentWillReceiveProps: function(newProps) {
-    ApiUtil.fetchQuestionsTag(newProps.params.tagName);
+    if (this.props.params.tagName !== newProps.params.tagName) {
+      ApiUtil.fetchQuestionsTag(newProps.params.tagName);
+    }
   },
   componentWillUnmount: function() {
     _callbackId.remove();
@@ -35,7 +40,8 @@ var QuestionsIndex = React.createClass({
     this.setState({
       questions: QuestionStore.allQuestions(),
       sortBy: QuestionStore.getQuestionSortBy(),
-      tag: QuestionStore.getQuestionsTag()
+      tag: QuestionStore.getQuestionsTag(),
+      loaded: true
     });
   },
   handleSortChange: function(sortBy) {
@@ -46,64 +52,28 @@ var QuestionsIndex = React.createClass({
   resetTag: function() {
     this.setState({ tag: {} });
   },
-  render: function() {
+  renderQuestionIndexItems: function() {
     var questions = this.state.questions;
-    // if (!questions.length) {
-    //   return (<div />);
-    // }
-    var QuestionIndexItems = questions.map(function(question) {
+    if (questions) {
+      return questions.map(function(question) {
+        return (
+          <QuestionIndexItem
+            tagPrePushCallback={this.resetTag}
+            currentPathTagName={this.props.params.tagName}
+            {...question}
+            key={'question-' + question.id} />
+        );
+      }.bind(this));
+    } else {
+      return (<div />);
+    }
+  },
+  renderSidebar: function(sidebarLabel, sidebarTag, tagDescription) {
+    if (this.state.loaded) {
       return (
-        <QuestionIndexItem
-          tagPrePushCallback={this.resetTag}
-          currentPathTagName={this.props.params.tagName}
-          {...question}
-          key={'question-' + question.id} />
-      );
-    }.bind(this));
-
-    var sortNavHeader = 'Questions', sidebarTag;
-    var sidebarLabel = questions.length === 1 ? 'question' : 'questions';
-
-    if (this.props.params.tagName) {
-      sortNavHeader = 'Tagged ' + sortNavHeader;
-      sidebarLabel = 'tagged ' + sidebarLabel;
-      sidebarTag = (
-        <TagStub
-          isSidebar={true}
-          tagPrePushCallback={this.resetTag}
-          currentPathTagName={this.props.params.tagName}
-          tagName={this.props.params.tagName} />
-      );
-    }
-
-    var tagDescription;
-    if (Object.keys(this.state.tag).length) {
-      tagDescription = (
-        <div className='question-index-tag-header'>
-          {this.state.tag.description}
-        </div>
-      );
-    }
-
-    return (
-      <div>
-        <div className='content-double-main'>
-          <SortNav
-            tabShift='right'
-            links={QUESTION_SORT_TYPES}
-            active={this.state.sortBy}
-            header={sortNavHeader}
-            handleSortChange={this.handleSortChange}/>
-          <ReactCSSTransitionGroup
-            transitionName='fade-in-left-out'
-            transitionEnterTimeout={500}
-            transitionLeaveTimeout={500}>
-            {QuestionIndexItems}
-          </ReactCSSTransitionGroup>
-        </div>
         <div className='content-double-sidebar'>
           <div className='sidebar-quantity'>
-            {questions.length}
+            {this.state.questions ? this.state.questions.length : null}
           </div>
           <div className='sidebar-label'>
             {sidebarLabel}
@@ -118,6 +88,60 @@ var QuestionsIndex = React.createClass({
             {tagDescription}
           </ReactCSSTransitionGroup>
         </div>
+      );
+    } else {
+      return (
+        <div className='content-double-sidebar'>
+          <div className='icon-loading' />
+        </div>
+      );
+    }
+  },
+  render: function() {
+    var questions = this.state.questions;
+    var sortNavHeader = 'Questions', sidebarTag;
+    var sidebarLabel;
+    if (questions) {
+      sidebarLabel = questions.length === 1 ? 'question' : 'questions';
+    }
+
+    if (this.props.params.tagName) {
+      sortNavHeader = 'Tagged ' + sortNavHeader;
+      sidebarLabel = 'tagged ' + sidebarLabel;
+      sidebarTag = (
+        <TagStub
+          isSidebar={true}
+          tagPrePushCallback={this.resetTag}
+          currentPathTagName={this.props.params.tagName}
+          tagName={this.props.params.tagName} />
+      );
+    }
+
+    var tagDescription;
+    if (this.state.tag) {
+      tagDescription = (
+        <div className='question-index-tag-header'>
+          {this.state.tag.description}
+        </div>
+      );
+    }
+    return (
+      <div>
+        <div className='content-double-main'>
+          <SortNav
+            tabShift='right'
+            links={QUESTION_SORT_TYPES}
+            active={this.state.sortBy}
+            header={sortNavHeader}
+            handleSortChange={this.handleSortChange}/>
+          <ReactCSSTransitionGroup
+            transitionName='fade-in-left-out'
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={500}>
+            {this.renderQuestionIndexItems()}
+          </ReactCSSTransitionGroup>
+        </div>
+        {this.renderSidebar(sidebarLabel, sidebarTag, tagDescription)}
       </div>
     );
   }
