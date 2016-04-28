@@ -7,11 +7,15 @@ var TagsIndexItem = React.createClass({
     hashHistory.push(path);
   },
   render: function() {
-    var tag = this.props.tag, footer;
+    var tag = this.props.tag;
     var description = tag.description;
     if (description.length > 130) {
       description = description.slice(0, 120) + '...';
     }
+
+    var footer = tag.weekly_question_count + ' asked this week, ' +
+      tag.monthly_question_count + ' this month.';
+
     return (
       <div className='tags-index-item'>
         <div className='tags-index-item-header group'>

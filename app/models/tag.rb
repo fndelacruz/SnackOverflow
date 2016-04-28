@@ -16,6 +16,22 @@ class Tag < ActiveRecord::Base
   has_many :questions, through: :taggings, source: :question
   after_create :generate_tag_badges
 
+  def self.index_all
+    Tag.includes(:questions).all
+  end
+
+  def question_count
+    questions.length
+  end
+
+  def weekly_question_count
+    questions.select { |question| question.created_at >= 7.days.ago }.length
+  end
+
+  def monthly_question_count
+    questions.select { |question| question.created_at >= 1.month.ago }.length
+  end
+
   private
 
   def generate_tag_badges
