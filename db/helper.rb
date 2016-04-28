@@ -116,7 +116,10 @@ def create_random_vote!(votable)
   begin
     random_vote(votable)
   rescue => e
-   debugger unless e.message == "Validation failed: User already voted on this!"
+    if e.message != "Validation failed: User already voted on this!"
+      puts e.message
+      debugger
+    end
   end
 end
 
@@ -124,7 +127,10 @@ def create_random_question_vote!
   begin
     random_vote(random_question)
   rescue => e
-   debugger unless e.message == "Validation failed: User already voted on this!"
+    if e.message != "Validation failed: User already voted on this!"
+      puts e.message
+      debugger
+    end
   end
 end
 
@@ -132,7 +138,10 @@ def create_random_answer_vote!
   begin
     random_vote(random_answer)
   rescue => e
-    debugger unless e.message == "Validation failed: User already voted on this!"
+    if e.message != "Validation failed: User already voted on this!"
+      puts e.message
+      debugger
+    end
   end
 end
 
@@ -140,7 +149,10 @@ def create_random_comment_vote!
   begin
     random_vote(random_comment)
   rescue => e
-    debugger unless e.message == "Validation failed: User already voted on this!"
+    if e.message != "Validation failed: User already voted on this!"
+      puts e.message
+      debugger
+    end
   end
 end
 
