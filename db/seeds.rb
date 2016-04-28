@@ -11,7 +11,10 @@ ActiveRecord::Base.transaction do
           description: FFaker::DizzleIpsum.sentences(3 + rand(2)).join(' ')
         )
     rescue => e
-      debugger unless e.message == 'Validation failed: Name has already been taken'
+      if e.message != 'Validation failed: Name has already been taken'
+        puts e.message
+        debugger
+      end
     end
   end
 
