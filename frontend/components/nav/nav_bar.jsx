@@ -28,9 +28,32 @@ var NavBar = React.createClass({
   handleCurrentUserClick: function() {
     hashHistory.push('/users/' + this.state.currentUser.id);
   },
+  renderCurrentUser: function() {
+    var currentUser = this.state.currentUser;
+    if (this.state.currentUser) {
+      var currentUserDisplayName = currentUser.display_name;
+      var currentUserReputation = currentUser.reputation;
+      return (
+        <li
+          title={currentUser.display_name}
+          className='nav-current-user-container'
+          onClick={this.handleCurrentUserClick}>
+          <div className='current-user-display-name'>
+            {currentUserDisplayName}
+          </div>
+          <img
+            className='nav-current-user-icon'
+            src={'https://robohash.org/' + currentUser.id + '?bgset=any'}/>
+          <div className='current-user-reputation'>
+            {currentUserReputation}
+          </div>
+        </li>
+      );
+    }
+  },
   render: function() {
     var currentUser = this.state.currentUser, currentUserDisplayName, currentUserReputation;
-    if (Object.keys(currentUser).length) {
+    if (currentUser) {
       currentUserDisplayName = currentUser.display_name;
       currentUserReputation = currentUser.reputation;
     }
@@ -52,20 +75,7 @@ var NavBar = React.createClass({
               <li>Notifications</li>
             </ul>
             <ul className='nav-right-container base'>
-              <li
-                title={currentUser.display_name}
-                className='nav-current-user-container'
-                onClick={this.handleCurrentUserClick}>
-                <div className='current-user-display-name'>
-                  {currentUserDisplayName}
-                </div>
-                <img
-                  className='nav-current-user-icon'
-                  src={'https://robohash.org/' + currentUser.id + '?bgset=any'}/>
-                <div className='current-user-reputation'>
-                  {currentUserReputation}
-                </div>
-              </li>
+              {this.renderCurrentUser()}
               <li id='nav-search-container'>
                 <input className='nav-search' type='text' placeholder="? Search"/>
               </li>

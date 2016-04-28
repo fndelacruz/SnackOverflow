@@ -5,14 +5,16 @@ var CurrentUserStore = new Store(AppDispatcher);
 /*
  * TODO: add currentUser inbox, notifications
  */
-var _currentUser = {};
+var _currentUser;
 
 function resetCurrentUser(currentUser) {
   _currentUser = currentUser;
 }
 
 CurrentUserStore.fetch = function() {
-  return $.extend({}, _currentUser);
+  if (_currentUser) {
+    return $.extend({}, _currentUser);
+  }
 };
 
 CurrentUserStore.__onDispatch = function(payload) {
