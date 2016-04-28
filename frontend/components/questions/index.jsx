@@ -18,10 +18,13 @@ var QuestionsIndex = React.createClass({
       questions: QuestionStore.allQuestions(),
       sortBy: QuestionStore.getQuestionSortBy(),
       tag: QuestionStore.getQuestionsTag(),
-      loaded: false
+      indexLoaded: QuestionStore.getIndexLoaded(),
+      tagLoaded: false
     };
   },
   componentDidMount: function() {
+    console.log('QuestionsIndex mount ON!');
+
     _callbackId = QuestionStore.addListener(this.onChange);
     if (this.props.params.tagName) {
       ApiUtil.fetchQuestionsTag(this.props.params.tagName);
@@ -34,6 +37,10 @@ var QuestionsIndex = React.createClass({
     }
   },
   componentWillUnmount: function() {
+    console.log('QuestionsIndex mount OFF!');
+    if (this.props.params.tagName) {
+      QuestionActions.receiveQuestionsTag(null);
+    }
     _callbackId.remove();
   },
   onChange: function() {
@@ -41,7 +48,8 @@ var QuestionsIndex = React.createClass({
       questions: QuestionStore.allQuestions(),
       sortBy: QuestionStore.getQuestionSortBy(),
       tag: QuestionStore.getQuestionsTag(),
-      loaded: true
+      indexLoaded: QuestionStore.getIndexLoaded(),
+      tagLoaded: true
     });
   },
   handleSortChange: function(sortBy) {
@@ -54,7 +62,8 @@ var QuestionsIndex = React.createClass({
   },
   renderQuestionIndexItems: function() {
     var questions = this.state.questions;
-    if (questions) {
+    if ((!this.props.params.tagName && questions) ||
+        (this.props.params.tagName && questions && this.state.tagLoaded)) {
       return questions.map(function(question) {
         return (
           <QuestionIndexItem
@@ -69,11 +78,13 @@ var QuestionsIndex = React.createClass({
     }
   },
   renderSidebar: function(sidebarLabel, sidebarTag, tagDescription) {
-    if (this.state.loaded) {
+    var questions = this.state.questions;
+    if ((!this.props.params.tagName && this.state.indexLoaded) ||
+        (this.props.params.tagName && questions && this.state.tagLoaded)) {
       return (
         <div className='content-double-sidebar'>
           <div className='sidebar-quantity'>
-            {this.state.questions ? this.state.questions.length : null}
+            {questions ? questions.length : null}
           </div>
           <div className='sidebar-label'>
             {sidebarLabel}
