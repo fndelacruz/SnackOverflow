@@ -7,18 +7,17 @@
 }
 
 .sub-search-input-label {
-  padding: 10px 10px 10px 0;
+  margin: 10px 10px 10px 0;
   float: left;
 }
 
 .sub-search-input {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  padding: 0 8px;
+  float: left;
+  padding: 8px 8px;
   width: 150px;
 }
 
 .sub-search-loading {
-
+  float: left;
+  padding-left: 20px;
 }

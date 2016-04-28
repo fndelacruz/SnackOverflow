@@ -17,7 +17,8 @@ var TagsIndex = React.createClass({
     return {
       tags: TagStore.all(),
       sortBy: TagStore.getSortBy(),
-      search: ''
+      search: '',
+      indexLoaded: TagStore.getIndexLoaded()
     };
   },
   componentDidMount: function() {
@@ -33,7 +34,8 @@ var TagsIndex = React.createClass({
   onChange: function() {
     this.setState({
       tags: TagStore.all(),
-      sortBy: TagStore.getSortBy()
+      sortBy: TagStore.getSortBy(),
+      indexLoaded: TagStore.getIndexLoaded()
     });
   },
   handleSearchChange: function(e) {
@@ -59,6 +61,7 @@ var TagsIndex = React.createClass({
           header='Tags'
           handleSortChange={this.handleSortChange}/>
         <SubSearch
+          indexLoaded={this.state.indexLoaded}
           search={this.state.search}
           handleSearchChange={this.handleSearchChange}/>
         <div className='tags-index-item-container'>

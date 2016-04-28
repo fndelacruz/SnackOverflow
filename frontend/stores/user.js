@@ -10,9 +10,11 @@ var _sortBy = 'reputation';
 var _searchTerm = '';
 var _postsSortBy = 'Votes';
 var _postsSelect = 'All';
+var _indexLoaded;
 
 function resetUsers(users) {
   _users = {};
+  _indexLoaded = true;
   users.forEach(function(user) {
     Util.formatDateHelper(user);
     _users[user.id] = user;
@@ -42,14 +44,12 @@ function resetPostsSelect(select) {
 }
 
 function resetSearchTerm(searchTerm) {
-  if (searchTerm.length >= 3) {
-    _searchTerm = searchTerm;
-    this.__emitChange();
-  } else if (searchTerm.length < 3 && _searchTerm !== '') {
-    _searchTerm = '';
-    this.__emitChange();
-  }
+  _searchTerm = searchTerm.trim().toLowerCase();
 }
+
+UserStore.getIndexLoaded = function() {
+  return _indexLoaded;
+};
 
 UserStore.getPostsSelect = function() {
   return _postsSelect;
@@ -126,28 +126,24 @@ UserStore.__onDispatch = function(payload) {
   switch (payload.actionType) {
     case UserConstants.RECEIVE_USERS:
       resetUsers(payload.action);
-      this.__emitChange();
       break;
     case UserConstants.CHANGE_USER_SORT:
       resetSortBy(payload.action);
-      this.__emitChange();
       break;
     case UserConstants.CHANGE_USER_SEARCH_TERM:
-      resetSearchTerm.call(this, payload.action.toLowerCase());
+      resetSearchTerm(payload.action);
       break;
     case UserConstants.RECEIVE_USER:
       resetUser(payload.action);
-      this.__emitChange();
       break;
     case UserConstants.CHANGE_USER_POSTS_SORT:
       resetPostsSortBy(payload.action);
-      this.__emitChange();
       break;
     case UserConstants.CHANGE_USER_POSTS_SELECT:
       resetPostsSelect(payload.action);
-      this.__emitChange();
       break;
   }
+  this.__emitChange();
 };
 
 module.exports = UserStore;

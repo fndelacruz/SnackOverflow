@@ -1,6 +1,16 @@
 var React = require('react');
 
 var SubSearch = React.createClass({
+  renderLoading: function() {
+    // debugger
+    if (!this.props.indexLoaded) {
+      return (
+        <div className='sub-search-loading'>
+          <div className='icon-loading' />
+        </div>
+      );
+    }
+  },
   render: function() {
     return (
       <div className='sub-search-container group'>
@@ -13,6 +23,7 @@ var SubSearch = React.createClass({
           value={this.props.search}
           onChange={this.props.handleSearchChange}
           className='sub-search-input' />
+        {this.renderLoading()}
       </div>
     );
   }

@@ -15,7 +15,8 @@ var UsersIndex = React.createClass({
     return {
       users: UserStore.all(),
       sortBy: UserStore.getSortBy(),
-      search: ''
+      search: '',
+      indexLoaded: UserStore.getIndexLoaded()
     };
   },
   componentDidMount: function() {
@@ -31,7 +32,8 @@ var UsersIndex = React.createClass({
   onChange: function() {
     this.setState({
       users: UserStore.all(),
-      sortBy: UserStore.getSortBy()
+      sortBy: UserStore.getSortBy(),
+      indexLoaded: UserStore.getIndexLoaded()
     });
   },
   handleSearchChange: function(e) {
@@ -58,6 +60,7 @@ var UsersIndex = React.createClass({
           handleSortChange={this.handleSortChange}/>
         <SubSearch
           search={this.state.search}
+          indexLoaded={this.state.indexLoaded}
           handleSearchChange={this.handleSearchChange}/>
         <div className='users-index-item-container'>
           {users}

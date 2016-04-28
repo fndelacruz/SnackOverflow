@@ -10,8 +10,10 @@ var TagStore = new Store(AppDispatcher);
 var _tags = [];
 var _sortBy = 'popular';
 var _searchTerm = '';
+var _indexLoaded;
 
 function resetTags(tags) {
+  _indexLoaded = true;
   _tags = tags;
 }
 
@@ -22,6 +24,10 @@ function resetTagSort(sortBy) {
 function resetTagSearchTerm(searchTerm) {
     _searchTerm = searchTerm;
 }
+
+TagStore.getIndexLoaded = function() {
+  return _indexLoaded;
+};
 
 TagStore.all = function() {
   switch (_sortBy) {
