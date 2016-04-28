@@ -1,6 +1,6 @@
 require_relative 'helper'
 
-ActiveRecord::Base.transaction do
+# ActiveRecord::Base.transaction do
   create_nontag_badges!
 
   # random tag creation
@@ -64,6 +64,6 @@ ActiveRecord::Base.transaction do
   # Vote.create!(user: bob, votable: ann_q1, value: 1)
 
   # generate_fixed_content!
-  # generate_random_content!
+  generate_random_content!
 
-end
+# end
