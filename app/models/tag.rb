@@ -24,21 +24,28 @@ class Tag < ActiveRecord::Base
         name: "#{name}",
         rank: 'bronze',
         category: 'Tag',
-        subcategory: id,
-        description: "Awarded for every 100 reputation earned from answers in the #{name} tag.",
+        subcategory: "#{name}",
+        description: "Awarded for every 100 reputation earned from answers in the #{snake_case_to_camel_space(name)} tag.",
       }, {
         name: "#{name}",
         rank: 'silver',
         category: 'Tag',
-        subcategory: id,
-        description: "Awarded for every 500 reputation earned from answers in the #{name} tag.",
+        subcategory: "#{name}",
+        description: "Awarded for every 500 reputation earned from answers in the #{snake_case_to_camel_space(name)} tag.",
       }, {
         name: "#{name}",
         rank: 'gold',
         category: 'Tag',
-        subcategory: id,
-        description: "Awarded for every 1000 reputation earned from answers in the #{name} tag.",
+        subcategory: "#{name}",
+        description: "Awarded for every 1000 reputation earned from answers in the #{snake_case_to_camel_space(name)} tag.",
       }
     ])
+  end
+
+  private
+
+  def snake_case_to_camel_space(string)
+    words = string.split('_')
+    words.map { |word| word.capitalize }.join(' ')
   end
 end

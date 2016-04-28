@@ -7,7 +7,7 @@ ActiveRecord::Base.transaction do
   50.times do
     begin
       Tag.create!(
-          name: random_word,
+          name: random_word.downcase,
           description: FFaker::DizzleIpsum.sentences(3 + rand(2)).join(' ')
         )
     rescue => e
