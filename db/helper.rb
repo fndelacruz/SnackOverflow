@@ -116,7 +116,10 @@ def create_random_vote!(votable)
   begin
     random_vote(votable)
   rescue => e
-   debugger unless e.message == "Validation failed: User already voted on this!"
+    if e.message != "Validation failed: User already voted on this!"
+      puts e.message
+      debugger
+    end
   end
 end
 
@@ -124,7 +127,10 @@ def create_random_question_vote!
   begin
     random_vote(random_question)
   rescue => e
-   debugger unless e.message == "Validation failed: User already voted on this!"
+    if e.message != "Validation failed: User already voted on this!"
+      puts e.message
+      debugger
+    end
   end
 end
 
@@ -132,7 +138,10 @@ def create_random_answer_vote!
   begin
     random_vote(random_answer)
   rescue => e
-    debugger unless e.message == "Validation failed: User already voted on this!"
+    if e.message != "Validation failed: User already voted on this!"
+      puts e.message
+      debugger
+    end
   end
 end
 
@@ -140,7 +149,10 @@ def create_random_comment_vote!
   begin
     random_vote(random_comment)
   rescue => e
-    debugger unless e.message == "Validation failed: User already voted on this!"
+    if e.message != "Validation failed: User already voted on this!"
+      puts e.message
+      debugger
+    end
   end
 end
 
@@ -362,10 +374,10 @@ def generate_random_content!
   50.times { create_random_question_comment! }
   400.times { create_random_answer_comment! }
 
-  2000.times { create_random_vote!(random_question) }
-  6400.times { create_random_vote!(random_answer) }
-  1600.times { create_random_vote!(random_comment) }
+  200.times { create_random_vote!(random_question) }
+  640.times { create_random_vote!(random_answer) }
+  160.times { create_random_vote!(random_comment) }
 
-  6000.times { create_random_view!(random_question) }
+  1000.times { create_random_view!(random_question) }
   1000.times { create_random_view!(random_user) }
 end

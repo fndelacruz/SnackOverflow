@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "./node_modules/.bin/webpack"
   },
   "repository": {
     "type": "git",
@@ -31,5 +32,9 @@
     "react-router": "^2.0.1",
     "webpack": "^1.12.4"
   },
-  "homepage": "https://github.com/fndelacruz/SnackOverflow#readme"
+  "homepage": "https://github.com/fndelacruz/SnackOverflow#readme",
+  "engines": {
+    "node": "5.5.0",
+    "npm": "3.5.3"
+  }
 }

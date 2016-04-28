@@ -1,6 +1,6 @@
 require_relative 'helper'
 
-ActiveRecord::Base.transaction do
+# ActiveRecord::Base.transaction do
   create_nontag_badges!
 
   # random tag creation
@@ -11,7 +11,10 @@ ActiveRecord::Base.transaction do
           description: FFaker::DizzleIpsum.sentences(3 + rand(2)).join(' ')
         )
     rescue => e
-      debugger unless e.message == 'Validation failed: Name has already been taken'
+      if e.message != 'Validation failed: Name has already been taken'
+        puts e.message
+        debugger
+      end
     end
   end
 
@@ -63,4 +66,4 @@ ActiveRecord::Base.transaction do
   # generate_fixed_content!
   generate_random_content!
 
-end
+# end
