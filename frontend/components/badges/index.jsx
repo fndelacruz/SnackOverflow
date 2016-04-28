@@ -32,7 +32,28 @@ var BadgesIndex = React.createClass({
     BadgeActions.resetBadgesSelect(select);
   },
   renderBadges: function(category, subcategory) {
-    return (this.state.badges[category][subcategory].map(function(badge) {
+    var badges = this.state.badges[category][subcategory];
+    switch (this.state.select) {
+      case 'all':
+        // do nothing
+        break;
+      case 'gold':
+        badges = badges.filter(function(badge) {
+          return badge.rank === 'gold';
+        });
+        break;
+      case 'silver':
+        badges = badges.filter(function(badge) {
+          return badge.rank === 'silver';
+        });
+        break;
+      case 'bronze':
+        badges = badges.filter(function(badge) {
+          return badge.rank === 'bronze';
+        });
+        break;
+    }
+    return (badges.map(function(badge) {
       return (
         <div
           key={'badge-' + badge.id}
@@ -46,7 +67,7 @@ var BadgesIndex = React.createClass({
           </div>
         </div>
       );
-    }));
+    }.bind()));
   },
   renderSubcategories: function(category) {
     var subcategories = Object.keys(this.state.badges[category]).sort();
