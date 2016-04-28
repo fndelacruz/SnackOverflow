@@ -103,9 +103,10 @@ QuestionStore.allQuestions = function() {
 };
 
 QuestionStore.getQuestion = function(questionId) {
-  if (!Object.keys(_questions).length) {
-    return {};
+  if (!_questions) {
+    return null;
   }
+
   var answers = _questions[questionId].answers;
   switch (_sortAnswersBy) {
     case 'active':

@@ -9,7 +9,7 @@ var hashHistory = require('react-router').hashHistory;
 var _callbackId;
 var QuestionShow = React.createClass({
   getInitialState: function() {
-    return { question: {} };
+    return { question: QuestionStore.getQuestion(this.props.params.questionId) };
   },
   componentDidMount: function() {
     _callbackId = QuestionStore.addListener(this.onChange);
@@ -65,7 +65,19 @@ var QuestionShow = React.createClass({
   },
   handleToolClick: function(toolType, itemType, id) {
     if (toolType === 'edit') {
-      alert('TODO handleToolClick edit');
+      switch (itemType) {
+        case 'Question':
+          var path = '/questions/' + id + '/edit';
+          console.log('pushing to:', path);
+          hashHistory.push(path);
+          break;
+        case 'Answer':
+
+          break;
+        default:
+          alert('TODO handleToolClick edit');
+          break;
+      }
     } else if (toolType === 'delete') {
       if (itemType === 'Question') {
         ApiUtil.destroyQuestion(id, function() {
@@ -78,7 +90,8 @@ var QuestionShow = React.createClass({
   },
   render: function() {
     var question = this.state.question, tags;
-    if (Object.keys(question).length === 0) {
+
+    if (!question) {
       return (<div />);
     }
 
