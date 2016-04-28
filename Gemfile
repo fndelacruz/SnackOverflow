@@ -49,3 +49,7 @@ group :development do
   gem 'annotate'
   gem 'quiet_assets'
 end
+
+group :production do
+  gem 'rails_12factor'
+end
