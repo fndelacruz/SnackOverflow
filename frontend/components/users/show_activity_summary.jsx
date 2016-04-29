@@ -6,31 +6,37 @@ var ShowActivitySummary = React.createClass({
     return (
       <div className='show-activity-summary-container group'>
         <ShowActivitySummaryItem
-          items={this.props.given_answers}
           title={'Answers'}
-          subTabs={['votes', 'activity', 'newest']}
-          count={23} />
+          items={this.props.given_answers}
+          subTabs={['votes', 'newest']}
+          count={23}
+          userId={this.props.id} />
         <ShowActivitySummaryItem
           title={'Reputation'}
-          count={53} />
+          count={53}
+          userId={this.props.id} />
         <ShowActivitySummaryItem
-          items={this.props.questions}
           title={'Questions'}
-          subTabs={['votes', 'activity', 'newest']}
-          count={513} />
+          items={this.props.questions}
+          subTabs={['votes', 'newest']}
+          count={513}
+          userId={this.props.id} />
         <ShowActivitySummaryItem
+        title={'Tags'}
           items={this.props.associated_tags_sorted_by_answer_score}
-          title={'Tags'}
-          count={12} />
+          count={12}
+          userId={this.props.id} />
         <ShowActivitySummaryItem
+        title={'Badges'}
           items={this.props.badgings}
-          title={'Badges'}
           subTabs={['recent', 'class', 'name']}
-          count={6} />
+          count={6}
+          userId={this.props.id} />
         <ShowActivitySummaryItem
-          item={this.props.votes}
           title={'Votes Cast'}
-          count={354} />
+          items={this.props.votes}
+          count={354}
+          userId={this.props.id} />
       </div>
     );
   }

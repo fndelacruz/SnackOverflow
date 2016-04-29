@@ -37,5 +37,11 @@ module.exports = {
       action: select,
       actionType: UserConstants.CHANGE_USER_POSTS_SELECT
     });
+  },
+  resetActivitySortBy: function(sortBy) {
+    AppDispatcher.dispatch({
+      action: sortBy,
+      actionType: UserConstants.CHANGE_ACTIVITY_SORT_BY
+    });
   }
 };

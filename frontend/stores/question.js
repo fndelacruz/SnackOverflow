@@ -103,7 +103,7 @@ QuestionStore.allQuestions = function() {
 };
 
 QuestionStore.getQuestion = function(questionId) {
-  if (!_questions) {
+  if (!_questions || !_questions[questionId]) {
     return null;
   }
 

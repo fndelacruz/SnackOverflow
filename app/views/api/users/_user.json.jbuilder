@@ -8,7 +8,7 @@ elsif options[:show]
     user,
     :id, :display_name, :email, :created_at, :updated_at, :votes, :bio,
       :reputation, :location, :associated_tags_sorted_by_answer_score,
-      :view_count
+      :view_count, :vote_count
   )
 
   json.questions do

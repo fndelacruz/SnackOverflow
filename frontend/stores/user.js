@@ -51,12 +51,29 @@ function resetSearchTerm(searchTerm) {
   _searchTerm = searchTerm.trim().toLowerCase();
 }
 
-UserStore.getActivitySortBy = function() {
-  return $.extend({}, {
-    activityAnswerSortBy: _activityAnswerSortBy,
-    activityQuestionSortBy: _activityQuestionSortBy,
-    activityBadgeSortBy: _activityBadgeSortBy,
-  });
+UserStore.getActivitySortBy = function(type) {
+  switch (type) {
+    case 'Answers':
+      return _activityAnswerSortBy;
+    case 'Questions':
+      return _activityQuestionSortBy;
+    case 'Badges':
+      return _activityBadgeSortBy;
+  }
+};
+
+resetActivitySortBy = function(sortBy) {
+  switch (sortBy.type) {
+    case 'Answers':
+      _activityAnswerSortBy = sortBy.tab;
+      break;
+    case 'Questions':
+      _activityQuestionSortBy = sortBy.tab;
+      break;
+    case 'Badges':
+      _activityBadgeSortBy = sortBy.tab;
+      break;
+  }
 };
 
 UserStore.getIndexLoaded = function() {
@@ -153,6 +170,9 @@ UserStore.__onDispatch = function(payload) {
       break;
     case UserConstants.CHANGE_USER_POSTS_SELECT:
       resetPostsSelect(payload.action);
+      break;
+    case UserConstants.CHANGE_ACTIVITY_SORT_BY:
+      resetActivitySortBy(payload.action);
       break;
   }
   this.__emitChange();

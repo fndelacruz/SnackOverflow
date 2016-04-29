@@ -11,6 +11,7 @@ var ShowActivitySummaryItemLineItem = React.createClass({
           className='show-activity-summary-item-line-item-title link'>
           {this.props.title}
         </div>
+        {this.props.createdAt.toLocaleString()}
       </div>
     );
   }

@@ -24,8 +24,7 @@ var UserShow = React.createClass({
     return {
       user: UserStore.getUser(this.props.params.userId),
       tab: tab,
-      active: activeTab,
-      activitySortBy: UserStore.getActivitySortBy
+      active: activeTab
     };
   },
   componentDidMount: function() {
