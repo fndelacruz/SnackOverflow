@@ -1,0 +1,19 @@
+.show-activity-summary-item-line-item {
+  outline: 1px dashed blue;
+  height: 25px;
+  margin: 12px 0;
+  line-height: 25px;
+}
+
+.show-activity-summary-item-line-item-counter {
+  float: left;
+  border: 1px solid #777;
+  border-radius: 3px;
+  width: 35px;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.show-activity-summary-item-line-item-title {
+  float: left;
+}

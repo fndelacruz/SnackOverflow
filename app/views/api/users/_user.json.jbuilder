@@ -6,7 +6,7 @@ if options[:stub]
 elsif options[:show]
   json.extract!(
     user,
-    :id, :display_name, :email, :created_at, :updated_at, :vote_count, :bio,
+    :id, :display_name, :email, :created_at, :updated_at, :votes, :bio,
       :reputation, :location, :associated_tags_sorted_by_answer_score,
       :view_count
   )

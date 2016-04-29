@@ -12,6 +12,10 @@ var _postsSortBy = 'Votes';
 var _postsSelect = 'All';
 var _indexLoaded;
 
+var _activityAnswerSortBy = 'votes';
+var _activityQuestionSortBy = 'votes';
+var _activityBadgeSortBy = 'recent';
+
 function resetUsers(users) {
   _users = {};
   _indexLoaded = true;
@@ -46,6 +50,14 @@ function resetPostsSelect(select) {
 function resetSearchTerm(searchTerm) {
   _searchTerm = searchTerm.trim().toLowerCase();
 }
+
+UserStore.getActivitySortBy = function() {
+  return $.extend({}, {
+    activityAnswerSortBy: _activityAnswerSortBy,
+    activityQuestionSortBy: _activityQuestionSortBy,
+    activityBadgeSortBy: _activityBadgeSortBy,
+  });
+};
 
 UserStore.getIndexLoaded = function() {
   return _indexLoaded;

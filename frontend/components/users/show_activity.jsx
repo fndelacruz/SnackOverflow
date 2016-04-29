@@ -15,7 +15,7 @@ var UserShowActivity = React.createClass({
   renderMain: function() {
     switch (this.props.active) {
       case 'summary':
-        return (<ShowActivitySummary />);
+        return (<ShowActivitySummary {...this.props} />);
       default:
         return (
           <div>todo: {this.props.active}</div>

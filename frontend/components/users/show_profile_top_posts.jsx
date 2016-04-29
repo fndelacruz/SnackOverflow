@@ -96,14 +96,16 @@ var ShowProfileTopPosts = React.createClass({
           <span className='user-show-common-header-count'>
             {this.handleHeaderCount()}
           </span>
-          <MiniNav
-            links={SHOW_PROFILE_TOP_POSTS_SORT_TYPES}
-            handleClick={this.handleSortByClick}
-            active={this.state.sortBy}/>
-          <MiniNav
-            links={SHOW_PROFILE_TOP_POSTS_SELECTORS}
-            handleClick={this.handleSelectClick}
-            active={this.state.select}/>
+          <div className='mini-nav-group-container group'>
+            <MiniNav
+              links={SHOW_PROFILE_TOP_POSTS_SORT_TYPES}
+              handleClick={this.handleSortByClick}
+              active={this.state.sortBy}/>
+            <MiniNav
+              links={SHOW_PROFILE_TOP_POSTS_SELECTORS}
+              handleClick={this.handleSelectClick}
+              active={this.state.select}/>
+          </div>
         </div>
         {this.renderTopPosts()}
         <div className='user-show-profile-main-footer'>

@@ -71,10 +71,10 @@ var UserShowProfile = React.createClass({
 
               <div className='user-show-profile-header-stats-header-group'>
                 <div className='user-show-profile-header-stats-header-group-value'>
-                  {this.props.vote_count}
+                  {this.props.votes.length}
                 </div>
                 <div className='user-show-profile-header-stats-header-group-label'>
-                  {(this.props.vote_count === 1 ? 'vote' : 'votes') + ' cast'}
+                  {(this.props.votes.length === 1 ? 'vote' : 'votes') + ' cast'}
                 </div>
               </div>
             </div>
