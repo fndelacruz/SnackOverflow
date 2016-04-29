@@ -13,6 +13,7 @@ var ShowActivitySummary = React.createClass({
           userId={this.props.id} />
         <ShowActivitySummaryItem
           title={'Reputation'}
+          items={['placeholder', 'until', 'get', 'reputation', 'elements']}
           count={53}
           userId={this.props.id} />
         <ShowActivitySummaryItem
