@@ -17,7 +17,7 @@ var UserShow = React.createClass({
     if (this.props.params.tab) {
       if (USER_SHOW_ACTIVITY_TABS.indexOf(this.props.params.tab) !== -1) {
         tab = 'Activity';
-        activityTab = this.props.params.tab;
+        activeTab = this.props.params.tab;
       }
     }
 
@@ -48,12 +48,14 @@ var UserShow = React.createClass({
   onChange: function() {
     this.setState({ user: UserStore.getUser(this.props.params.userId) });
   },
-  handleSortChange: function(link) {
-    if (this.state.tab !== link) {
-      if (link === 'Profile') {
-        var path = '/users/' + this.state.user.id;
-        hashHistory.push(path);
+  handleProfileActivityTab: function(link) {
+    if (USER_SHOW_SORT_TYPES.indexOf(link) !== -1 && this.state.tab !== link) {
+      var path = '/users/' + this.state.user.id;
+      if (link === 'Activity') {
+        path += '/summary';
       }
+
+      hashHistory.push(path);
       this.setState({ tab: link });
     }
   },
@@ -75,7 +77,7 @@ var UserShow = React.createClass({
           tabShift='left'
           links={USER_SHOW_SORT_TYPES}
           active={this.state.tab}
-          handleSortChange={this.handleSortChange}/>
+          handleSortChange={this.handleProfileActivityTab}/>
 
         {this.handleTab()}
       </div>

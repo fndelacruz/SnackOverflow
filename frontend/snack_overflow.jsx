@@ -20,7 +20,7 @@ var App = (
     <Route path='/' component={NavBar}>
       <Route path='questions' component={QuestionsIndex} />
       <Route path='questions/tagged/:tagName' component={QuestionsIndex} />
-      <Route path='questions/:questionId' component={QuestionShow} />
+      <Route path='questions/:questionId(/answer/:answerId)' component={QuestionShow} />
       <Route path='questions/:questionId/edit' component={QuestionEdit} />
       <Route path='ask' component={QuestionsNew} />
       <Route path='users' component={UsersIndex} />

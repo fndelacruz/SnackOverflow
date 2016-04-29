@@ -66,6 +66,9 @@ var ShowActivitySummaryItem = React.createClass({
     hashHistory.push(path);
   },
   render: function() {
+    if (!this.props.items) {
+      return <div />;
+    }
     var headerLabelClass = 'user-show-common-header-label';
     var footer, onClick;
 

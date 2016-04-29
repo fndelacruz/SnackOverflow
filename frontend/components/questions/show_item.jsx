@@ -66,9 +66,8 @@ var ShowItem = React.createClass({ // used for question show and answers index i
     hashHistory.push(path);
   },
   render: function() {
-    var item = this.props.item, type = this.props.type, tags, id, tools;
+    var item = this.props.item, type = this.props.type, tags;
     if (item.tags && item.tags.length) {
-
       tags = (
         <TagStubIndex
           tagPrePushCallback={this.props.tagPrePushCallback}
@@ -78,10 +77,8 @@ var ShowItem = React.createClass({ // used for question show and answers index i
       );
     }
 
-    if (this.props.type === 'Question') {
-      id = 'question-show-question';
-    }
 
+    var tools;
     if (item.owned) {
       tools = (
         <div className='question-show-item-main-footer-tools'>
@@ -96,15 +93,21 @@ var ShowItem = React.createClass({ // used for question show and answers index i
         </div>
       );
     }
+
     var createdAt = item.created_at.toLocaleString();
+    var rootClassName = 'question-show-item-container group';
+    var id = item.id;
     if (type === 'Question') {
       createdAt = 'asked ' + createdAt;
+      rootClassName += ' question-show-item-question';
+      id = 'question-' + id;
     } else if (type === 'Answer') {
       createdAt = 'answered ' + createdAt;
+      id = 'answer-' + id;
     }
     var updatedAt = 'edited ' + item.updated_at.toLocaleString();
     return (
-      <div className='question-show-item-container group' id={id}>
+      <div className={rootClassName} id={id}>
         <div className='question-show-item-sidebar'>
           <div className='question-show-item-vote-container'>
             <div

@@ -95,6 +95,17 @@ var QuestionShow = React.createClass({
       return (<div />);
     }
 
+    if (this.props.params.answerId) {
+      var answerId = 'answer-' + this.props.params.answerId;
+      var answerEl = document.getElementById(answerId);
+      if (answerEl) {
+        var answerElClassName = answerEl.getAttribute('class');
+        answerEl.setAttribute('class', answerElClassName + ' active-show-item');
+        answerEl.scrollIntoView();
+        answerEl.setAttribute('class', answerElClassName);
+      }
+    }
+
     return (
       <div className='question-show'>
         <div className='question-show-header'>

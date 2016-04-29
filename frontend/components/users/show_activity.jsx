@@ -23,6 +23,7 @@ var UserShowActivity = React.createClass({
     }
   },
   render: function(tab) {
+    // debugger
     return (
       <div>
         <SortNav
