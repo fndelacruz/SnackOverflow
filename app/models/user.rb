@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   }
 
   attr_reader :password
+  attr_accessor :tags
 
   validates :email, :display_name, :password_digest, :session_token, presence: true
   validates :email, :session_token, uniqueness: true
@@ -157,6 +158,32 @@ class User < ActiveRecord::Base
         ) AS sq4 ON sq1.id = users.id
     SQL
     user.first
+  end
+
+  def self.find_with_tags(id)
+    user_tags = User.find_by_sql [<<-SQL, user_id: id]
+      SELECT
+        users.*,
+        tags_q.name,
+        COUNT(tags_q)
+      FROM
+        users
+      LEFT JOIN
+        questions ON users.id = questions.user_id
+      LEFT JOIN
+        taggings AS taggings_q ON questions.id = taggings_q.question_id
+      LEFT JOIN
+        tags AS tags_q ON taggings_q.tag_id = tags_q.id
+      WHERE
+        users.id = :user_id
+      GROUP BY
+        users.id, tags_q.name
+      ORDER BY
+        users.id, COUNT(tags_q) DESC, tags_q.name
+    SQL
+    user_tags[0].tags = {}
+    user_tags.each { |tag| user_tags[0].tags[tag.name] = tag.count if tag.name }
+      .first
   end
 
   def self.find_by_credentials(email, password)
