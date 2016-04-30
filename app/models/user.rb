@@ -57,20 +57,111 @@ class User < ActiveRecord::Base
   has_many :received_answer_votes, through: :given_answers, source: :votes
   has_many :received_question_votes, through: :questions, source: :votes
 
+  def self.find_with_reputation(id)
+    user = User.find_by_sql [<<-SQL, userId: id]
+      SELECT
+        users.*,
+        (
+          COALESCE(sq1.question_vote_reputation, 0) +
+          COALESCE(sq2.answer_vote_reputation, 0) +
+          COALESCE(sq3.comment_vote_reputation, 0) +
+          COALESCE(sq4.given_answer_downvote_reputation)
+        ) AS sql_reputation
+      FROM
+        users
+      JOIN
+        (
+          SELECT
+            users.id,
+            users.display_name,
+            SUM(
+              CASE votes.value
+              WHEN 1 THEN 10
+              WHEN -1 THEN -4
+              END
+            ) AS question_vote_reputation
+          FROM
+            users
+          LEFT JOIN
+            questions ON users.id = questions.user_id
+          LEFT JOIN
+            votes ON (questions.id = votes.votable_id AND votes.votable_type = 'Question')
+          WHERE
+            users.id = :userId
+          GROUP BY
+            users.id
+          ORDER BY
+            users.id
+        ) AS sq1 on sq1.id = users.id
+      JOIN
+        (
+          SELECT
+            users.id,
+            SUM(
+              CASE votes.value
+              WHEN 1 THEN 20
+              WHEN -1 THEN -4
+              END
+            ) AS answer_vote_reputation
+          FROM
+            users
+          LEFT JOIN
+            answers ON users.id = answers.user_id
+          LEFT JOIN
+            votes ON (answers.id = votes.votable_id AND votes.votable_type = 'Answer')
+          WHERE
+            users.id = :userId
+          GROUP BY
+            users.id
+          ORDER BY
+            users.id
+        ) AS sq2 ON sq1.id = users.id
+      JOIN
+        (
+          SELECT
+            users.id,
+            SUM(
+              CASE votes.value
+              WHEN 1 THEN 1
+              WHEN -1 THEN -1
+              END
+            ) AS comment_vote_reputation
+          FROM
+            users
+          LEFT JOIN
+            comments ON users.id = comments.user_id
+          LEFT JOIN
+            votes ON (comments.id = votes.votable_id AND votes.votable_type = 'Comment')
+          WHERE
+            users.id = :userId
+          GROUP BY
+            users.id
+          ORDER BY
+            users.id
+        ) AS sq3 ON sq2.id = users.id
+      JOIN
+        (
+          SELECT
+            users.id, COUNT(votes.*) * -2 AS given_answer_downvote_reputation
+          FROM
+            users
+          JOIN
+            votes ON users.id = votes.user_id
+          WHERE
+            users.id = :userId AND
+            votes.votable_type = 'Answer' AND votes.value = -1
+           GROUP BY
+            users.id
+          ORDER BY
+            users.id
+        ) AS sq4 ON sq1.id = users.id
+    SQL
+    user.first
+  end
+
   def self.find_by_credentials(email, password)
     user = User.find_by_email(email)
     user if user && user.is_password?(password)
-  end
-
-  def self.current_user_find(userId)
-    User.includes(
-      { questions: [:votes, :tags] },
-      { given_answers: :votes },
-      :votes,
-      { comments: :votes },
-      received_answer_votes: { votable: :associated_tags },
-      received_question_votes: { votable: :associated_tags })
-      .find(userId)
   end
 
   # NOTE: for UsersIndex

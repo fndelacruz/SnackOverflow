@@ -1,6 +1,6 @@
 class Api::UsersController < ApplicationController
   def current
-    @user = User.current_user_find(current_user.id)
+    @current_user = User.find_with_reputation(current_user.id)
   end
 
   def index

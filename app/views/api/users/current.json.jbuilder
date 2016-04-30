@@ -1,1 +1,5 @@
-json.partial!('user', user: @user, options: {})
+json.extract!(@current_user,
+  :id, :display_name
+)
+
+json.reputation @current_user.sql_reputation
