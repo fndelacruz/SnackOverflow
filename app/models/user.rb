@@ -161,8 +161,8 @@ class User < ActiveRecord::Base
     user.first
   end
 
-  def self.find_with_tags(user_id)
-    user_tags = User.find_by_sql [<<-SQL, user_id: user_id]
+  def self.find_with_tags(user_id=nil)
+    find_by_sql_string = <<-SQL
       SELECT
         users.*,
         tag_names.tag_name AS tag_name,
@@ -183,32 +183,24 @@ class User < ActiveRecord::Base
       FROM
         users
       LEFT JOIN
-        #{self.question_and_answer_tag_names}
+        #{self.question_and_answer_tag_names(user_id)}
       LEFT JOIN
-        #{self.question_tags_count}
+        #{self.question_tags_count(user_id)}
       LEFT JOIN
-        #{self.question_tags_reputation}
+        #{self.question_tags_reputation(user_id)}
       LEFT JOIN
-        #{self.answer_tags_count}
+        #{self.answer_tags_count(user_id)}
       LEFT JOIN
-        #{self.answer_tags_reputation}
-      WHERE
-        users.id = :user_id
+        #{self.answer_tags_reputation(user_id)}
+      #{user_id ? "WHERE users.id = :user_id" : ""}
       ORDER BY
         id, answer_tag_reputation DESC
     SQL
-    user_tags[0].tags = {}
-    user_tags.each do |tag|
-      next unless tag.tag_name
-      user_tags[0].tags[tag.tag_name] = {
-        question_tag_count: tag.question_tag_count,
-        question_tag_reputation: tag.question_tag_reputation,
-        answer_tag_count: tag.answer_tag_count,
-        answer_tag_reputation: tag.answer_tag_reputation,
-        post_tag_count: tag.post_tag_count,
-        post_tag_reputation: tag.post_tag_reputation
-      }
-    end.first
+    find_by_sql_args = [find_by_sql_string]
+    find_by_sql_args << { user_id: user_id } if user_id
+    user_tags = User.find_by_sql(find_by_sql_args)
+
+    parse_user_tags(user_id, user_tags)
   end
 
   def self.find_with_reputation_and_tags(id)

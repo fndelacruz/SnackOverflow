@@ -1,5 +1,5 @@
 module UserSQLHelper
-  def question_and_answer_tag_names
+  def question_and_answer_tag_names(user_id=nil)
     <<-SQL
       (
         (
@@ -14,8 +14,7 @@ module UserSQLHelper
             taggings ON questions.id = taggings.question_id
           JOIN
             tags ON taggings.tag_id = tags.id
-          WHERE
-            questions.user_id = :user_id
+          #{user_id ? "WHERE questions.user_id = :user_id" : ""}
           GROUP BY
             users.id, tags.name
           ORDER BY
@@ -36,8 +35,7 @@ module UserSQLHelper
             taggings ON questions.id = taggings.question_id
           JOIN
             tags ON taggings.tag_id = tags.id
-          WHERE
-            answers.user_id = :user_id
+          #{user_id ? "WHERE answers.user_id = :user_id" : ""}
           GROUP BY
             users.id, tags.name
           ORDER BY
@@ -47,7 +45,7 @@ module UserSQLHelper
     SQL
   end
 
-  def question_tags_count
+  def question_tags_count(user_id=nil)
     <<-SQL
       (
         SELECT -- question tags count
@@ -62,8 +60,7 @@ module UserSQLHelper
           taggings AS taggings_q ON questions.id = taggings_q.question_id
         JOIN
           tags AS tags_q ON taggings_q.tag_id = tags_q.id
-        WHERE
-          users.id = :user_id
+        #{user_id ? "WHERE users.id = :user_id" : ""}
         GROUP BY
           users.id, tags_q.name
         ORDER BY
@@ -74,7 +71,7 @@ module UserSQLHelper
     SQL
   end
 
-  def question_tags_reputation
+  def question_tags_reputation(user_id=nil)
     <<-SQL
       (
         SELECT -- question tags reputation
@@ -96,8 +93,7 @@ module UserSQLHelper
           tags AS tags_q ON taggings_q.tag_id = tags_q.id
         LEFT JOIN
           votes ON questions.id = votes.votable_id AND votes.votable_type = 'Question'
-        WHERE
-          users.id = :user_id
+        #{user_id ? "WHERE users.id = :user_id" : ""}
         GROUP BY
           users.id, tags_q.name
         ORDER BY
@@ -108,7 +104,7 @@ module UserSQLHelper
     SQL
   end
 
-  def answer_tags_count
+  def answer_tags_count(user_id=nil)
     <<-SQL
       (
         SELECT -- answer tags count
@@ -125,8 +121,7 @@ module UserSQLHelper
           taggings AS taggings_a ON q2.id = taggings_a.question_id
         JOIN
           tags AS tags_a ON taggings_a.tag_id = tags_a.id
-        WHERE
-          answers.user_id = :user_id
+        #{user_id ? "WHERE answers.user_id = :user_id" : ""}
         GROUP BY
           users.id, tags_a.name
         ORDER BY
@@ -137,7 +132,7 @@ module UserSQLHelper
     SQL
   end
 
-  def answer_tags_reputation
+  def answer_tags_reputation(user_id=nil)
     <<-SQL
       (
         SELECT -- answer tags reputation
@@ -161,8 +156,7 @@ module UserSQLHelper
           tags AS tags_a ON taggings_a.tag_id = tags_a.id
         LEFT JOIN
           votes ON answers.id = votes.votable_id AND votes.votable_type = 'Answer'
-        WHERE
-          answers.user_id = :user_id
+        #{user_id ? "WHERE answers.user_id = :user_id" : ""}
         GROUP BY
           users.id, tags_a.name
         ORDER BY
@@ -171,5 +165,27 @@ module UserSQLHelper
         users.id = sq_a_tag_reputation.user_id AND
         tag_names.tag_name = sq_a_tag_reputation.tag_name
     SQL
+  end
+
+  def parse_user_tags(user_id, user_tags)
+    user_tags[0].tags = {}
+    users = [user_tags[0]]
+
+    user_tags.each do |user_with_tag|
+      if users.last.id != user_with_tag.id
+        user_with_tag.tags = {}
+        users << user_with_tag
+      end
+
+      users.last.tags[user_with_tag.tag_name] = {
+        question_tag_count: user_with_tag.question_tag_count,
+        question_tag_reputation: user_with_tag.question_tag_reputation,
+        answer_tag_count: user_with_tag.answer_tag_count,
+        answer_tag_reputation: user_with_tag.answer_tag_reputation,
+        post_tag_count: user_with_tag.post_tag_count,
+        post_tag_reputation: user_with_tag.post_tag_reputation
+      }
+    end
+    user_id ? users.first : users
   end
 end
