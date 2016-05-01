@@ -172,6 +172,7 @@ module UserSQLHelper
     users = [user_tags[0]]
 
     user_tags.each do |user_with_tag|
+      next unless user_with_tag.tag_name
       if users.last.id != user_with_tag.id
         user_with_tag.tags = {}
         users << user_with_tag

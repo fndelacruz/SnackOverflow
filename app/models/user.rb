@@ -119,132 +119,61 @@ class User < ActiveRecord::Base
       ORDER BY
         id, answer_tag_reputation DESC
     SQL
-    parse_user_tags(user_id, user_tags)
+    user_tags.empty? ? nil : parse_user_tags(user_id, user_tags)
   end
 
-  def self.find_with_reputation_and_tags(id)
-    user_tags = User.find_by_sql [<<-SQL, user_id: id]
+  def self.find_with_reputation_and_tags(user_id=nil)
+    user_tags = User.find_by_sql [<<-SQL, user_id: user_id]
       SELECT
         users.*,
         (
-          COALESCE(sq1.question_vote_reputation, 0) +
-          COALESCE(sq2.answer_vote_reputation, 0) +
-          COALESCE(sq3.comment_vote_reputation, 0) +
-          COALESCE(sq4.given_answer_downvote_reputation)
+          COALESCE(user_received_question_vote_reputations.reputation, 0) +
+          COALESCE(user_received_answer_vote_reputations.reputation, 0) +
+          COALESCE(user_received_comment_vote_reputations.reputation, 0) +
+          COALESCE(user_given_answer_downvote_reputations.reputation, 0)
         ) AS sql_reputation,
-        tags_q.name,
-        COUNT(tags_q)
+        tag_names.tag_name AS tag_name,
+        COALESCE(sq_q_tag_count.q_tag_count, 0)
+          AS question_tag_count,
+        COALESCE(sq_q_tag_reputation.q_tag_reputation, 0)
+          AS question_tag_reputation,
+        COALESCE(sq_a_tag_count.a_tag_count, 0)
+          AS answer_tag_count,
+        COALESCE(sq_a_tag_reputation.a_tag_reputation, 0)
+          AS answer_tag_reputation,
+        COALESCE(sq_q_tag_count.q_tag_count, 0) +
+          COALESCE(sq_a_tag_count.a_tag_count, 0)
+          AS post_tag_count,
+        COALESCE(sq_q_tag_reputation.q_tag_reputation, 0) +
+          COALESCE(sq_a_tag_reputation.a_tag_reputation, 0)
+          AS post_tag_reputation
       FROM
         users
-      JOIN
-        (
-          SELECT
-            users.id,
-            users.display_name,
-            SUM(
-              CASE votes.value
-              WHEN 1 THEN 10
-              WHEN -1 THEN -4
-              END
-            ) AS question_vote_reputation
-          FROM
-            users
-          LEFT JOIN
-            questions ON users.id = questions.user_id
-          LEFT JOIN
-            votes ON (questions.id = votes.votable_id AND votes.votable_type = 'Question')
-          WHERE
-            users.id = :user_id
-          GROUP BY
-            users.id
-          ORDER BY
-            users.id
-        ) AS sq1 on sq1.id = users.id
-      JOIN
-        (
-          SELECT
-            users.id,
-            SUM(
-              CASE votes.value
-              WHEN 1 THEN 20
-              WHEN -1 THEN -4
-              END
-            ) AS answer_vote_reputation
-          FROM
-            users
-          LEFT JOIN
-            answers ON users.id = answers.user_id
-          LEFT JOIN
-            votes ON (answers.id = votes.votable_id AND votes.votable_type = 'Answer')
-          WHERE
-            users.id = :user_id
-          GROUP BY
-            users.id
-          ORDER BY
-            users.id
-        ) AS sq2 ON sq1.id = users.id
-      JOIN
-        (
-          SELECT
-            users.id,
-            SUM(
-              CASE votes.value
-              WHEN 1 THEN 1
-              WHEN -1 THEN -1
-              END
-            ) AS comment_vote_reputation
-          FROM
-            users
-          LEFT JOIN
-            comments ON users.id = comments.user_id
-          LEFT JOIN
-            votes ON (comments.id = votes.votable_id AND votes.votable_type = 'Comment')
-          WHERE
-            users.id = :user_id
-          GROUP BY
-            users.id
-          ORDER BY
-            users.id
-        ) AS sq3 ON sq2.id = users.id
-      JOIN
-        (
-          SELECT
-            users.id, COUNT(votes.*) * -2 AS given_answer_downvote_reputation
-          FROM
-            users
-          JOIN
-            votes ON users.id = votes.user_id
-          WHERE
-            users.id = :user_id AND
-            votes.votable_type = 'Answer' AND votes.value = -1
-           GROUP BY
-            users.id
-          ORDER BY
-            users.id
-        ) AS sq4 ON sq1.id = users.id
       LEFT JOIN
-        questions ON users.id = questions.user_id
+        #{self.user_received_question_vote_reputations(user_id)}
       LEFT JOIN
-        taggings AS taggings_q ON questions.id = taggings_q.question_id
+        #{user_received_answer_vote_reputations(user_id)}
       LEFT JOIN
-        tags AS tags_q ON taggings_q.tag_id = tags_q.id
-      WHERE
-        users.id = :user_id
-      GROUP BY
-        users.id,
-        tags_q.name,
-        sq1.question_vote_reputation,
-        sq2.answer_vote_reputation,
-        sq3.comment_vote_reputation,
-        sq4.given_answer_downvote_reputation
+        #{user_received_comment_vote_reputations(user_id)}
+      LEFT JOIN
+        #{user_given_answer_downvote_reputations(user_id)}
+      LEFT JOIN
+        #{self.question_and_answer_tag_names(user_id)}
+      LEFT JOIN
+        #{self.question_tags_count(user_id)}
+      LEFT JOIN
+        #{self.question_tags_reputation(user_id)}
+      LEFT JOIN
+        #{self.answer_tags_count(user_id)}
+      LEFT JOIN
+        #{self.answer_tags_reputation(user_id)}
+      #{user_id ? "WHERE users.id = :user_id" : ""}
       ORDER BY
-        users.id, COUNT(tags_q) DESC, tags_q.name
+        id, answer_tag_reputation DESC
     SQL
-    user_tags[0].tags = {}
-    user_tags.each { |tag| user_tags[0].tags[tag.name] = tag.count if tag.name }
-      .first
+    parse_user_tags(user_id, user_tags)
   end
-
+  
   def self.find_by_credentials(email, password)
     user = User.find_by_email(email)
     user if user && user.is_password?(password)
