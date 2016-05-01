@@ -14,6 +14,7 @@
 #
 
 class User < ActiveRecord::Base
+  extend UserSQLHelper
   include Viewable
 
   REPUTATION_SCHEME = {
@@ -160,30 +161,54 @@ class User < ActiveRecord::Base
     user.first
   end
 
-  def self.find_with_tags(id)
-    user_tags = User.find_by_sql [<<-SQL, user_id: id]
+  def self.find_with_tags(user_id)
+    user_tags = User.find_by_sql [<<-SQL, user_id: user_id]
       SELECT
         users.*,
-        tags_q.name,
-        COUNT(tags_q)
+        tag_names.tag_name AS tag_name,
+        COALESCE(sq_q_tag_count.q_tag_count, 0)
+          AS question_tag_count,
+        COALESCE(sq_q_tag_reputation.q_tag_reputation, 0)
+          AS question_tag_reputation,
+        COALESCE(sq_a_tag_count.a_tag_count, 0)
+          AS answer_tag_count,
+        COALESCE(sq_a_tag_reputation.a_tag_reputation, 0)
+          AS answer_tag_reputation,
+        COALESCE(sq_q_tag_count.q_tag_count, 0) +
+          COALESCE(sq_a_tag_count.a_tag_count, 0)
+          AS post_tag_count,
+        COALESCE(sq_q_tag_reputation.q_tag_reputation, 0) +
+          COALESCE(sq_a_tag_reputation.a_tag_reputation, 0)
+          AS post_tag_reputation
       FROM
         users
       LEFT JOIN
-        questions ON users.id = questions.user_id
+        #{self.question_and_answer_tag_names}
       LEFT JOIN
-        taggings AS taggings_q ON questions.id = taggings_q.question_id
+        #{self.question_tags_count}
       LEFT JOIN
-        tags AS tags_q ON taggings_q.tag_id = tags_q.id
+        #{self.question_tags_reputation}
+      LEFT JOIN
+        #{self.answer_tags_count}
+      LEFT JOIN
+        #{self.answer_tags_reputation}
       WHERE
         users.id = :user_id
-      GROUP BY
-        users.id, tags_q.name
       ORDER BY
-        users.id, COUNT(tags_q) DESC, tags_q.name
+        id, answer_tag_reputation DESC
     SQL
     user_tags[0].tags = {}
-    user_tags.each { |tag| user_tags[0].tags[tag.name] = tag.count if tag.name }
-      .first
+    user_tags.each do |tag|
+      next unless tag.tag_name
+      user_tags[0].tags[tag.tag_name] = {
+        question_tag_count: tag.question_tag_count,
+        question_tag_reputation: tag.question_tag_reputation,
+        answer_tag_count: tag.answer_tag_count,
+        answer_tag_reputation: tag.answer_tag_reputation,
+        post_tag_count: tag.post_tag_count,
+        post_tag_reputation: tag.post_tag_reputation
+      }
+    end.first
   end
 
   def self.find_with_reputation_and_tags(id)

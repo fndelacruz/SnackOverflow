@@ -1,0 +1,28 @@
+SELECT
+  users.id,
+  tags_q.name AS q_tag_name,
+  COUNT(tags_q) AS q_tag_count,
+  tags_a.name AS a_tag_name,
+  COUNT(tags_a) AS a_tag_count
+FROM
+  users
+LEFT JOIN
+  questions AS q1 ON users.id = q1.user_id
+LEFT JOIN
+  taggings AS taggings_q ON q1.id = taggings_q.question_id
+LEFT JOIN
+  tags AS tags_q ON taggings_q.tag_id = tags_q.id
+LEFT JOIN
+  answers ON users.id = answers.user_id
+LEFT JOIN
+  questions AS q2 on users.id = q2.user_id
+LEFT JOIN
+  taggings AS taggings_a ON q2.id = taggings_a.question_id
+LEFT JOIN
+  tags AS tags_a ON taggings_a.tag_id = tags_a.id
+WHERE
+  users.id = 1
+GROUP BY
+  users.id, tags_q.name
+ORDER BY
+  users.id, COUNT(tags_q) DESC, tags_q.name, COUNT(tags_a) DESC, tags_a.name
