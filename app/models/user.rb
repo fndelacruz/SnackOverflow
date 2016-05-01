@@ -59,110 +59,33 @@ class User < ActiveRecord::Base
   has_many :received_answer_votes, through: :given_answers, source: :votes
   has_many :received_question_votes, through: :questions, source: :votes
 
-  def self.find_with_reputation(id)
-    user = User.find_by_sql [<<-SQL, user_id: id]
+  def self.find_with_reputation(user_id=nil)
+    users = User.find_by_sql [<<-SQL, user_id: user_id]
       SELECT
         users.*,
         (
-          COALESCE(sq1.question_vote_reputation, 0) +
-          COALESCE(sq2.answer_vote_reputation, 0) +
-          COALESCE(sq3.comment_vote_reputation, 0) +
-          COALESCE(sq4.given_answer_downvote_reputation)
+          COALESCE(user_received_question_vote_reputations.reputation, 0) +
+          COALESCE(user_received_answer_vote_reputations.reputation, 0) +
+          COALESCE(user_received_comment_vote_reputations.reputation, 0) +
+          COALESCE(user_given_answer_downvote_reputations.reputation, 0)
         ) AS sql_reputation
       FROM
         users
-      JOIN
-        (
-          SELECT
-            users.id,
-            users.display_name,
-            SUM(
-              CASE votes.value
-              WHEN 1 THEN 10
-              WHEN -1 THEN -4
-              END
-            ) AS question_vote_reputation
-          FROM
-            users
-          LEFT JOIN
-            questions ON users.id = questions.user_id
-          LEFT JOIN
-            votes ON (questions.id = votes.votable_id AND votes.votable_type = 'Question')
-          WHERE
-            users.id = :user_id
-          GROUP BY
-            users.id
-          ORDER BY
-            users.id
-        ) AS sq1 on sq1.id = users.id
-      JOIN
-        (
-          SELECT
-            users.id,
-            SUM(
-              CASE votes.value
-              WHEN 1 THEN 20
-              WHEN -1 THEN -4
-              END
-            ) AS answer_vote_reputation
-          FROM
-            users
-          LEFT JOIN
-            answers ON users.id = answers.user_id
-          LEFT JOIN
-            votes ON (answers.id = votes.votable_id AND votes.votable_type = 'Answer')
-          WHERE
-            users.id = :user_id
-          GROUP BY
-            users.id
-          ORDER BY
-            users.id
-        ) AS sq2 ON sq1.id = users.id
-      JOIN
-        (
-          SELECT
-            users.id,
-            SUM(
-              CASE votes.value
-              WHEN 1 THEN 1
-              WHEN -1 THEN -1
-              END
-            ) AS comment_vote_reputation
-          FROM
-            users
-          LEFT JOIN
-            comments ON users.id = comments.user_id
-          LEFT JOIN
-            votes ON (comments.id = votes.votable_id AND votes.votable_type = 'Comment')
-          WHERE
-            users.id = :user_id
-          GROUP BY
-            users.id
-          ORDER BY
-            users.id
-        ) AS sq3 ON sq2.id = users.id
-      JOIN
-        (
-          SELECT
-            users.id, COUNT(votes.*) * -2 AS given_answer_downvote_reputation
-          FROM
-            users
-          JOIN
-            votes ON users.id = votes.user_id
-          WHERE
-            users.id = :user_id AND
-            votes.votable_type = 'Answer' AND votes.value = -1
-           GROUP BY
-            users.id
-          ORDER BY
-            users.id
-        ) AS sq4 ON sq1.id = users.id
+      LEFT JOIN
+        #{self.user_received_question_vote_reputations(user_id)}
+      LEFT JOIN
+        #{user_received_answer_vote_reputations(user_id)}
+      LEFT JOIN
+        #{user_received_comment_vote_reputations(user_id)}
+      LEFT JOIN
+        #{user_given_answer_downvote_reputations(user_id)}
+      #{user_id ? "WHERE users.id = :user_id" : ""}
     SQL
-    user.first
+    user_id ? users.first : users
   end
 
   def self.find_with_tags(user_id=nil)
-    find_by_sql_string = <<-SQL
+    user_tags = User.find_by_sql [<<-SQL, user_id: user_id]
       SELECT
         users.*,
         tag_names.tag_name AS tag_name,
@@ -196,10 +119,6 @@ class User < ActiveRecord::Base
       ORDER BY
         id, answer_tag_reputation DESC
     SQL
-    find_by_sql_args = [find_by_sql_string]
-    find_by_sql_args << { user_id: user_id } if user_id
-    user_tags = User.find_by_sql(find_by_sql_args)
-
     parse_user_tags(user_id, user_tags)
   end
 

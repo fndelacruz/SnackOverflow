@@ -188,4 +188,113 @@ module UserSQLHelper
     end
     user_id ? users.first : users
   end
+
+
+  def user_received_question_vote_reputations(user_id=nil)
+    <<-SQL
+      (
+        SELECT
+          users.id,
+          users.display_name,
+          SUM(
+            CASE votes.value
+            WHEN 1 THEN #{User::REPUTATION_SCHEME[:receive_question_upvote]}
+            WHEN -1 THEN #{User::REPUTATION_SCHEME[:receive_question_downvote]}
+            END
+          ) AS reputation
+        FROM
+          users
+        LEFT JOIN
+          questions ON users.id = questions.user_id
+        LEFT JOIN
+          votes ON (
+            questions.id = votes.votable_id AND
+            votes.votable_type = 'Question'
+          )
+        #{user_id ? "WHERE users.id = :user_id" : ""}
+        GROUP BY
+          users.id
+        ORDER BY
+          users.id
+      ) AS user_received_question_vote_reputations ON
+        users.id = user_received_question_vote_reputations.id
+    SQL
+  end
+
+  def user_received_answer_vote_reputations(user_id=nil)
+    <<-SQL
+      (
+        SELECT
+          users.id,
+          SUM(
+            CASE votes.value
+            WHEN 1 THEN #{User::REPUTATION_SCHEME[:receive_answer_upvote]}
+            WHEN -1 THEN #{User::REPUTATION_SCHEME[:receive_answer_downvote]}
+            END
+          ) AS reputation
+        FROM
+          users
+        LEFT JOIN
+          answers ON users.id = answers.user_id
+        LEFT JOIN
+          votes ON (answers.id = votes.votable_id AND votes.votable_type = 'Answer')
+        #{user_id ? "WHERE users.id = :user_id" : ""}
+        GROUP BY
+          users.id
+        ORDER BY
+          users.id
+      ) AS user_received_answer_vote_reputations ON
+        users.id = user_received_answer_vote_reputations.id
+    SQL
+  end
+
+  def user_received_comment_vote_reputations(user_id=nil)
+    <<-SQL
+      (
+        SELECT
+          users.id,
+          SUM(
+            CASE votes.value
+            WHEN 1 THEN #{User::REPUTATION_SCHEME[:receive_comment_upvote]}
+            WHEN -1 THEN #{User::REPUTATION_SCHEME[:receive_comment_downvote]}
+            END
+          ) AS reputation
+        FROM
+          users
+        LEFT JOIN
+          comments ON users.id = comments.user_id
+        LEFT JOIN
+          votes ON (comments.id = votes.votable_id AND votes.votable_type = 'Comment')
+        #{user_id ? "WHERE users.id = :user_id" : ""}
+        GROUP BY
+          users.id
+        ORDER BY
+          users.id
+      ) AS user_received_comment_vote_reputations ON
+        users.id = user_received_comment_vote_reputations.id
+    SQL
+  end
+
+  def user_given_answer_downvote_reputations(user_id=nil)
+    <<-SQL
+      (
+        SELECT
+          users.id,
+          COUNT(votes.*) * #{User::REPUTATION_SCHEME[:give_answer_downvote]}
+            AS reputation
+        FROM
+          users
+        JOIN
+          votes ON users.id = votes.user_id
+        WHERE
+          #{user_id ? "users.id = :user_id AND" : ""}
+          votes.votable_type = 'Answer' AND votes.value = -1
+        GROUP BY
+          users.id
+        ORDER BY
+          users.id
+      ) AS user_given_answer_downvote_reputations ON
+        users.id = user_given_answer_downvote_reputations.id
+    SQL
+  end
 end
