@@ -3,7 +3,7 @@ class Api::AnswersController < ApplicationController
     answer = Answer.new(answer_params)
     answer.user = current_user
     if answer.save!
-      @question = Question.detailed_find(answer.question.id)
+      render_question_show(answer.question.id)
     else
       render json: answer.errors.full_messages, status: :unprocessable_entity
     end
@@ -14,7 +14,7 @@ class Api::AnswersController < ApplicationController
     if answer
       if answer.user == current_user
         answer.destroy!
-        @question = Question.detailed_find(answer.question.id)
+        render_question_show(answer.question.id)
       else
         render json: {}, status: :unauthorized
       end

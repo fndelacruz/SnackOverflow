@@ -15,8 +15,7 @@ class Api::QuestionsController < ApplicationController
     if @question
       View.create!(user: current_user, viewable: @question)
 
-      user_ids = ([@question.user_id] + @question.answers.map(&:user_id)).uniq
-      @users = User.find_with_reputation_hash(user_ids)
+      @users = User.find_with_reputation_hash(parse_question_user_ids(@question))
     end
   end
 
@@ -35,7 +34,7 @@ class Api::QuestionsController < ApplicationController
     if question
       if question.user == current_user
         question.destroy!
-        @questions = Question.detailed_all
+        @questions = Question.index_all
       else
         render json: {}, status: :unauthorized
       end

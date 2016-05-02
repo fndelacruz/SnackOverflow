@@ -3,7 +3,7 @@ class Api::CommentsController < ApplicationController
     comment = Comment.new(comment_params)
     comment.user = current_user
     if comment.save!
-      @question = Question.detailed_find(comment.question.id)
+      render_question_show(comment.question.id)
     else
       render json: {}, status: :unprocessable_entity
     end
@@ -14,7 +14,7 @@ class Api::CommentsController < ApplicationController
     if comment
       if current_user == comment.user
         comment.destroy!
-        @question = Question.detailed_find(comment.question.id)
+        render_question_show(comment.question.id)
       else
         render json: {}, status: :unauthorized
       end

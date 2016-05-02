@@ -21,4 +21,14 @@ class ApplicationController < ActionController::Base
   def require_login
     redirect_to '/session/new' unless current_user
   end
+
+  def parse_question_user_ids(question)
+    ([question.user_id] + question.answers.map(&:user_id)).uniq
+  end
+
+  def render_question_show(question_id)
+    @question = Question.show_find(question_id)
+    @users = User.find_with_reputation_hash(parse_question_user_ids(@question))
+    render '/api/questions/show'
+  end
 end
