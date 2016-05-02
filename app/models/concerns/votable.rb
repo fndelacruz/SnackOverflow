@@ -62,7 +62,7 @@ module Votable
   end
 
   def user_vote(user)
-    votes.find { |vote| vote.user_id == user.id}
+    votes.find { |vote| vote.user_id == user.id }
   end
 
 end

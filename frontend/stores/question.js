@@ -112,16 +112,18 @@ QuestionStore.getQuestion = function(questionId) {
   }
 
   var answers = _questions[questionId].answers;
-  switch (_sortAnswersBy) {
-    case 'active':
-      sortAnswersByActive(answers);
-      break;
-    case 'oldest':
-      Util.sortBy(answers, 'created_at');
-      break;
-    case 'votes':
-      Util.sortBy(answers, 'vote_count', true);
-      break;
+  if (answers) {
+    switch (_sortAnswersBy) {
+      case 'active':
+        sortAnswersByActive(answers);
+        break;
+      case 'oldest':
+        Util.sortBy(answers, 'created_at');
+        break;
+      case 'votes':
+        Util.sortBy(answers, 'vote_count', true);
+        break;
+    }
   }
   return $.extend({}, _questions[questionId]);
 };

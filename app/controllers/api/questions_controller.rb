@@ -5,16 +5,18 @@ class Api::QuestionsController < ApplicationController
     question_user_ids = @questions.map(&:user_id)
     answer_user_ids = @questions.map { |question| question.answers }.flatten
       .map { |answer| answer.user_id}
-    user_ids = (question_user_ids + answer_user_ids).uniq.sort
+    user_ids = (question_user_ids + answer_user_ids).uniq
     @users = User.find_with_reputation_hash(user_ids)
   end
 
   def show
-    question = Question.find(params[:id])
+    @question = Question.show_find(params[:id])
 
-    if question
-      View.create!(user: current_user, viewable: question)
-      @question = Question.detailed_find(params[:id])
+    if @question
+      View.create!(user: current_user, viewable: @question)
+
+      user_ids = ([@question.user_id] + @question.answers.map(&:user_id)).uniq
+      @users = User.find_with_reputation_hash(user_ids)
     end
   end
 

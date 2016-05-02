@@ -89,7 +89,7 @@ var QuestionShow = React.createClass({
     }
   },
   render: function() {
-    var question = this.state.question, tags;
+    var question = this.state.question, tags, answerSection;
 
     if (!question) {
       return (<div />);
@@ -106,6 +106,18 @@ var QuestionShow = React.createClass({
       }
     }
 
+    if (question.answers) {
+      answerSection = (
+        <div className='answers-container'>
+          <AnswersIndex
+            answers={question.answers}
+            answerSortBy={this.state.answerSortBy}
+            handleVote={this.handleVote}
+            handleToolClick={this.handleToolClick} />
+          <AnswersNew question={question} />
+        </div>
+      );
+    }
     return (
       <div className='question-show'>
         <div className='question-show-header'>
@@ -119,12 +131,7 @@ var QuestionShow = React.createClass({
             handleVote={this.handleVote}
             handleFavorite={this.handleFavorite}
             handleToolClick={this.handleToolClick} />
-          <AnswersIndex
-            answers={question.answers}
-            answerSortBy={this.state.answerSortBy}
-            handleVote={this.handleVote}
-            handleToolClick={this.handleToolClick} />
-          <AnswersNew question={question} />
+          {answerSection}
         </div>
 
         <div className='content-double-sidebar'>

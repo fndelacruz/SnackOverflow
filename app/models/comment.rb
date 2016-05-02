@@ -12,15 +12,14 @@
 #
 
 class Comment < ActiveRecord::Base
+  include Votable
+
   validates :user, :commentable, :content, presence: true
 
   belongs_to :user
   belongs_to :commentable, polymorphic: true
 
-  include Votable
-
   def question
     commentable_type == 'Question' ? commentable : commentable.question
   end
-
 end

@@ -5,7 +5,7 @@ var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var CommentsIndex = React.createClass({
   render: function() {
     if (!this.props.comments) {
-      return (<div />);
+      return (<div className='comments-index-container' />);
     }
 
     var comments = this.props.comments.map(function(comment) {

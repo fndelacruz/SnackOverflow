@@ -5,9 +5,6 @@ var QuestionActions = require('../../actions/question');
 var ShowItem = require('../questions/show_item');
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
-function answerHeader(answersLength) {
-  return answersLength + ' Answer' + (answersLength === 1 ? '' : 's');
-}
 var ANSWER_SORT_TYPES = ['active', 'oldest', 'votes'];
 
 var AnswersIndex = React.createClass({
@@ -16,25 +13,32 @@ var AnswersIndex = React.createClass({
       QuestionActions.changeAnswerSort(sortBy);
     }
   },
+  handleAnswerHeader: function() {
+    var answersLength = this.props.answers.length;
+    return answersLength + ' Answer' + (answersLength === 1 ? '' : 's');
+  },
   render: function() {
-    var AnswerIndexItems = this.props.answers.map(function(answer) {
-      return (
-        <ShowItem
+    var AnswerIndexItems;
+    if (this.props.answers) {
+       AnswerIndexItems = this.props.answers.map(function(answer) {
+        return (
+          <ShowItem
           key={'answer-' + answer.id}
           type='Answer'
           item={answer}
           handleVote={this.props.handleVote}
           handleToolClick={this.props.handleToolClick} />
-      );
+        );
 
-    }.bind(this));
+      }.bind(this));
+    }
     return (
       <div className='answers-index-container'>
         <SortNav
           tabShift='right'
           links={ANSWER_SORT_TYPES}
           active={this.props.answerSortBy}
-          header={answerHeader(this.props.answers.length)}
+          header={this.handleAnswerHeader()}
           handleSortChange={this.handleSortChange} />
         <ReactCSSTransitionGroup
           transitionName={'show-index-item'}

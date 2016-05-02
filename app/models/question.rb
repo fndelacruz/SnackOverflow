@@ -39,10 +39,11 @@ class Question < ActiveRecord::Base
       :favorites).all
   end
 
-  def self.detailed_find(id)
+  def self.show_find(id)
     self
-      .includes(USER_DETAILS, :votes, {answers: [USER_DETAILS, :votes, {comments: [USER_DETAILS, :votes]}]}, :views, :associated_tags,
-        {comments: [USER_DETAILS, :votes]}, :favorites)
+      .includes(:user, :votes, :views, :associated_tags, :favorites,
+        { answers: [:user, :votes, { comments: [:user, :votes] }] },
+        { comments: [:user, :votes] })
       .find(id)
   end
 
