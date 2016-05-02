@@ -85,9 +85,9 @@ UserStore.getPostsSelect = function() {
 };
 
 UserStore.getUser = function(userId) {
-  if (!Object.keys(_users).length) {
-    // NOTE: if ApiUti.fetchUsers did not yet succeed, do not attempt to fetch
-    // a user
+  if (!Object.keys(_users).length || !_users[userId]) {
+    // NOTE: if ApiUti.fetchUsers did not yet succeed OR if user is not in the
+    // store, do not attempt to fetch a user
     return {};
   }
   if (typeof _users[userId].posts === 'undefined') {
