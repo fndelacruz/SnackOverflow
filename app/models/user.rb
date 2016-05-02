@@ -187,19 +187,23 @@ class User < ActiveRecord::Base
   end
 
   def self.show_find(user_id)
-    User.includes(
-        { questions: :votes },
-        { given_answers: [:votes, :question] },
-        :votes,
-        { comments: :votes },
-        :views,
-        { badgings: :badge },
-        :answer_tags,
-        :question_tags,
-        received_answer_votes: { votable: :associated_tags },
-        received_question_votes: { votable: :associated_tags })
-      .find(user_id)
+    self.find_with_reputation_and_tags_and_vote_count(user_id)
   end
+  
+  # def self.show_find(user_id)
+  #   User.includes(
+  #       { questions: :votes },
+  #       { given_answers: [:votes, :question] },
+  #       :votes,
+  #       { comments: :votes },
+  #       :views,
+  #       { badgings: :badge },
+  #       :answer_tags,
+  #       :question_tags,
+  #       received_answer_votes: { votable: :associated_tags },
+  #       received_question_votes: { votable: :associated_tags })
+  #     .find(user_id)
+  # end
 
   def associated_tags_score
     @associated_tags_score || (

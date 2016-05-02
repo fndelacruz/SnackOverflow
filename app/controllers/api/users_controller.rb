@@ -10,8 +10,10 @@ class Api::UsersController < ApplicationController
   def show
     @user = User.show_find(params[:id])
     if @user
+      @questions = Question.includes(:votes).where(user_id: params[:id])
+      @given_answers = Answer.includes(:votes, :question).where(user_id: params[:id])
+      @badgings = Badging.includes(:badge).where(user_id: params[:id])
       View.create!(user: current_user, viewable: @user)
-      @user
     else
       render json: {}, error: :not_found
     end

@@ -38,11 +38,11 @@ var ShowProfileTopPosts = React.createClass({
         return this.props.posts.length;
       case 'Questions':
         return this.props.posts.filter(function(post) {
-          return post.type === 'Question';
+          return !post.question_id;
         }).length;
       case 'Answers':
         return this.props.posts.filter(function(post) {
-          return post.type === 'Answer';
+          return post.question_id;
         }).length;
     }
   },
@@ -67,16 +67,16 @@ var ShowProfileTopPosts = React.createClass({
       <div className='user-show-profile-top-posts-main'>
         {posts.slice(0,10).map(function(post) {
           var answerId;
-          if (post.type === 'Answer') {
+          if (post.question_id) {
             answerId = post.id;
           }
           return (
             <div
               onClick={this.handlePostClick.bind(null, post.question_id, answerId)}
               className='user-show-profile-top-posts-main-element group'
-              key={post.type + '-' + post.id}>
+              key={(post.question_id ? 'answer' : 'question') + '-' + post.id}>
               <div className='user-show-profile-top-posts-main-element-type'>
-                {post.type === 'Answer' ? 'A:' : 'Q:'}
+                {post.question_id ? 'A:' : 'Q:'}
               </div>
               <div className='user-show-profile-top-posts-main-element-vote-count'>
                 <span>{post.vote_count}</span>

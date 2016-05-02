@@ -20,5 +20,4 @@ class Answer < ActiveRecord::Base
   belongs_to :question
   has_many :associated_tags, through: :question, source: :associated_tags
 
-  has_one :title, through: :question, source: :title
 end

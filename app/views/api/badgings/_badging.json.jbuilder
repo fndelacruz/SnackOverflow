@@ -1,5 +1,4 @@
-json.extract!(
-  badging,
+json.extract!(badging,
   :id, :user_id, :badgeable_type, :badgeable_id, :created_at
 )
 

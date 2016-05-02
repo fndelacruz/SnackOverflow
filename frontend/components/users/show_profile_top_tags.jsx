@@ -37,7 +37,7 @@ var ShowProfileTopTags = React.createClass({
             <div
               title={handleTitle(tag)}
               className='user-show-profile-top-tags-main-element'
-              key={'tag-' + tag.id}>
+              key={'tag-' + tag.name}>
               <span
                 title=''
                 onClick={handleClick.bind(null, this.props.userId, tag.name)}

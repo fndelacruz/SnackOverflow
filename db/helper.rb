@@ -369,14 +369,14 @@ def generate_random_content!
   # NOTE: the following dates as used DO NOT respect reality (ex: a user can
   # create an answer before joining the site). Will fix this for deployment.
 
-  50.times { create_random_question! }
-  300.times { create_random_answer! }
+  75.times { create_random_question! }
+  400.times { create_random_answer! }
   50.times { create_random_question_comment! }
   400.times { create_random_answer_comment! }
 
-  200.times { create_random_vote!(random_question) }
-  640.times { create_random_vote!(random_answer) }
-  160.times { create_random_vote!(random_comment) }
+  2000.times { create_random_vote!(random_question) }
+  6400.times { create_random_vote!(random_answer) }
+  1600.times { create_random_vote!(random_comment) }
 
   1000.times { create_random_view!(random_question) }
   1000.times { create_random_view!(random_user) }
