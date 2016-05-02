@@ -24,7 +24,7 @@ var ShowActivitySummary = React.createClass({
           userId={this.props.id} />
         <ShowActivitySummaryItem
         title={'Tags'}
-          items={this.props.associated_tags_sorted_by_answer_score}
+          items={this.props.tags}
           count={12}
           userId={this.props.id} />
         <ShowActivitySummaryItem

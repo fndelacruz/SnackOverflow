@@ -15,12 +15,12 @@ var UsersIndexItem = React.createClass({
     hashHistory.push(path);
   },
   handleTagList: function() {
-    var associated_tags_sorted_by_answer_score = this.props.user.associated_tags_sorted_by_answer_score;
-    if (associated_tags_sorted_by_answer_score) {
+    var tags = this.props.user.tags;
+    if (tags) {
       return (
         <TagLinkIndex
           userId={this.props.user.id}
-          tags={associated_tags_sorted_by_answer_score} />
+          tags={tags} />
       );
     }
   },
@@ -39,18 +39,18 @@ var UsersIndexItem = React.createClass({
         footer = this.handleTagList();
         break;
       case 'new users':
-        // footer should be tag list
-        // pre-footer should be created_at_words (actually, score in past days...)
+        // TODO: pre-footer should be created_at_words (actually, score in past days...)
         prefooter = (<div>{'joined ' + user.created_at.toLocaleString()}</div>);
         footer = this.handleTagList();
         break;
       case 'voters':
+        var voteWord = user.vote_count === 1 ? 'vote' : 'votes';
         prefooter = (
           <div className='users-index-item-reputation'>
             {user.reputation}
           </div>
         );
-        footer = user.vote_count + ' votes';
+        footer = user.vote_count + ' ' + voteWord;
         break;
     }
     return (

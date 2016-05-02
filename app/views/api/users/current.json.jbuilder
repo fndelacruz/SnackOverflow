@@ -2,4 +2,4 @@ json.extract!(@current_user,
   :id, :display_name
 )
 
-json.reputation @current_user.sql_reputation
+json.reputation @current_user.reputation

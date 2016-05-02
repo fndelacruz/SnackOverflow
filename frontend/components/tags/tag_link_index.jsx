@@ -13,9 +13,9 @@ var TagLinkIndex = React.createClass({
       <div className='tag-link-index'>
         {this.props.tags.slice(0, 3).map(function(tag, idx) {
           return (
-            <span key={'user-' + this.props.userId + '-tag-' + tag.object.id}>
+            <span key={'user-' + this.props.userId + '-tag-' + tag.name}>
               {handleAnswerTagsComma(idx)}
-              <TagLink tag={tag.object} />
+              <TagLink tag={tag} />
             </span>
           );
         }.bind(this))}

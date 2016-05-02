@@ -168,23 +168,24 @@ module UserSQLHelper
   end
 
   def parse_user_tags(user_id, user_tags)
-    user_tags[0].tags = {}
+    user_tags[0].tags = []
     users = [user_tags[0]]
 
     user_tags.each do |user_with_tag|
-      next unless user_with_tag.tag_name
       if users.last.id != user_with_tag.id
-        user_with_tag.tags = {}
+        user_with_tag.tags = []
         users << user_with_tag
       end
+      next unless user_with_tag.tag_name
 
-      users.last.tags[user_with_tag.tag_name] = {
-        question_tag_count: user_with_tag.question_tag_count,
-        question_tag_reputation: user_with_tag.question_tag_reputation,
-        answer_tag_count: user_with_tag.answer_tag_count,
+      users.last.tags << {
+        name: user_with_tag.tag_name,
+        question_count: user_with_tag.question_tag_count,
+        question_reputation: user_with_tag.question_tag_reputation,
+        answer_count: user_with_tag.answer_tag_count,
         answer_tag_reputation: user_with_tag.answer_tag_reputation,
-        post_tag_count: user_with_tag.post_tag_count,
-        post_tag_reputation: user_with_tag.post_tag_reputation
+        post_count: user_with_tag.post_tag_count,
+        post_reputation: user_with_tag.post_tag_reputation
       }
     end
     user_id ? users.first : users
@@ -298,4 +299,21 @@ module UserSQLHelper
         users.id = user_given_answer_downvote_reputations.id
     SQL
   end
+def user_vote_counts(user_id=nil)
+  <<-SQL
+    (
+      SELECT
+        users.id, COUNT(votes.*) AS count
+      FROM
+        users
+      LEFT JOIN
+        votes on users.id = votes.user_id
+      #{user_id ? "WHERE users.id = :user_id" : ""}
+      GROUP BY
+        users.id
+      ORDER BY
+        users.id
+    ) AS user_vote_counts ON users.id = user_vote_counts.id
+  SQL
+end
 end

@@ -111,7 +111,7 @@ var UserShowProfile = React.createClass({
           <ShowProfileBadges badgings={this.props.badgings} />
           <ShowProfileTopTags
             userId={this.props.id}
-            tags={this.props.associated_tags_sorted_by_answer_score} />
+            tags={this.props.tags} />
           <ShowProfileTopPosts
             posts={this.props.posts} />
         </div>

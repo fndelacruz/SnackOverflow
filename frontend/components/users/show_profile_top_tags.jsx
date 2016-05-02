@@ -11,16 +11,16 @@ function handleTitle(tag) {
   var answerWord = tag.answer_count === 1 ? 'answer' : 'answers';
   if (tag.question_count) {
     title.push('Asked ' + tag.question_count + ' ' + questionWord +
-      ' with a total score of ' + tag.question_score + '.');
+      ' with a total score of ' + tag.question_reputation + '.');
   }
   if (tag.answer_count) {
     title.push('Gave ' + tag.answer_count + ' ' + answerWord +
-      ' with a total score of ' + tag.answer_score + '.');
+      ' with a total score of ' + tag.answer_reputation + '.');
   }
   return title.join(' ');
 }
 
-var ShowProfleTopTags = React.createClass({
+var ShowProfileTopTags = React.createClass({
 
   renderTopTags: function() {
     if (this.props.tags.length === 0) {
@@ -37,12 +37,12 @@ var ShowProfleTopTags = React.createClass({
             <div
               title={handleTitle(tag)}
               className='user-show-profile-top-tags-main-element'
-              key={'tag-' + tag.object.id}>
+              key={'tag-' + tag.id}>
               <span
                 title=''
-                onClick={handleClick.bind(null, this.props.userId, tag.object.name)}
+                onClick={handleClick.bind(null, this.props.userId, tag.name)}
                 className='user-show-profile-top-tags-main-element-tag'>
-                {tag.object.name}
+                {tag.name}
               </span>
               <div className='user-show-profile-top-tags-main-element-stats group'>
                 <div className='user-show-profile-top-tags-main-element-stats-element'>
@@ -50,7 +50,7 @@ var ShowProfleTopTags = React.createClass({
                     SCORE
                   </div>
                   <div className='user-show-profile-top-tags-main-element-stats-value'>
-                    {tag.answer_score}
+                    {tag.answer_reputation}
                   </div>
                 </div>
 
@@ -91,4 +91,4 @@ var ShowProfleTopTags = React.createClass({
   }
 });
 
-module.exports = ShowProfleTopTags;
+module.exports = ShowProfileTopTags;

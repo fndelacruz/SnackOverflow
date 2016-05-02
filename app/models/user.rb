@@ -68,7 +68,7 @@ class User < ActiveRecord::Base
           COALESCE(user_received_answer_vote_reputations.reputation, 0) +
           COALESCE(user_received_comment_vote_reputations.reputation, 0) +
           COALESCE(user_given_answer_downvote_reputations.reputation, 0)
-        ) AS sql_reputation
+        ) AS reputation
       FROM
         users
       LEFT JOIN
@@ -122,16 +122,17 @@ class User < ActiveRecord::Base
     user_tags.empty? ? nil : parse_user_tags(user_id, user_tags)
   end
 
-  def self.find_with_reputation_and_tags(user_id=nil)
+  def self.find_with_reputation_and_tags_and_vote_count(user_id=nil)
     user_tags = User.find_by_sql [<<-SQL, user_id: user_id]
       SELECT
         users.*,
+        user_vote_counts.count AS vote_count,
         (
           COALESCE(user_received_question_vote_reputations.reputation, 0) +
           COALESCE(user_received_answer_vote_reputations.reputation, 0) +
           COALESCE(user_received_comment_vote_reputations.reputation, 0) +
           COALESCE(user_given_answer_downvote_reputations.reputation, 0)
-        ) AS sql_reputation,
+        ) AS reputation,
         tag_names.tag_name AS tag_name,
         COALESCE(sq_q_tag_count.q_tag_count, 0)
           AS question_tag_count,
@@ -167,30 +168,22 @@ class User < ActiveRecord::Base
         #{self.answer_tags_count(user_id)}
       LEFT JOIN
         #{self.answer_tags_reputation(user_id)}
+      JOIN
+        #{self.user_vote_counts(user_id)}
       #{user_id ? "WHERE users.id = :user_id" : ""}
       ORDER BY
         id, answer_tag_reputation DESC
     SQL
     parse_user_tags(user_id, user_tags)
   end
-  
+
   def self.find_by_credentials(email, password)
     user = User.find_by_email(email)
     user if user && user.is_password?(password)
   end
 
-  # NOTE: for UsersIndex
   def self.index_all
-    User.includes(
-      { questions: [:votes] },
-      { given_answers: :votes },
-      :votes,
-      { comments: :votes },
-      :answer_tags,
-      :question_tags,
-      received_answer_votes: { votable: :associated_tags },
-      received_question_votes: { votable: :associated_tags })
-      .all
+    self.find_with_reputation_and_tags_and_vote_count
   end
 
   def self.show_find(user_id)
@@ -264,17 +257,13 @@ class User < ActiveRecord::Base
         post_count: post_count,
         answer_count: answer_tag_counts[tag],
         question_count: question_tag_counts[tag],
-        answer_score: associated_tags_score[:answers][tag.id],
-        question_score: associated_tags_score[:questions][tag.id],
+        answer_reputation: associated_tags_score[:answers][tag.id],
+        question_reputation: associated_tags_score[:questions][tag.id],
       }
     end.sort { |a, b| b[:answer_score] <=> a[:answer_score] }
   end
 
-  def vote_count
-    votes.length
-  end
-
-  def reputation
+  def reputation_old
     question_rep = questions.map(&:votes).flatten.map do |vote|
       if vote.value == 1
         User::REPUTATION_SCHEME[:receive_question_upvote]
