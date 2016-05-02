@@ -1,7 +1,12 @@
 class Api::QuestionsController < ApplicationController
   def index
     # TODO: implement pagination
-    @questions = Question.detailed_all
+    @questions = Question.index_all
+    question_user_ids = @questions.map(&:user_id)
+    answer_user_ids = @questions.map { |question| question.answers }.flatten
+      .map { |answer| answer.user_id}
+    user_ids = (question_user_ids + answer_user_ids).uniq.sort
+    @users = User.find_with_reputation_hash(user_ids)
   end
 
   def show

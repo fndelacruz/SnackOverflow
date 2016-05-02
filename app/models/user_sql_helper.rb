@@ -213,7 +213,7 @@ module UserSQLHelper
             questions.id = votes.votable_id AND
             votes.votable_type = 'Question'
           )
-        #{user_id ? "WHERE users.id = :user_id" : ""}
+        #{user_id ? "WHERE #{where_user_id_helper(user_id)}" : ""}
         GROUP BY
           users.id
         ORDER BY
@@ -240,7 +240,7 @@ module UserSQLHelper
           answers ON users.id = answers.user_id
         LEFT JOIN
           votes ON (answers.id = votes.votable_id AND votes.votable_type = 'Answer')
-        #{user_id ? "WHERE users.id = :user_id" : ""}
+        #{user_id ? "WHERE #{where_user_id_helper(user_id)}" : ""}
         GROUP BY
           users.id
         ORDER BY
@@ -267,7 +267,7 @@ module UserSQLHelper
           comments ON users.id = comments.user_id
         LEFT JOIN
           votes ON (comments.id = votes.votable_id AND votes.votable_type = 'Comment')
-        #{user_id ? "WHERE users.id = :user_id" : ""}
+        #{user_id ? "WHERE #{where_user_id_helper(user_id)}" : ""}
         GROUP BY
           users.id
         ORDER BY
@@ -289,7 +289,7 @@ module UserSQLHelper
         JOIN
           votes ON users.id = votes.user_id
         WHERE
-          #{user_id ? "users.id = :user_id AND" : ""}
+          #{user_id ? "#{where_user_id_helper(user_id)} AND" : ""}
           votes.votable_type = 'Answer' AND votes.value = -1
         GROUP BY
           users.id
@@ -299,21 +299,32 @@ module UserSQLHelper
         users.id = user_given_answer_downvote_reputations.id
     SQL
   end
-def user_vote_counts(user_id=nil)
-  <<-SQL
-    (
-      SELECT
-        users.id, COUNT(votes.*) AS count
-      FROM
-        users
-      LEFT JOIN
-        votes on users.id = votes.user_id
-      #{user_id ? "WHERE users.id = :user_id" : ""}
-      GROUP BY
-        users.id
-      ORDER BY
-        users.id
-    ) AS user_vote_counts ON users.id = user_vote_counts.id
-  SQL
-end
+
+  def user_vote_counts(user_id=nil)
+    <<-SQL
+      (
+        SELECT
+          users.id, COUNT(votes.*) AS count
+        FROM
+          users
+        LEFT JOIN
+          votes on users.id = votes.user_id
+        #{user_id ? "WHERE #{where_user_id_helper(user_id)}" : ""}
+        GROUP BY
+          users.id
+        ORDER BY
+          users.id
+      ) AS user_vote_counts ON users.id = user_vote_counts.id
+    SQL
+  end
+
+  def where_user_id_helper(user_id)
+    where = "users.id "
+    if user_id.is_a?(Integer) || user_id.is_a?(String)
+      where += "= :user_id"
+    elsif user_id.is_a?(Array)
+      where += "IN (#{user_id.join(',')})"
+    end
+    where
+  end
 end

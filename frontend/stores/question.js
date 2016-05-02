@@ -15,14 +15,18 @@ var _indexLoaded;
 function formatDates(question) {
   Util.formatDateHelper(question);
 
-  question.comments.forEach(Util.formatDateHelper);
-  Util.sortBy(question.comments, 'created_at', true);
+  if (question.comments) {
+    question.comments.forEach(Util.formatDateHelper);
+    Util.sortBy(question.comments, 'created_at', true);
+  }
 
-  question.answers.forEach(function(answer) {
-    Util.formatDateHelper(answer);
-    answer.comments.forEach(Util.formatDateHelper);
-    Util.sortBy(answer.comments, 'created_at', true);
-  });
+  if (question.answers) {
+    question.answers.forEach(function(answer) {
+      Util.formatDateHelper(answer);
+      answer.comments.forEach(Util.formatDateHelper);
+      Util.sortBy(answer.comments, 'created_at', true);
+    });
+  }
 }
 
 function resetQuestions(questions) {

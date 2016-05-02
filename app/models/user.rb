@@ -72,16 +72,26 @@ class User < ActiveRecord::Base
       FROM
         users
       LEFT JOIN
-        #{self.user_received_question_vote_reputations(user_id)}
+        #{user_received_question_vote_reputations(user_id)}
       LEFT JOIN
         #{user_received_answer_vote_reputations(user_id)}
       LEFT JOIN
         #{user_received_comment_vote_reputations(user_id)}
       LEFT JOIN
         #{user_given_answer_downvote_reputations(user_id)}
-      #{user_id ? "WHERE users.id = :user_id" : ""}
+      #{user_id ? "WHERE #{where_user_id_helper(user_id)}" : ""}
+      ORDER BY
+        users.id
     SQL
-    user_id ? users.first : users
+    user_id.is_a?(Integer) ? users.first : users
+  end
+
+  def self.find_with_reputation_hash(user_ids)
+    users_hash = {}
+    self.find_with_reputation(user_ids).each do |user|
+      users_hash[user.id] = user
+    end
+    users_hash
   end
 
   def self.find_with_tags(user_id=nil)
@@ -106,15 +116,15 @@ class User < ActiveRecord::Base
       FROM
         users
       LEFT JOIN
-        #{self.question_and_answer_tag_names(user_id)}
+        #{question_and_answer_tag_names(user_id)}
       LEFT JOIN
-        #{self.question_tags_count(user_id)}
+        #{question_tags_count(user_id)}
       LEFT JOIN
-        #{self.question_tags_reputation(user_id)}
+        #{question_tags_reputation(user_id)}
       LEFT JOIN
-        #{self.answer_tags_count(user_id)}
+        #{answer_tags_count(user_id)}
       LEFT JOIN
-        #{self.answer_tags_reputation(user_id)}
+        #{answer_tags_reputation(user_id)}
       #{user_id ? "WHERE users.id = :user_id" : ""}
       ORDER BY
         id, answer_tag_reputation DESC
@@ -151,7 +161,7 @@ class User < ActiveRecord::Base
       FROM
         users
       LEFT JOIN
-        #{self.user_received_question_vote_reputations(user_id)}
+        #{user_received_question_vote_reputations(user_id)}
       LEFT JOIN
         #{user_received_answer_vote_reputations(user_id)}
       LEFT JOIN
@@ -159,17 +169,17 @@ class User < ActiveRecord::Base
       LEFT JOIN
         #{user_given_answer_downvote_reputations(user_id)}
       LEFT JOIN
-        #{self.question_and_answer_tag_names(user_id)}
+        #{question_and_answer_tag_names(user_id)}
       LEFT JOIN
-        #{self.question_tags_count(user_id)}
+        #{question_tags_count(user_id)}
       LEFT JOIN
-        #{self.question_tags_reputation(user_id)}
+        #{question_tags_reputation(user_id)}
       LEFT JOIN
-        #{self.answer_tags_count(user_id)}
+        #{answer_tags_count(user_id)}
       LEFT JOIN
-        #{self.answer_tags_reputation(user_id)}
+        #{answer_tags_reputation(user_id)}
       JOIN
-        #{self.user_vote_counts(user_id)}
+        #{user_vote_counts(user_id)}
       #{user_id ? "WHERE users.id = :user_id" : ""}
       ORDER BY
         id, answer_tag_reputation DESC
