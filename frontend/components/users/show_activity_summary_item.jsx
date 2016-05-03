@@ -29,9 +29,9 @@ var ShowActivitySummaryItem = React.createClass({
     }
   },
   renderElements: function() {
+    var items = this.props.items;
     switch (this.props.title) {
       case 'Answers': case 'Questions':
-        var items = this.props.items;
         switch (this.state.subTab) {
           case 'votes':
             Util.sortBy(items, 'vote_count', true);
@@ -54,6 +54,22 @@ var ShowActivitySummaryItem = React.createClass({
               title={item.title}
               createdAt={item.created_at}
               count={item.vote_count} />
+          );
+        }.bind(this)));
+      case 'Reputation':
+        return (items.slice(0,5).map(function(item) {
+          var path = 'questions/' + item.question_id;
+          if (item.votable_type === 'Answer') {
+            path += '/answer/' + item.votable_id;
+          }
+          var key = 'vote-' + item.id + '-reputation-' + item.reputation;
+          return (
+            <ShowActivitySummaryItemLineItem
+              key={key + item.id}
+              handleClick={function() { hashHistory.push(path); }}
+              title={item.title}
+              createdAt={item.created_at}
+              count={item.reputation} />
           );
         }.bind(this)));
       default:
