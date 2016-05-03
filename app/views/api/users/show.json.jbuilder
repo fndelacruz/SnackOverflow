@@ -22,4 +22,10 @@ json.badgings do
   end
 end
 
+json.reputations do
+  json.array!(@reputations) do |reputation|
+    json.partial!('/api/votes/vote', vote: reputation)
+  end
+end
+
 json.updated_at_words "last seen #{time_ago_in_words(@user.updated_at)} ago"

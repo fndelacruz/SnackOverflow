@@ -18,8 +18,50 @@ class Vote < ActiveRecord::Base
   validates :value, inclusion: [-1, 1]
   belongs_to :user
   belongs_to :votable, polymorphic: true
-  
+
   after_create :handle_badges
+
+  def self.reputations_for_user_id(user_id)
+    votes = (
+      Vote.select("
+          votes.*,
+          (
+            CASE votes.value
+              WHEN 1 THEN #{User::REPUTATION_SCHEME[:receive_question_upvote]}
+              WHEN -1 THEN #{User::REPUTATION_SCHEME[:receive_question_downvote]}
+            END
+          ) AS reputation")
+        .joins("JOIN questions ON
+          votes.votable_id = questions.id AND votes.votable_type = 'Question'")
+        .where(questions: { user_id: user_id})
+      .union_all Vote.select("
+          votes.*,
+          (
+            CASE votes.value
+              WHEN 1 THEN #{User::REPUTATION_SCHEME[:receive_answer_upvote]}
+              WHEN -1 THEN #{User::REPUTATION_SCHEME[:receive_answer_downvote]}
+            END
+          ) AS reputation")
+        .joins("JOIN answers ON
+          votes.votable_id = answers.id AND votes.votable_type = 'Answer'")
+        .where(answers: { user_id: user_id })
+      .union_all Vote.select("
+          votes.*,
+          (
+            CASE votes.value
+              WHEN 1 THEN #{User::REPUTATION_SCHEME[:receive_comment_upvote]}
+              WHEN -1 THEN #{User::REPUTATION_SCHEME[:receive_comment_downvote]}
+            END
+          ) AS reputation")
+        .joins("JOIN comments ON
+          votes.votable_id = comments.id AND votes.votable_type = 'Comment'")
+        .where(comments: { user_id: user_id })
+      .union_all Vote.select("
+          votes.*,
+          #{User::REPUTATION_SCHEME[:give_answer_downvote]} AS reputation")
+        .where(user_id: user_id, votable_type: 'Answer', value: -1)
+    ).order(:created_at).reverse_order
+  end
 
   private
 

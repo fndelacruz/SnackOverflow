@@ -14,7 +14,7 @@ var ShowActivitySummary = React.createClass({
         <ShowActivitySummaryItem
           handleViewMoreClick={this.props.handleViewMoreClick.bind(null, 'reputation')}
           title={'Reputation'}
-          items={['placeholder', 'until', 'get', 'reputation', 'elements']}
+          items={this.props.reputations}
           userId={this.props.id} />
         <ShowActivitySummaryItem
           handleViewMoreClick={this.props.handleViewMoreClick.bind(null, 'questions')}
