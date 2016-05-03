@@ -6,37 +6,36 @@ var ShowActivitySummary = React.createClass({
     return (
       <div className='show-activity-summary-container group'>
         <ShowActivitySummaryItem
+          handleViewMoreClick={this.props.handleViewMoreClick.bind(null, 'answers')}
           title={'Answers'}
           items={this.props.given_answers}
           subTabs={['votes', 'newest']}
-          count={23}
           userId={this.props.id} />
         <ShowActivitySummaryItem
+          handleViewMoreClick={this.props.handleViewMoreClick.bind(null, 'reputation')}
           title={'Reputation'}
           items={['placeholder', 'until', 'get', 'reputation', 'elements']}
-          count={53}
           userId={this.props.id} />
         <ShowActivitySummaryItem
+          handleViewMoreClick={this.props.handleViewMoreClick.bind(null, 'questions')}
           title={'Questions'}
           items={this.props.questions}
           subTabs={['votes', 'newest']}
-          count={513}
           userId={this.props.id} />
         <ShowActivitySummaryItem
-        title={'Tags'}
+          handleViewMoreClick={this.props.handleViewMoreClick.bind(null, 'tags')}
+          title={'Tags'}
           items={this.props.tags}
-          count={12}
           userId={this.props.id} />
         <ShowActivitySummaryItem
-        title={'Badges'}
+          handleViewMoreClick={this.props.handleViewMoreClick.bind(null, 'badges')}
+          title={'Badges'}
           items={this.props.badgings}
           subTabs={['recent', 'class', 'name']}
-          count={6}
           userId={this.props.id} />
         <ShowActivitySummaryItem
           title={'Votes Cast'}
           items={this.props.votes}
-          count={354}
           userId={this.props.id} />
       </div>
     );

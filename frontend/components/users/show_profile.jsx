@@ -3,6 +3,7 @@ var ShowProfileHeaderPortrait = require('./show_profile_header_portrait');
 var ShowProfileTopTags = require('./show_profile_top_tags');
 var ShowProfileTopPosts = require('./show_profile_top_posts');
 var ShowProfileBadges = require('./show_profile_badges');
+var hashHistory = require('react-router').hashHistory;
 
 function handleBio(bio) {
   if (bio) {
@@ -108,11 +109,16 @@ var UserShowProfile = React.createClass({
         </div>
 
         <div className='user-show-profile-main-container group'>
-          <ShowProfileBadges badgings={this.props.badgings} />
+          <ShowProfileBadges
+            handleViewMoreClick={this.props.handleViewMoreClick}
+            badgings={this.props.badgings} />
           <ShowProfileTopTags
+            handleViewMoreClick={this.props.handleViewMoreClick}
             userId={this.props.id}
             tags={this.props.tags} />
           <ShowProfileTopPosts
+            handleViewMoreClick={this.props.handleViewMoreClick}
+            userId={this.props.id}
             posts={this.props.posts} />
         </div>
       </div>

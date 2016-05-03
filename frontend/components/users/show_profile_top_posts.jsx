@@ -117,11 +117,15 @@ var ShowProfileTopPosts = React.createClass({
         {this.renderTopPosts()}
         <div className='user-show-profile-main-footer'>
           {'View all '}
-          <span className='link'>
+          <span
+            onClick={this.props.handleViewMoreClick.bind(null, 'questions')}
+            className='link'>
             questions
           </span>
           {' and '}
-          <span className='link'>
+          <span
+            onClick={this.props.handleViewMoreClick.bind(null, 'answers')}
+            className='link'>
             answers
           </span>
           {' →'}

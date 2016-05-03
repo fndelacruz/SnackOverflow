@@ -48,6 +48,10 @@ var UserShow = React.createClass({
   onChange: function() {
     this.setState({ user: UserStore.getUser(this.props.params.userId) });
   },
+  handleViewMoreClick: function(tab) {
+    var path = '/users/' + this.props.params.userId + '/' + tab;
+    hashHistory.push(path);
+  },
   handleProfileActivityTab: function(link) {
     if (USER_SHOW_SORT_TYPES.indexOf(link) !== -1 && this.state.tab !== link) {
       var path = '/users/' + this.state.user.id;
@@ -61,11 +65,16 @@ var UserShow = React.createClass({
   },
   handleTab: function() {
     if (this.state.tab === 'Profile') {
-      return (<UserShowProfile {...this.state.user} />);
+      return (
+        <UserShowProfile
+          handleViewMoreClick={this.handleViewMoreClick}
+          {...this.state.user} />
+        );
     } else if (this.state.tab === 'Activity') {
       return (
         <UserShowActivity
           {...this.state.user}
+          handleViewMoreClick={this.handleViewMoreClick}
           active={this.state.active} />
       );
     }

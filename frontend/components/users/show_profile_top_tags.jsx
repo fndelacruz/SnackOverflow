@@ -82,7 +82,9 @@ var ShowProfileTopTags = React.createClass({
         {this.renderTopTags()}
 
         <div className='user-show-profile-main-footer'>
-          <span className='link'>
+          <span
+            onClick={this.props.handleViewMoreClick.bind(null, 'tags')}
+            className='link'>
             View all tags →
           </span>
         </div>

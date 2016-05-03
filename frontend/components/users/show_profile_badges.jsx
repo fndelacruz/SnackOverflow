@@ -3,9 +3,6 @@ var Util = require('../../util/util');
 var BadgeStub = require('../badges/stub');
 
 var ShowProfileBadges = React.createClass({
-  handleAllBadgesClick: function() {
-    alert('TODO handleAllBadgesClick');
-  },
   renderBadgeRanks: function() {
     var badgings = {
       gold: [],
@@ -80,7 +77,9 @@ var ShowProfileBadges = React.createClass({
           {this.renderBadgeRanks()}
         </div>
         <div className='user-show-profile-main-footer'>
-          <span onClick={this.handleAllBadgesClick} className='link'>
+          <span
+            onClick={this.props.handleViewMoreClick.bind(null, 'badges')}
+            className='link'>
             View all badges →
           </span>
         </div>

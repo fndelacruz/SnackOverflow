@@ -64,11 +64,6 @@ var ShowActivitySummaryItem = React.createClass({
         );
     }
   },
-  handleMoreClick: function() {
-    var path = '/users/' + this.props.userId + '/' +
-      this.props.title.toLowerCase();
-    hashHistory.push(path);
-  },
   render: function() {
     if (!this.props.items) {
       return <div />;
@@ -80,12 +75,12 @@ var ShowActivitySummaryItem = React.createClass({
       headerLabelClass += ' link';
       footer = (
         <span
-          onClick={this.handleMoreClick}
+          onClick={this.props.handleViewMoreClick}
           className='show-activity-summary-item-footer link'>
           View more →
         </span>
       );
-      onClick = this.handleMoreClick;
+      onClick = this.props.handleViewMoreClick;
     }
 
     return (
@@ -95,7 +90,7 @@ var ShowActivitySummaryItem = React.createClass({
             {this.props.title}
           </span>
           <span className='user-show-common-header-count'>
-            {this.props.count}
+            {this.props.items ? this.props.items.length : 'undefined'}
           </span>
           {this.renderSubTabs()}
         </div>

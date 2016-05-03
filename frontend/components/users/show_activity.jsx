@@ -15,7 +15,11 @@ var UserShowActivity = React.createClass({
   renderMain: function() {
     switch (this.props.active) {
       case 'summary':
-        return (<ShowActivitySummary {...this.props} />);
+        return (
+          <ShowActivitySummary
+            handleViewMoreClick={this.props.handleViewMoreClick}
+            {...this.props} />
+        );
       default:
         return (
           <div>todo: {this.props.active}</div>
@@ -23,7 +27,6 @@ var UserShowActivity = React.createClass({
     }
   },
   render: function(tab) {
-    // debugger
     return (
       <div>
         <SortNav
