@@ -1,23 +1,8 @@
 var React = require('react');
 var TagStub = require('../tags/stub');
-
+var Util = require('../../util/util');
 function handleClick(userId, tagName) {
   alert('TODO clickOverride');
-}
-
-function handleTitle(tag) {
-  var title = [];
-  var questionWord = tag.question_count === 1 ? 'question' : 'questions';
-  var answerWord = tag.answer_count === 1 ? 'answer' : 'answers';
-  if (tag.question_count) {
-    title.push('Asked ' + tag.question_count + ' ' + questionWord +
-      ' with a total score of ' + tag.question_reputation + '.');
-  }
-  if (tag.answer_count) {
-    title.push('Gave ' + tag.answer_count + ' ' + answerWord +
-      ' with a total score of ' + tag.answer_reputation + '.');
-  }
-  return title.join(' ');
 }
 
 var ShowProfileTopTags = React.createClass({
@@ -35,7 +20,7 @@ var ShowProfileTopTags = React.createClass({
         {this.props.tags.slice(0, 6).map(function(tag) {
           return (
             <div
-              title={handleTitle(tag)}
+              title={Util.handleTagTitleAttr(tag)}
               className='user-show-profile-top-tags-main-element'
               key={'tag-' + tag.name}>
               <span

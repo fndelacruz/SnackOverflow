@@ -1,6 +1,7 @@
 var React = require('react');
 var MiniNav = require('../shared/mini_nav');
 var ShowActivitySummaryItemLineItem = require('./show_activity_summary_item_line_item');
+var ShowActivityTagItem = require('./show_activity_tag_item');
 var hashHistory = require('react-router').hashHistory;
 var UserStore = require('../../stores/user');
 var UserActions = require('../../actions/user');
@@ -50,7 +51,7 @@ var ShowActivitySummaryItem = React.createClass({
           return (
             <ShowActivitySummaryItemLineItem
               key={key + item.id}
-              handleClick={function() { hashHistory.push(path); }}
+              handleClick={hashHistory.push.bind(this, path)}
               title={item.title}
               createdAt={item.created_at}
               count={item.vote_count} />
@@ -66,12 +67,22 @@ var ShowActivitySummaryItem = React.createClass({
           return (
             <ShowActivitySummaryItemLineItem
               key={key + item.id}
-              handleClick={function() { hashHistory.push(path); }}
+              handleClick={hashHistory.push.bind(this, path)}
               title={item.title}
               createdAt={item.created_at}
               count={item.reputation} />
           );
         }.bind(this)));
+      case 'Tags':
+        return (items.slice(0,10).map(function(item) {
+          // var path = 'questions/' + item.question_id;
+          return (
+            <ShowActivityTagItem
+              key={'tag-' + item.name}
+              handleClick={function() {alert('TODO handleTagClick')}}
+              {...item} />
+          );
+        }));
       default:
         return (
           <div>

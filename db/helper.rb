@@ -55,7 +55,7 @@ def random_time_ago
 end
 
 def random_word
-  FFaker::BaconIpsum.word.gsub(/[ \.]/, '_')
+  FFaker::BaconIpsum.word.gsub(/[ \.]/, '-')
 end
 
 def create_random_user!
