@@ -9,7 +9,11 @@ var hashHistory = require('react-router').hashHistory;
 var _callbackId;
 var QuestionShow = React.createClass({
   getInitialState: function() {
-    return { question: QuestionStore.getQuestion(this.props.params.questionId) };
+    return {
+      question: QuestionStore.getQuestion(this.props.params.questionId),
+      firstLoad: true,
+      firstAnswerLoad: true
+    };
   },
   componentDidMount: function() {
     _callbackId = QuestionStore.addListener(this.onChange);
@@ -24,7 +28,8 @@ var QuestionShow = React.createClass({
   onChange: function() {
     this.setState({
       question: QuestionStore.getQuestion(this.props.params.questionId),
-      answerSortBy: QuestionStore.getAnswerSortBy()
+      answerSortBy: QuestionStore.getAnswerSortBy(),
+      firstLoad: false
     });
   },
   handleVote: function(votable, id, value, commentUserVote) {
@@ -98,14 +103,17 @@ var QuestionShow = React.createClass({
     if (this.props.params.answerId) {
       var answerId = 'answer-' + this.props.params.answerId;
       var answerEl = document.getElementById(answerId);
-      if (answerEl) {
+      if (answerEl && this.state.firstAnswerLoad) {
         var answerElClassName = answerEl.getAttribute('class');
         answerEl.setAttribute('class', answerElClassName + ' active-show-item');
         answerEl.scrollIntoView();
         answerEl.setAttribute('class', answerElClassName);
+        this.state.firstAnswerLoad = false;
       }
     } else {
-      window.scrollTo(0,0);
+      if (this.state.firstLoad) {
+        window.scrollTo(0,0);
+      }
     }
 
     if (question.answers) {
