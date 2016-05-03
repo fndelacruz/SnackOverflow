@@ -183,7 +183,7 @@ module UserSQLHelper
         question_count: user_with_tag.question_tag_count,
         question_reputation: user_with_tag.question_tag_reputation,
         answer_count: user_with_tag.answer_tag_count,
-        answer_tag_reputation: user_with_tag.answer_tag_reputation,
+        answer_reputation: user_with_tag.answer_tag_reputation,
         post_count: user_with_tag.post_tag_count,
         post_reputation: user_with_tag.post_tag_reputation
       }

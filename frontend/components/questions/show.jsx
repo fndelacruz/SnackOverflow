@@ -104,6 +104,8 @@ var QuestionShow = React.createClass({
         answerEl.scrollIntoView();
         answerEl.setAttribute('class', answerElClassName);
       }
+    } else {
+      window.scrollTo(0,0);
     }
 
     if (question.answers) {

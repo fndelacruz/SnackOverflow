@@ -14,10 +14,12 @@ var ShowProfileTopPosts = React.createClass({
       sortBy: UserStore.getPostsSortBy()
     };
   },
-  handlePostClick: function(questionId, answerId) {
-    path = '/questions/' + questionId;
-    if (answerId) {
-      path += '/answer/' + answerId;
+  handlePostClick: function(primaryId, questionId) {
+    var path = '/questions/';
+    if (questionId) {
+      path += questionId + '/answer/' + primaryId;
+    } else {
+      path += primaryId;
     }
     hashHistory.push(path);
   },
@@ -67,12 +69,9 @@ var ShowProfileTopPosts = React.createClass({
       <div className='user-show-profile-top-posts-main'>
         {posts.slice(0,10).map(function(post) {
           var answerId;
-          if (post.question_id) {
-            answerId = post.id;
-          }
           return (
             <div
-              onClick={this.handlePostClick.bind(null, post.question_id, answerId)}
+              onClick={this.handlePostClick.bind(null, post.id, post.question_id)}
               className='user-show-profile-top-posts-main-element group'
               key={(post.question_id ? 'answer' : 'question') + '-' + post.id}>
               <div className='user-show-profile-top-posts-main-element-type'>
