@@ -1,10 +1,9 @@
 json.extract!(@user, :id, :display_name, :email, :created_at, :updated_at,
-  :votes, :bio, :reputation, :location, :tags, :view_count, :vote_count
-)
+    :votes, :bio, :reputation, :location, :tags, :view_count, :vote_count)
 
 json.questions do
   json.array!(@questions) do |question|
-    json.extract!(question, :id, :title, :created_at, :vote_count )
+    json.extract!(question, :id, :title, :created_at, :vote_count)
   end
 end
 
@@ -18,13 +17,14 @@ end
 json.badgings do
   json.array!(@badgings) do |badging|
     json.extract!(badging, :id, :created_at)
-    json.badge { json.partial!('/api/badges/badge', badge: badging.badge) }
+    json.badge { json.extract!(badging.badge, :id, :name, :rank, :description) }
   end
 end
 
 json.reputations do
   json.array!(@reputations) do |reputation|
-    json.partial!('/api/votes/vote', vote: reputation)
+    json.extract!(reputation, :id, :user_id, :votable_type, :votable_id,
+        :reputation, :question_id, :title, :created_at)
   end
 end
 
