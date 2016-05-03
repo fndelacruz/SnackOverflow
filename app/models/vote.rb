@@ -25,6 +25,8 @@ class Vote < ActiveRecord::Base
     votes = (
       Vote.select("
           votes.*,
+          questions.title,
+          questions.id AS question_id,
           (
             CASE votes.value
               WHEN 1 THEN #{User::REPUTATION_SCHEME[:receive_question_upvote]}
@@ -32,10 +34,12 @@ class Vote < ActiveRecord::Base
             END
           ) AS reputation")
         .joins("JOIN questions ON
-          votes.votable_id = questions.id AND votes.votable_type = 'Question'")
+            votes.votable_id = questions.id AND votes.votable_type = 'Question'")
         .where(questions: { user_id: user_id})
       .union_all Vote.select("
           votes.*,
+          questions.title,
+          questions.id AS question_id,
           (
             CASE votes.value
               WHEN 1 THEN #{User::REPUTATION_SCHEME[:receive_answer_upvote]}
@@ -43,10 +47,13 @@ class Vote < ActiveRecord::Base
             END
           ) AS reputation")
         .joins("JOIN answers ON
-          votes.votable_id = answers.id AND votes.votable_type = 'Answer'")
+            votes.votable_id = answers.id AND votes.votable_type = 'Answer'")
+        .joins("JOIN questions ON answers.question_id = questions.id")
         .where(answers: { user_id: user_id })
       .union_all Vote.select("
           votes.*,
+          COALESCE(q1.title, q2.title) AS title,
+          COALESCE(q1.id, q2.id) AS question_id,
           (
             CASE votes.value
               WHEN 1 THEN #{User::REPUTATION_SCHEME[:receive_comment_upvote]}
@@ -54,11 +61,21 @@ class Vote < ActiveRecord::Base
             END
           ) AS reputation")
         .joins("JOIN comments ON
-          votes.votable_id = comments.id AND votes.votable_type = 'Comment'")
+            votes.votable_id = comments.id AND votes.votable_type = 'Comment'")
+        .joins("LEFT JOIN questions AS q1 ON comments.commentable_id = q1.id AND
+            comments.commentable_type = 'Question'")
+        .joins("LEFT JOIN answers ON comments.commentable_id = answers.id AND
+            comments.commentable_type = 'Answer'")
+        .joins("LEFT JOIN questions AS q2 ON answers.question_id = q2.id")
         .where(comments: { user_id: user_id })
       .union_all Vote.select("
           votes.*,
+          questions.title,
+          questions.id AS question_id,
           #{User::REPUTATION_SCHEME[:give_answer_downvote]} AS reputation")
+        .joins("JOIN answers ON
+            votes.votable_id = answers.id AND votes.votable_type = 'Answer'")
+        .joins("JOIN questions ON answers.question_ID = questions.id")
         .where(user_id: user_id, votable_type: 'Answer', value: -1)
     ).order(:created_at).reverse_order
   end
