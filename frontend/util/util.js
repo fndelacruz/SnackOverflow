@@ -5,27 +5,43 @@ module.exports = {
 
   // NOTE: defaults to ascending
   sortBy: function(items, sortType, isDescending, sortType2, isDescending2) {
-      items.sort(function(a, b) {
-        if (a[sortType] < b[sortType]) {
-          return isDescending ? 1 : -1;
-        } else if (a[sortType] > b[sortType]) {
-          return isDescending ? -1 : 1;
-        } else if (a[sortType] === b[sortType]) {
-
-          if (sortType2) {
-            if (a[sortType2] < b[sortType2]) {
-              return isDescending2 ? 1 : -1;
-            } else if (a[sortType2] > b[sortType2]) {
-              return isDescending2 ? -1 : 1;
-            } else if (a[sortType2] === b[sortType2]) {
-              return 0;
-            }
-
-          } else {
+      if (sortType === 'rank') {
+        items.sort(function(a, b) {
+          if (a.rank === 'bronze' && b.rank === 'silver' ||
+              a.rank === 'bronze' && b.rank === 'gold' ||
+              a.rank === 'silver' && b.rank === 'gold') {
+            return isDescending ? 1 : -1;
+          } else if (a.rank === 'gold' && b.rank === 'silver' ||
+              a.rank === 'gold' && b.rank === 'bronze' ||
+              a.rank === 'silver' && b.rank === 'bronze') {
+            return isDescending ? -1 : 1;
+          } else if (a.rank === b.rank) {
             return 0;
           }
-        }
-      });
+        });
+      } else {
+        items.sort(function(a, b) {
+          if (a[sortType] < b[sortType]) {
+            return isDescending ? 1 : -1;
+          } else if (a[sortType] > b[sortType]) {
+            return isDescending ? -1 : 1;
+          } else if (a[sortType] === b[sortType]) {
+
+            if (sortType2) {
+              if (a[sortType2] < b[sortType2]) {
+                return isDescending2 ? 1 : -1;
+              } else if (a[sortType2] > b[sortType2]) {
+                return isDescending2 ? -1 : 1;
+              } else if (a[sortType2] === b[sortType2]) {
+                return 0;
+              }
+
+            } else {
+              return 0;
+            }
+          }
+        });
+      }
   },
   formatDateHelper: function (item) {
     if (item.created_at) {

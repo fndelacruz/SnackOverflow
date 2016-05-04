@@ -6,6 +6,7 @@ var hashHistory = require('react-router').hashHistory;
 var UserStore = require('../../stores/user');
 var UserActions = require('../../actions/user');
 var Util = require('../../util/util');
+var BadgeStub = require('../badges/stub');
 
 var ShowActivitySummaryItem = React.createClass({
   getInitialState: function() {
@@ -75,7 +76,7 @@ var ShowActivitySummaryItem = React.createClass({
         }.bind(this)));
       case 'Tags':
         return (items.slice(0,10).map(function(item) {
-          // var path = 'questions/' + item.question_id;
+          // TODO: handleClick as search query
           return (
             <ShowActivityTagItem
               key={'tag-' + item.name}
@@ -96,12 +97,22 @@ var ShowActivitySummaryItem = React.createClass({
             break;
         }
         return (items.slice(0,10).map(function(item) {
-          // var path = 'questions/' + item.question_id;
+          // TODO: handleClick as search query
+          var multipler;
+          if (item.count > 1) {
+            multipler = (
+              <div className='show-activity-badge-item-count'>
+                {'x ' + item.count}
+              </div>
+            );
+          }
           return (
             <div
+              className='show-activity-badge-item-container'
               key={'tag-' + item.name}
-              handleClick={function() {alert('TODO handleTagClick');}}>
-              {item.rank} {Util.snakeCaseToCamelSpace(item.name)} {item.count === 1 ? '' : 'x ' + item.count} {item.created_at.toLocaleString()}
+              handleClick={function() {alert('TODO handleBadgeClick');}}>
+              <BadgeStub badge={item} />
+              {multipler}
             </div>
           );
         }));
@@ -120,15 +131,32 @@ var ShowActivitySummaryItem = React.createClass({
     var headerLabelClass = 'user-show-common-header-label';
     var footer, onClick;
 
+    switch (this.props.title) {
+      case 'Answers': case 'Reputation': case 'Questions':
+        if (this.props.items.length >= 5) {
+          footer = (
+            <span
+              onClick={this.props.handleViewMoreClick}
+              className='show-activity-summary-item-footer link'>
+              View more →
+            </span>
+          );
+        }
+        break;
+      case 'Tags': case 'Badges':
+        if (this.props.items.length >= 10) {
+          footer = (
+            <span
+              onClick={this.props.handleViewMoreClick}
+              className='show-activity-summary-item-footer link'>
+              View more →
+            </span>
+          );
+        }
+        break;
+    }
     if (this.props.title !== 'Votes Cast') {
       headerLabelClass += ' link';
-      footer = (
-        <span
-          onClick={this.props.handleViewMoreClick}
-          className='show-activity-summary-item-footer link'>
-          View more →
-        </span>
-      );
       onClick = this.props.handleViewMoreClick;
     }
 
