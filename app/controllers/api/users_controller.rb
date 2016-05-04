@@ -15,6 +15,12 @@ class Api::UsersController < ApplicationController
       @badges = Badge.grouped_with_stats_by_user_id(params[:id])
       @reputations = Vote.reputations_for_user_id(params[:id])
       @vote_stats = Vote.stats_for_user_id(params[:id])
+
+      # TODO: when get to for ShowActivityDetail favorties, expand this by
+      # joining {question: [:favorites, :votes, :answer, :views, :tags]
+      
+      @favorites = Favorite.where(user_id: params[:id])
+
       View.create!(user: current_user, viewable: @user)
     else
       render json: {}, error: :not_found

@@ -27,10 +27,10 @@ function resetUsers(users) {
 
 function resetUser(user) {
   Util.formatDateHelper(user);
-  ['questions', 'given_answers', 'badges', 'reputations']
+  ['questions', 'given_answers', 'badges', 'reputations', 'favorites']
       .forEach(function(collection) {
-    user[collection].forEach(Util.formatDateHelper)
-  })
+    user[collection].forEach(Util.formatDateHelper);
+  });
   user.posts = user.questions.concat(user.given_answers);
   Util.sortBy(user.posts, 'vote_reputation', true); // by default, sorts by vote_count
   _users[user.id] = user;

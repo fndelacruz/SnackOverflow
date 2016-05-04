@@ -1,5 +1,5 @@
 .show-activity-summary-item-container {
-  margin-top: 40px;
+  margin-bottom: 40px;
   float: left;
   width: 515px;
   height: 270px;
@@ -8,12 +8,6 @@
 
 .show-activity-summary-item-container:nth-child(2n) {
   margin-left: 30px;
-}
-
-.show-activity-summary-item-container .user-show-common-header {
-  border-bottom: 1px solid #bbb;
-  padding-bottom: 10px;
-  margin-bottom: 25px;
 }
 
 // badges

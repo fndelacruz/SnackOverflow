@@ -82,6 +82,22 @@ def create_random_question!
   )
 end
 
+def toggle_random_favorite!
+  sometime = random_time_ago
+  user = random_user
+  question = random_question
+  if favorite = user.favorites.where(question: question).first
+    favorite.destroy!
+  else
+    Favorite.create!(
+      user_id: user.id,
+      question: question,
+      created_at: sometime,
+      updated_at: sometime
+    )
+  end
+end
+
 def create_random_answer!
   sometime = random_time_ago
   random_question.answers.create!(
@@ -380,4 +396,6 @@ def generate_random_content!
 
   1000.times { create_random_view!(random_question) }
   1000.times { create_random_view!(random_user) }
+
+  500.times { toggle_random_favorite! }
 end

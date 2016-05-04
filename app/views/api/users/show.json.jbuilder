@@ -27,6 +27,12 @@ json.reputations do
   end
 end
 
+json.favorites do
+  json.array!(@favorites) do |favorite|
+    json.extract!(favorite, :id, :user_id, :question_id, :created_at)
+  end
+end
+
 json.vote_stats @vote_stats
 
 json.updated_at_words "last seen #{time_ago_in_words(@user.updated_at)} ago"

@@ -3,6 +3,14 @@ module.exports = {
     return string[0].toUpperCase() + string.slice(1);
   },
 
+  handleSigularize: function(string, count) {
+    if (count === 1 && string[string.length - 1] === 's') {
+      return string.slice(0, (string.length - 1));
+    } else {
+      return string;
+    }
+  },
+
   // NOTE: defaults to ascending
   sortBy: function(items, sortType, isDescending, sortType2, isDescending2) {
       if (sortType === 'rank') {

@@ -4,7 +4,7 @@ var UserActions = require('../../actions/user');
 var SortNav = require('../shared/sort_nav');
 var ShowActivitySummary = require('./show_activity_summary');
 var hashHistory = require('react-router').hashHistory;
-
+var ShowActivityDetail = require('./show_activity_detail');
 var USER_SHOW_ACTIVITY_TABS = ['summary', 'answers', 'questions', 'tags', 'badges', 'favorites', 'reputation'];
 
 var UserShowActivity = React.createClass({
@@ -13,6 +13,7 @@ var UserShowActivity = React.createClass({
     hashHistory.push(path);
   },
   renderMain: function() {
+    var items;
     switch (this.props.active) {
       case 'summary':
         return (
@@ -20,15 +21,24 @@ var UserShowActivity = React.createClass({
             handleViewMoreClick={this.props.handleViewMoreClick}
             {...this.props} />
         );
+      case 'answers':
+        items = this.props.given_answers;
+        break;
+      case 'reputation':
+        items = this.props.reputations;
+        break;
       default:
-        return (
-          <div>todo: {this.props.active}</div>
-        );
+        items = this.props[this.props.active];
     }
+    return (
+      <ShowActivityDetail
+        items={items}
+        title={this.props.active}/>
+    );
   },
   render: function(tab) {
     return (
-      <div>
+      <div className='show-activity-container'>
         <SortNav
           tabShift='left'
           links={USER_SHOW_ACTIVITY_TABS}

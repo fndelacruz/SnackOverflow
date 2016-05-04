@@ -253,7 +253,7 @@ var ShowActivitySummaryItem = React.createClass({
 
     return (
       <div className='show-activity-summary-item-container'>
-        <div className='user-show-common-header'>
+        <div className='show-activity-header'>
           <span className={headerLabelClass} onClick={onClick}>
             {this.props.title}
           </span>
