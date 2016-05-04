@@ -14,6 +14,7 @@ class Api::UsersController < ApplicationController
       @given_answers = Answer.includes(:votes, :question).where(user_id: params[:id])
       @badges = Badge.grouped_with_stats_by_user_id(params[:id])
       @reputations = Vote.reputations_for_user_id(params[:id])
+      @vote_stats = Vote.stats_for_user_id(params[:id])
       View.create!(user: current_user, viewable: @user)
     else
       render json: {}, error: :not_found

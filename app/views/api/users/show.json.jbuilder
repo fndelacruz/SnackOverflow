@@ -1,5 +1,5 @@
 json.extract!(@user, :id, :display_name, :email, :created_at, :updated_at,
-    :votes, :bio, :reputation, :location, :tags, :view_count, :vote_count)
+    :bio, :reputation, :location, :tags, :view_count, :vote_count)
 
 json.questions do
   json.array!(@questions) do |question|
@@ -26,5 +26,7 @@ json.reputations do
         :reputation, :question_id, :title, :created_at)
   end
 end
+
+json.vote_stats @vote_stats
 
 json.updated_at_words "last seen #{time_ago_in_words(@user.updated_at)} ago"

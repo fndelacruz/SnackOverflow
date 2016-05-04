@@ -116,6 +116,80 @@ var ShowActivitySummaryItem = React.createClass({
             </div>
           );
         }));
+      case 'Votes Cast':
+        var byType = (
+          <div className='show-activity-votes-cast-data-container'>
+            {['question', 'answer', 'comment'].map(function(type) {
+              return (
+                <div
+                  key={'vote-container-' + type}
+                  className='show-activity-votes-cast-data-element'>
+                  <span className='show-activity-votes-cast-data-label'>
+                    {type + ':'}
+                  </span>
+                  <span className='show-activity-votes-cast-data-value'>
+                    {' ' + items[type]}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        );
+
+        var byTimeInterval = (['month', 'week', 'day'].map(function(timeInterval) {
+          return (
+            <div
+              key={'vote-container-' + timeInterval}
+              className='show-activity-votes-cast-element'>
+              <div className='show-activity-votes-cast-label'>
+                {timeInterval}
+              </div>
+              <div className='show-activity-votes-cast-data-container'>
+                <div className='show-activity-votes-cast-data-element'>
+                  <span className='show-activity-votes-cast-data-value'>
+                    {items[timeInterval]}
+                  </span>
+                </div>
+              </div>
+            </div>
+          );
+        }));
+        return (
+          <div className='show-activity-votes-cast-container group'>
+            <div className='show-activity-votes-cast-element'>
+              <div className='show-activity-votes-cast-label'>
+                all time
+              </div>
+              <div className='show-activity-votes-cast-data-container'>
+                <div className='show-activity-votes-cast-data-element'>
+                  <span className='show-activity-votes-cast-data-label'>
+                    up:
+                  </span>
+                  <span className='show-activity-votes-cast-data-value'>
+                    {' ' + items.up}
+                  </span>
+                </div>
+                <div className='show-activity-votes-cast-data-element'>
+                  <span className='show-activity-votes-cast-data-label'>
+                    down:
+                  </span>
+                  <span className='show-activity-votes-cast-data-value'>
+                    {' ' + items.down}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className='show-activity-votes-cast-element'>
+              <div className='show-activity-votes-cast-label'>
+                by type
+              </div>
+              {byType}
+            </div>
+
+            {byTimeInterval}
+          </div>
+        );
       default:
         return (
           <div>
@@ -162,13 +236,18 @@ var ShowActivitySummaryItem = React.createClass({
 
     var items = this.props.items, count;
     if (items) {
-      if (this.props.title == 'Badges') {
-        count = 0;
-        for (var badge in items) {
-          count += items[badge].count;
-        }
-      } else {
-        count = items.length;
+      switch (this.props.title) {
+        case 'Badges':
+          count = 0;
+          for (var badge in items) {
+            count += items[badge].count;
+          }
+          break;
+        case 'Votes Cast':
+          count = this.props.items.total;
+          break;
+        default:
+          count = items.length;
       }
     }
 

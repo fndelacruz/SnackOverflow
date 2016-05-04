@@ -21,6 +21,20 @@ class Vote < ActiveRecord::Base
 
   after_create :handle_badges
 
+  def self.stats_for_user_id(user_id)
+    {
+      total: Vote.where(user_id: user_id).count,
+      up: Vote.where(user_id: user_id, value: 1).count,
+      down: Vote.where(user_id: user_id, value: -1).count,
+      question: Vote.where(user_id: user_id, votable_type: 'Question').count,
+      answer: Vote.where(user_id: user_id, votable_type: 'Answer').count,
+      comment: Vote.where(user_id: user_id, votable_type: 'Comment').count,
+      day: Vote.where('user_id = ? AND created_at > ?', user_id, 1.day.ago).count,
+      week: Vote.where('user_id = ? AND created_at > ?', user_id, 1.week.ago).count,
+      month: Vote.where('user_id = ? AND created_at > ?', user_id, 1.month.ago).count,
+    }
+  end
+
   def self.reputations_for_user_id(user_id)
     votes = (
       Vote.select("

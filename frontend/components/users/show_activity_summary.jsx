@@ -35,7 +35,7 @@ var ShowActivitySummary = React.createClass({
           userId={this.props.id} />
         <ShowActivitySummaryItem
           title={'Votes Cast'}
-          items={this.props.votes}
+          items={this.props.vote_stats}
           userId={this.props.id} />
       </div>
     );
