@@ -12,7 +12,7 @@ class Api::UsersController < ApplicationController
     if @user
       @questions = Question.includes(:votes).where(user_id: params[:id])
       @given_answers = Answer.includes(:votes, :question).where(user_id: params[:id])
-      @badgings = Badging.includes(:badge).where(user_id: params[:id])
+      @badges = Badge.grouped_with_stats_by_user_id(params[:id])
       @reputations = Vote.reputations_for_user_id(params[:id])
       View.create!(user: current_user, viewable: @user)
     else

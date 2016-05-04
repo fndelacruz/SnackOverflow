@@ -30,7 +30,7 @@ var ShowActivitySummary = React.createClass({
         <ShowActivitySummaryItem
           handleViewMoreClick={this.props.handleViewMoreClick.bind(null, 'badges')}
           title={'Badges'}
-          items={this.props.badgings}
+          items={this.props.badges}
           subTabs={['recent', 'class', 'name']}
           userId={this.props.id} />
         <ShowActivitySummaryItem

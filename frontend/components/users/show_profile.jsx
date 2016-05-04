@@ -37,7 +37,7 @@ var UserShowProfile = React.createClass({
       <div className='user-show-profile-container group'>
         <div className='user-show-profile-header group'>
           <ShowProfileHeaderPortrait
-            badgings={this.props.badgings}
+            badges={this.props.badges}
             reputation={this.props.reputation}
             id={this.props.id} />
 
@@ -111,7 +111,7 @@ var UserShowProfile = React.createClass({
         <div className='user-show-profile-main-container group'>
           <ShowProfileBadges
             handleViewMoreClick={this.props.handleViewMoreClick}
-            badgings={this.props.badgings} />
+            badges={this.props.badges} />
           <ShowProfileTopTags
             handleViewMoreClick={this.props.handleViewMoreClick}
             userId={this.props.id}

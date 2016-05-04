@@ -4,25 +4,28 @@ var BadgeStub = require('../badges/stub');
 
 var ShowProfileBadges = React.createClass({
   renderBadgeRanks: function() {
-    var badgings = {
+    var badges = {
       gold: [],
       silver: [],
       bronze: [],
     };
 
-    this.props.badgings.forEach(function(badging) {
-      badgings[badging.badge.rank].push(badging);
+    var badgeCounts = {
+      gold: 0,
+      silver: 0,
+      bronze: 0
+    };
+
+    this.props.badges.forEach(function(badge) {
+      badges[badge.rank].push(badge);
+      badgeCounts[badge.rank] += badge.count;
     });
 
-    Object.keys(badgings).forEach(function(rank) {
-      Util.sortBy(badgings[rank], 'created_at', true);
-    });
-
-    return Object.keys(badgings).map(function(rank) {
-      Util.sortBy(badgings[rank], 'created_at', true);
+    return Object.keys(badges).map(function(rank) {
+      Util.sortBy(badges[rank], 'created_at', true);
       var className = 'user-show-profile-badges-element-header badge-header-' + rank;
 
-      if (badgings[rank].length) {
+      if (badges[rank].length) {
         return (
           <div
             key={'badges-' + rank}
@@ -32,7 +35,7 @@ var ShowProfileBadges = React.createClass({
                 {rank.toUpperCase()}
               </div>
               <div className='user-show-profile-badges-element-header-value'>
-                {badgings[rank].length}
+                {badgeCounts[rank]}
               </div>
             </div>
 
@@ -41,14 +44,14 @@ var ShowProfileBadges = React.createClass({
                 Recent
               </div>
               <div className='user-show-profile-badges-element-main-badges-container'>
-                {badgings[rank].slice(0, 3).map(function(badging) {
+                {badges[rank].slice(0, 3).map(function(badge) {
                   return (
                     <div
                       className='user-show-profile-badges-element-main-badges-element group'
-                      key={'badging-' + badging.id}>
-                      <BadgeStub badge={badging.badge} />
+                      key={'badge-' + badge.id}>
+                      <BadgeStub badge={badge} />
                       <div className='user-show-profile-badges-element-main-badges-element-created-date'>
-                        {badging.created_at.toLocaleDateString()}
+                        {badge.created_at.toLocaleDateString()}
                       </div>
                     </div>
                   );
@@ -70,7 +73,7 @@ var ShowProfileBadges = React.createClass({
             Badges
           </span>
           <span className='user-show-common-header-count'>
-            {this.props.badgings.length}
+            {this.props.badges.length}
           </span>
         </div>
         <div className='user-show-profile-badges-element-container-container'>

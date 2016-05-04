@@ -14,10 +14,16 @@ json.given_answers do
   end
 end
 
-json.badgings do
-  json.array!(@badgings) do |badging|
-    json.extract!(badging, :id, :created_at)
-    json.badge { json.extract!(badging.badge, :id, :name, :rank, :description) }
+# json.badgings do
+#   json.array!(@badgings) do |badging|
+#     json.extract!(badging, :id, :created_at)
+#     json.badge { json.extract!(badging.badge, :id, :name, :rank, :description) }
+#   end
+# end
+
+json.badges do
+  json.array!(@badges) do |badge|
+    json.extract!(badge, :id, :name, :rank, :description, :count, :created_at)
   end
 end
 

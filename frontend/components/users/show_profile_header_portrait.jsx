@@ -16,16 +16,16 @@ var ShowProfileHeaderPortrait = React.createClass({
   },
   renderBadges: function() {
     var badges = { bronze: 0, silver: 0, gold: 0};
-    this.props.badgings.forEach(function(badging) {
-      switch (badging.badge.rank) {
+    this.props.badges.forEach(function(badge) {
+      switch (badge.rank) {
         case 'bronze':
-          badges.bronze += 1;
+          badges.bronze += badge.count;
           break;
         case 'silver':
-          badges.silver += 1;
+          badges.silver += badge.count;
           break;
         case 'gold':
-          badges.gold += 1;
+          badges.gold += badge.count;
           break;
       }
     });

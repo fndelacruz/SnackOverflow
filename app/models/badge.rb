@@ -104,6 +104,16 @@ class Badge < ActiveRecord::Base
     SCHEMA[:questions][:favorites]
   end
 
+  def self.grouped_with_stats_by_user_id(user_id)
+    Badge.select("badges.id, badges.name, badges.rank, badges.description, " +
+          "COUNT(badges.*) AS count, " +
+          "MAX(badgings.created_at) AS created_at")
+      .joins("JOIN badgings ON badges.id = badgings.badge_id")
+      .where(badgings: { user_id: user_id })
+      .group("badges.id")
+      .order("created_at DESC")
+  end
+
   def badgings_count
     badgings.length
   end
