@@ -5,6 +5,7 @@ module UserSQLHelper
         (
           SELECT  -- question tags enumeration
             users.id AS user_id,
+            tags.id AS tag_id,
             tags.name AS tag_name
           FROM
             users
@@ -16,14 +17,15 @@ module UserSQLHelper
             tags ON taggings.tag_id = tags.id
           #{user_id ? "WHERE questions.user_id = :user_id" : ""}
           GROUP BY
-            users.id, tags.name
+            users.id, tags.name, tags.id
           ORDER BY
-            users.id, tags.name
+            users.id, tags.name, tags.id
         )
           UNION
         (
           SELECT  -- answer tags enumeration
             users.id AS user_id,
+            tags.id AS tag_id,
             tags.name AS tag_name
           FROM
             users
@@ -37,9 +39,9 @@ module UserSQLHelper
             tags ON taggings.tag_id = tags.id
           #{user_id ? "WHERE answers.user_id = :user_id" : ""}
           GROUP BY
-            users.id, tags.name
+            users.id, tags.name, tags.id
           ORDER BY
-            users.id, tags.name
+            users.id, tags.name, tags.id
         )
       ) AS tag_names ON users.id = tag_names.user_id
     SQL
@@ -180,6 +182,7 @@ module UserSQLHelper
 
       users.last.tags << {
         name: user_with_tag.tag_name,
+        id: user_with_tag.tag_id,
         question_count: user_with_tag.question_tag_count,
         question_reputation: user_with_tag.question_tag_reputation,
         answer_count: user_with_tag.answer_tag_count,

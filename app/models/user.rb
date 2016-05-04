@@ -99,6 +99,7 @@ class User < ActiveRecord::Base
       SELECT
         users.*,
         tag_names.tag_name AS tag_name,
+        tag_names.tag_id AS tag_id,
         COALESCE(sq_q_tag_count.q_tag_count, 0)
           AS question_tag_count,
         COALESCE(sq_q_tag_reputation.q_tag_reputation, 0)
@@ -144,6 +145,7 @@ class User < ActiveRecord::Base
           COALESCE(user_given_answer_downvote_reputations.reputation, 0)
         ) AS reputation,
         tag_names.tag_name AS tag_name,
+        tag_names.tag_id AS tag_id,
         COALESCE(sq_q_tag_count.q_tag_count, 0)
           AS question_tag_count,
         COALESCE(sq_q_tag_reputation.q_tag_reputation, 0)

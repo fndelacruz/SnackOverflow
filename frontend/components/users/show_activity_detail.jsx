@@ -37,10 +37,108 @@ var ShowActivityDetail = React.createClass({
       );
     }
   },
+  renderShowActivityDetailItems: function() {
+    switch (this.props.title) {
+      case 'answers':
+        return (
+          this.props.items.map(function(item) {
+            return (
+              <div
+                key={'item-' + item.id}
+                className='show-activity-detail-answer-item-container'>
+                <div className='show-activity-summary-item-line-item group'>
+                  <div className='show-activity-summary-item-line-item-counter'>
+                    {item.vote_count}
+                  </div>
+                  <div className='show-activity-summary-item-line-item-title link'>
+                    {item.title}
+                  </div>
+                  <div className='show-activity-detail-answer-item-date'>
+                    {item.created_at.toLocaleString()}
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        );
+      case 'questions':
+        return (
+          this.props.items.map(function(item) {
+            return (
+              <div key={'item-' + item.id}>
+                {JSON.stringify(item)}
+              </div>
+            );
+          })
+        );
+      case 'tags':
+        return (
+          this.props.items.map(function(item) {
+            return (
+              <div key={'item-' + item.id}>
+                {JSON.stringify(item)}
+              </div>
+            );
+          })
+        );
+      case 'badges':
+        return (
+          this.props.items.map(function(item) {
+            return (
+              <div key={'item-' + item.id}>
+                {JSON.stringify(item)}
+              </div>
+            );
+          })
+        );
+      case 'favorites':
+        return (
+          this.props.items.map(function(item) {
+            return (
+              <div key={'item-' + item.id}>
+                {JSON.stringify(item)}
+              </div>
+            );
+          })
+        );
+      case 'reputation':
+        return (
+          this.props.items.map(function(item) {
+            return (
+              <div key={'item-' + item.id + '-rep-' + item.reputation}>
+                {JSON.stringify(item)}
+              </div>
+            );
+          })
+        );
+    }
+  },
   render: function() {
     if (!this.props.items) {
       return <div />;
     }
+
+    switch (this.state.active) {
+      case 'votes':
+        Util.sortBy(this.props.items, 'vote_count', true);
+        break;
+      case 'newest':
+        Util.sortBy(this.props.items, 'created_at', true);
+        break;
+      case 'rank':
+        Util.sortBy(this.props.items, 'rank', true);
+        break;
+      case 'name':
+        Util.sortBy(this.props.items, 'name');
+        break;
+      case 'views':
+        // TODO;
+        break;
+      case 'favorites':
+        // TODO;
+        break;
+    }
+
     return (
       <div className='show-activity-detail-container'>
         <div className='show-activity-header'>
@@ -53,8 +151,8 @@ var ShowActivityDetail = React.createClass({
           </span>
           {this.renderMiniNav()}
         </div>
-        <div className="show-activity-detail-main">
-          {JSON.stringify(this.props.items)}
+        <div className='show-activity-detail-main'>
+          {this.renderShowActivityDetailItems()}
         </div>
       </div>
     );
