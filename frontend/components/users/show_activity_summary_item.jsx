@@ -79,8 +79,30 @@ var ShowActivitySummaryItem = React.createClass({
           return (
             <ShowActivityTagItem
               key={'tag-' + item.name}
-              handleClick={function() {alert('TODO handleTagClick')}}
+              handleClick={function() {alert('TODO handleTagClick');}}
               {...item} />
+          );
+        }));
+      case 'Badges':
+        switch (this.state.subTab) {
+          case 'recent':
+            Util.sortBy(items, 'created_at', true);
+            break;
+          case 'class':
+            Util.sortBy(items, 'rank', true);
+            break;
+          case 'name':
+            Util.sortBy(items, 'name');
+            break;
+        }
+        return (items.slice(0,10).map(function(item) {
+          // var path = 'questions/' + item.question_id;
+          return (
+            <div
+              key={'tag-' + item.name}
+              handleClick={function() {alert('TODO handleTagClick');}}>
+              {item.rank} {Util.snakeCaseToCamelSpace(item.name)} {item.count === 1 ? '' : 'x ' + item.count} {item.created_at.toLocaleString()}
+            </div>
           );
         }));
       default:
@@ -110,6 +132,18 @@ var ShowActivitySummaryItem = React.createClass({
       onClick = this.props.handleViewMoreClick;
     }
 
+    var items = this.props.items, count;
+    if (items) {
+      if (this.props.title == 'Badges') {
+        count = 0;
+        for (var badge in items) {
+          count += items[badge].count;
+        }
+      } else {
+        count = items.length;
+      }
+    }
+
     return (
       <div className='show-activity-summary-item-container'>
         <div className='user-show-common-header'>
@@ -117,7 +151,7 @@ var ShowActivitySummaryItem = React.createClass({
             {this.props.title}
           </span>
           <span className='user-show-common-header-count'>
-            {this.props.items ? this.props.items.length : 'undefined'}
+            {count}
           </span>
           {this.renderSubTabs()}
         </div>

@@ -64,6 +64,10 @@ var ShowProfileBadges = React.createClass({
     });
   },
   render: function() {
+    var badgeCount = 0;
+    for (var badge in this.props.badges) {
+      badgeCount += this.props.badges[badge].count;
+    }
     return (
       <div
         className='user-show-profile-badges'
@@ -73,7 +77,7 @@ var ShowProfileBadges = React.createClass({
             Badges
           </span>
           <span className='user-show-common-header-count'>
-            {this.props.badges.length}
+            {badgeCount}
           </span>
         </div>
         <div className='user-show-profile-badges-element-container-container'>
