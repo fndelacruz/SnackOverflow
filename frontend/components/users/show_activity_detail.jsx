@@ -3,6 +3,8 @@ var MiniNav = require('../shared/mini_nav');
 var TagStubIndex = require('../tags/stub_index');
 var Util = require('../../util/util');
 var hashHistory = require('react-router').hashHistory;
+var ShowActivityTagItem = require('./show_activity_tag_item');
+var ShowActivityBadgeItem = require('./show_activity_badge_item');
 
 var SUB_TABS = {
   answers: ['votes', 'newest'],
@@ -132,9 +134,10 @@ var ShowActivityDetail = React.createClass({
         return (
           this.props.items.map(function(item) {
             return (
-              <div key={'item-' + item.id}>
-                {JSON.stringify(item)}
-              </div>
+              <ShowActivityTagItem
+                key={'item-' + item.id}
+                handleClick={function() {alert('TODO handleTagClick');}}
+                {...item} />
             );
           })
         );
@@ -142,9 +145,7 @@ var ShowActivityDetail = React.createClass({
         return (
           this.props.items.map(function(item) {
             return (
-              <div key={'item-' + item.id}>
-                {JSON.stringify(item)}
-              </div>
+              <ShowActivityBadgeItem key={'badge-' + item.name} badge={item} />
             );
           })
         );
@@ -177,7 +178,11 @@ var ShowActivityDetail = React.createClass({
 
     switch (this.state.active) {
       case 'votes':
-        Util.sortBy(this.props.items, 'vote_count', true);
+        if (this.props.title === 'tags') {
+          Util.sortBy(this.props.items, 'answer_reputation', true);
+        } else {
+          Util.sortBy(this.props.items, 'vote_count', true);
+        }
         break;
       case 'newest':
         Util.sortBy(this.props.items, 'created_at', true);
@@ -196,11 +201,19 @@ var ShowActivityDetail = React.createClass({
         break;
     }
 
+    var headerValue = this.props.items.length;
+    if (this.props.title === 'badges') {
+      headerValue = 0;
+      this.props.items.forEach(function(item) {
+        headerValue += item.count;
+      });
+    }
+
     return (
       <div className='show-activity-detail-container'>
         <div className='show-activity-header'>
           <span className='show-activity-header-value'>
-            {this.props.items.length + ' '}
+            {headerValue + ' '}
           </span>
           <span className='show-activity-header-label'>
             {Util.handleSigularize(

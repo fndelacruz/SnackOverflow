@@ -6,7 +6,7 @@ var hashHistory = require('react-router').hashHistory;
 var UserStore = require('../../stores/user');
 var UserActions = require('../../actions/user');
 var Util = require('../../util/util');
-var BadgeStub = require('../badges/stub');
+var ShowActivityBadgeItem = require('./show_activity_badge_item');
 
 var ShowActivitySummaryItem = React.createClass({
   getInitialState: function() {
@@ -98,22 +98,8 @@ var ShowActivitySummaryItem = React.createClass({
         }
         return (items.slice(0,10).map(function(item) {
           // TODO: handleClick as search query
-          var multipler;
-          if (item.count > 1) {
-            multipler = (
-              <div className='show-activity-badge-item-count'>
-                {'x ' + item.count}
-              </div>
-            );
-          }
           return (
-            <div
-              className='show-activity-badge-item-container'
-              key={'tag-' + item.name}
-              handleClick={function() {alert('TODO handleBadgeClick');}}>
-              <BadgeStub badge={item} />
-              {multipler}
-            </div>
+            <ShowActivityBadgeItem key={'badge-' + item.name} badge={item} />
           );
         }));
       case 'Votes Cast':
