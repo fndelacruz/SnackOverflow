@@ -34,7 +34,12 @@ end
 
 json.favorites do
   json.array!(@favorites) do |favorite|
-    json.extract!(favorite, :id, :user_id, :question_id, :created_at)
+    json.extract!(favorite, :id, :title, :created_at)
+    json.favorite_count favorite.favorite_count_joins
+    json.answer_count favorite.answer_count_joins
+    json.view_count favorite.view_count_joins
+    json.vote_count favorite.vote_count_joins
+    json.tags favorite.tags_joins
   end
 end
 

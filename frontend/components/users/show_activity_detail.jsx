@@ -11,7 +11,7 @@ var SUB_TABS = {
   questions: ['votes', 'newest', 'views', 'favorites'],
   tags: ['votes', 'name'],
   badges: ['newest', 'rank', 'name'],
-  favorites: ['votes', 'newest', 'views']
+  favorites: ['votes', 'newest', 'views', 'favorites']
 };
 
 var ShowActivityDetail = React.createClass({
@@ -65,24 +65,31 @@ var ShowActivityDetail = React.createClass({
             );
           })
         );
-      case 'questions':
+      case 'questions': case 'favorites':
         return (
           this.props.items.map(function(item) {
             var voteLabel = Util.handleSigularize('votes', item.vote_count);
             var answerLabel = Util.handleSigularize('answers', item.answer_count);
             var viewLabel = Util.handleSigularize('views', item.view_count);
-            var favoriteClass = "show-activity-detail-question-item-favorite-container";
-            var pushPath = '/questions/' + item.id;
-            if (item.favorite_count === 0) {
-              favoriteClass = "hidden";
+            var favoriteCountClass;
+
+            if (this.props.title === 'questions') {
+              favoriteCountClass = "show-activity-detail-question-item-favorite-count";
+              if (item.favorite_count === 0) {
+                favoriteCountClass += "hidden";
+              }
+            } else if (this.props.title === 'favorites') {
+              favoriteCountClass = "show-activity-detail-favorite-item-favorite-count";
             }
+
+            var pushPath = '/questions/' + item.id;
+
             return (
               <div
                 key={'item-' + item.id}
                 className='quick-question-container group'>
-                <div className={favoriteClass}>
-                 <div className='show-activity-detail-question-item-favorite-icon' />
-                 <div className='show-activity-detail-question-item-favorite-count'>
+                <div className='show-activity-detail-question-item-favorite-container'>
+                 <div className={favoriteCountClass}>
                    {item.favorite_count}
                  </div>
                 </div>
@@ -127,8 +134,7 @@ var ShowActivityDetail = React.createClass({
                 </div>
               </div>
             );
-            // {JSON.stringify(item)}
-          })
+          }.bind(this))
         );
       case 'tags':
         return (

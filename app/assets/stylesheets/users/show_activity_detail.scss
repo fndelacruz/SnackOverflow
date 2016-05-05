@@ -50,6 +50,22 @@
   color: #aaa;
 }
 
+// favorite items
+
+.show-activity-detail-favorite-item-favorite-count {
+  color: #ea1;
+  font-weight: 700;
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+.show-activity-detail-favorite-item-favorite-count:before {
+  display: block;
+  content: '★';
+  font-size: 24px;
+  color: #ea1;
+}
+
 // tag and badge items
 
 .show-activity-detail-main .show-activity-tag-item-container,

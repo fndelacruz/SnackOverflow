@@ -19,6 +19,13 @@ class Favorite < ActiveRecord::Base
 
   after_create :handle_badges
 
+  def self.questions_with_stats_and_tags_by_user_id(user_id)
+    Question.with_stats_and_tags_by_user_id(user_id)
+      .unscope(where: :user_id)
+      .joins(:favorites)
+      .where(favorites: { user_id: user_id })
+  end
+
   private
 
   def handle_badges

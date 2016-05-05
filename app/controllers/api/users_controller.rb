@@ -19,7 +19,7 @@ class Api::UsersController < ApplicationController
       # TODO: when get to for ShowActivityDetail favorties, expand this by
       # joining {question: [:favorites, :votes, :answer, :views, :tags]
 
-      @favorites = Favorite.where(user_id: params[:id])
+      @favorites = Favorite.questions_with_stats_and_tags_by_user_id(params[:id])
 
       View.create!(user: current_user, viewable: @user)
     else
