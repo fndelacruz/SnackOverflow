@@ -1,6 +1,8 @@
 var React = require('react');
 var MiniNav = require('../shared/mini_nav');
+var TagStubIndex = require('../tags/stub_index');
 var Util = require('../../util/util');
+var hashHistory = require('react-router').hashHistory;
 
 var SUB_TABS = {
   answers: ['votes', 'newest'],
@@ -64,11 +66,66 @@ var ShowActivityDetail = React.createClass({
       case 'questions':
         return (
           this.props.items.map(function(item) {
+            var voteLabel = Util.handleSigularize('votes', item.vote_count);
+            var answerLabel = Util.handleSigularize('answers', item.answer_count);
+            var viewLabel = Util.handleSigularize('views', item.view_count);
+            var favoriteClass = "show-activity-detail-question-item-favorite-container";
+            var pushPath = '/questions/' + item.id;
+            if (item.favorite_count === 0) {
+              favoriteClass = "hidden";
+            }
             return (
-              <div key={'item-' + item.id}>
-                {JSON.stringify(item)}
+              <div
+                key={'item-' + item.id}
+                className='quick-question-container group'>
+                <div className={favoriteClass}>
+                 <div className='show-activity-detail-question-item-favorite-icon' />
+                 <div className='show-activity-detail-question-item-favorite-count'>
+                   {item.favorite_count}
+                 </div>
+                </div>
+
+                <div
+                  data-label={voteLabel}
+                  className='quick-question-stats-container'>
+                  <div className='quick-question-stats-count'>
+                    {item.vote_count}
+                  </div>
+                </div>
+
+                <div
+                  data-label={answerLabel}
+                  className='quick-question-stats-container'>
+                  <div className='quick-question-stats-count'>
+                    {item.answer_count}
+                  </div>
+                </div>
+
+                <div
+                  data-label={viewLabel}
+                  className='quick-question-stats-container'>
+                  <div className='quick-question-stats-count'>
+                    {item.view_count}
+                  </div>
+                </div>
+
+                <div className='quick-question-title-tags-container'>
+                 <div
+                   onClick={hashHistory.push.bind(this, pushPath)}
+                   className='quick-question-title link'>
+                  {item.title}
+                 </div>
+                 <div className='quick-question-tags'>
+                   <TagStubIndex tags={item.tags} questionId={item.id} />
+                 </div>
+                </div>
+
+                <div className='show-activity-detail-item-date'>
+                  {item.created_at.toLocaleString()}
+                </div>
               </div>
             );
+            // {JSON.stringify(item)}
           })
         );
       case 'tags':
@@ -132,10 +189,10 @@ var ShowActivityDetail = React.createClass({
         Util.sortBy(this.props.items, 'name');
         break;
       case 'views':
-        // TODO;
+        Util.sortBy(this.props.items, 'view_count', true);
         break;
       case 'favorites':
-        // TODO;
+        Util.sortBy(this.props.items, 'favorite_count', true, 'vote_count');
         break;
     }
 

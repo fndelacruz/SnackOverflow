@@ -17,6 +17,10 @@
 .show-activity-header-label {
 }
 
+.show-activity-detail-item-date {
+  font-size: 14px;
+}
+
 // answer items
 
 .show-activity-detail-answer-item-date {
@@ -28,4 +32,20 @@
   margin: 0;
   padding: 8px;
   border-bottom: 1px solid #eee;
+}
+
+// question items
+
+.show-activity-detail-question-item-favorite-count {
+  color: #777;
+  font-weight: 700;
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+.show-activity-detail-question-item-favorite-count:before {
+  display: block;
+  content: '★';
+  font-size: 24px;
+  color: #aaa;
 }

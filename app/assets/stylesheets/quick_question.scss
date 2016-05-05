@@ -1,0 +1,42 @@
+.quick-question-container {
+  // outline: 1px dashed green;
+  padding: 15px;
+  position: relative;
+  text-align: center;
+  font-size: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.quick-question-container:first-child {
+  padding-top: 0px;
+}
+
+.quick-question-container > div {
+  float: left;
+}
+
+.quick-question-container > div:last-child {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+}
+
+.quick-question-stats-container {
+  padding: 10px;
+  width: 44px;
+}
+
+.quick-question-stats-container:after {
+  display: block;
+  content: attr(data-label);
+  font-size: 12px;
+}
+
+.quick-question-title-tags-container {
+ margin-left: 10px;
+}
+
+.quick-question-container .tags {
+  position: absolute;
+  bottom: 15px;
+}

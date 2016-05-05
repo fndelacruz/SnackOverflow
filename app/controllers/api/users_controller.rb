@@ -10,7 +10,7 @@ class Api::UsersController < ApplicationController
   def show
     @user = User.show_find(params[:id])
     if @user
-      @questions = Question.includes(:votes).where(user_id: params[:id])
+      @questions = Question.with_stats_and_tags_by_user_id(params[:id])
       @given_answers = Answer.includes(:votes, :question).where(user_id: params[:id])
       @badges = Badge.grouped_with_stats_by_user_id(params[:id])
       @reputations = Vote.reputations_for_user_id(params[:id])
@@ -18,7 +18,7 @@ class Api::UsersController < ApplicationController
 
       # TODO: when get to for ShowActivityDetail favorties, expand this by
       # joining {question: [:favorites, :votes, :answer, :views, :tags]
-      
+
       @favorites = Favorite.where(user_id: params[:id])
 
       View.create!(user: current_user, viewable: @user)

@@ -7,6 +7,7 @@ module Viewable
     has_many :views, as: :viewable, dependent: :delete_all
   end
 
+  # TODO: delete this after ensuring it is not used anymore
   def view_count
     views.length
   end

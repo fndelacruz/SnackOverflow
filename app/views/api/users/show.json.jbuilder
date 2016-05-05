@@ -3,7 +3,12 @@ json.extract!(@user, :id, :display_name, :email, :created_at, :updated_at,
 
 json.questions do
   json.array!(@questions) do |question|
-    json.extract!(question, :id, :title, :created_at, :vote_count)
+    json.extract!(question, :id, :title, :created_at)
+    json.favorite_count question.favorite_count_joins
+    json.answer_count question.answer_count_joins
+    json.view_count question.view_count_joins
+    json.vote_count question.vote_count_joins
+    json.tags question.tags_joins
   end
 end
 
