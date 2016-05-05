@@ -5,6 +5,7 @@ var Util = require('../../util/util');
 var hashHistory = require('react-router').hashHistory;
 var ShowActivityTagItem = require('./show_activity_tag_item');
 var ShowActivityBadgeItem = require('./show_activity_badge_item');
+var ShowActivityReputationItem = require('./show_activity_reputation_item');
 
 var SUB_TABS = {
   answers: ['votes', 'newest'],
@@ -155,23 +156,14 @@ var ShowActivityDetail = React.createClass({
             );
           })
         );
-      case 'favorites':
-        return (
-          this.props.items.map(function(item) {
-            return (
-              <div key={'item-' + item.id}>
-                {JSON.stringify(item)}
-              </div>
-            );
-          })
-        );
       case 'reputation':
         return (
           this.props.items.map(function(item) {
             return (
-              <div key={'item-' + item.id + '-rep-' + item.reputation}>
-                {JSON.stringify(item)}
-              </div>
+              <ShowActivityReputationItem
+                {...item}
+                key={'item-' + item.id + '-rep-' + item.reputation}>
+              </ShowActivityReputationItem>
             );
           })
         );

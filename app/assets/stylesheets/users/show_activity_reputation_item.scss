@@ -1,0 +1,42 @@
+.show-activity-reputation-item-container {
+  padding: 5px;
+}
+
+.show-activity-reputation-item-container:nth-child(2n) {
+  background: #eee;
+}
+
+.show-activity-reputation-item-container > div {
+  float: left;
+}
+
+.show-activity-reputation-item-value {
+  margin-right: 10px;
+  padding: 1px;
+  width: 30px;
+  font-size: 12px;
+  text-align: center;
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 5px;
+}
+
+.show-activity-reputation-item-value-up {
+  background: #080;
+}
+.show-activity-reputation-item-value-down {
+  background: #c00;
+}
+
+.show-activity-reputation-item-time {
+  width: 160px;
+  color: #888;
+}
+
+.show-activity-reputation-item-type {
+  width: 70px;
+}
+
+.show-activity-reputation-item-title {
+  // outline: 1px dashed blue;
+}
