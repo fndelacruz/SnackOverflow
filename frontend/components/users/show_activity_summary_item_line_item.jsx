@@ -9,10 +9,20 @@ function handleTitleTruncate(title) {
 
 var ShowActivitySummaryItemLineItem = React.createClass({
   render: function() {
+    var countValue = this.props.count;
+    var counterClass = 'show-activity-summary-item-line-item-counter';
+    if (this.props.isReputation) {
+      if (this.props.count > 0) {
+        countValue = '+' + countValue;
+        counterClass += ' show-activity-summary-item-line-item-counter-vote-up';
+      } else {
+        counterClass += ' show-activity-summary-item-line-item-counter-vote-down';
+      }
+    }
     return (
       <div className='show-activity-summary-item-line-item group'>
-        <div className='show-activity-summary-item-line-item-counter'>
-          {this.props.count}
+        <div className={counterClass}>
+          {countValue}
         </div>
         <div
           onClick={this.props.handleClick}

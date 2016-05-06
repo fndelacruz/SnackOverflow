@@ -1,0 +1,50 @@
+
+.subheader {
+  height: 35px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.subheader h1 {
+  float: left;
+  font-size: 18px;
+}
+
+.subheader ul {
+  float: bottom;
+}
+
+.subheader li {
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-right: 1px solid #fff;
+  color: #aaa;
+  padding: 8px 10px;
+  margin-left: 8px;
+}
+
+.subheader .active, .subheader li:hover {
+  color: #000;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 2px solid white;
+  border-top: 2px solid orange;
+  padding: 7px 10px 9px 10px;
+}
+
+.sort-nav-user-container {
+  float: right;
+}
+
+.sort-nav-user-display-name {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 30px;
+}
+
+.sort-nav-user-icon {
+  width: 30px;
+  margin-left: 10px;
+  float: right;
+}

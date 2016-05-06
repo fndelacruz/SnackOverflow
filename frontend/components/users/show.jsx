@@ -80,9 +80,18 @@ var UserShow = React.createClass({
     }
   },
   render: function() {
+    
+    var userInfo;
+    if (this.state.tab === 'Activity') {
+      userInfo = {
+        id: this.state.user.id,
+        displayName: this.state.user.display_name
+      };
+    }
     return (
       <div className='user-show-container'>
         <SortNav
+          userInfo={userInfo}
           tabShift='left'
           links={USER_SHOW_SORT_TYPES}
           active={this.state.tab}

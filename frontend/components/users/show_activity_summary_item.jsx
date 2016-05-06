@@ -67,6 +67,7 @@ var ShowActivitySummaryItem = React.createClass({
           var key = 'vote-' + item.id + '-reputation-' + item.reputation;
           return (
             <ShowActivitySummaryItemLineItem
+              isReputation={true}
               key={key + item.id}
               handleClick={hashHistory.push.bind(this, path)}
               title={item.title}
@@ -176,12 +177,6 @@ var ShowActivitySummaryItem = React.createClass({
             {byTimeInterval}
           </div>
         );
-      default:
-        return (
-          <div>
-            renderElements placeholder
-          </div>
-        );
     }
   },
   render: function() {
@@ -227,6 +222,12 @@ var ShowActivitySummaryItem = React.createClass({
           count = 0;
           for (var badge in items) {
             count += items[badge].count;
+          }
+          break;
+        case 'Reputation':
+          count = 0;
+          for (var reputation in items) {
+            count += items[reputation].reputation;
           }
           break;
         case 'Votes Cast':

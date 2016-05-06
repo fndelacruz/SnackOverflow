@@ -42,7 +42,7 @@ var ShowActivityDetail = React.createClass({
       );
     }
   },
-  renderShowActivityDetailItems: function() {
+  renderShowActivityDetailItems: function(items) {
     switch (this.props.title) {
       case 'answers':
         return (
@@ -75,12 +75,12 @@ var ShowActivityDetail = React.createClass({
             var favoriteCountClass;
 
             if (this.props.title === 'questions') {
-              favoriteCountClass = "show-activity-detail-question-item-favorite-count";
+              favoriteCountClass = 'show-activity-detail-question-item-favorite-count';
               if (item.favorite_count === 0) {
-                favoriteCountClass += "hidden";
+                favoriteCountClass += ' hidden';
               }
             } else if (this.props.title === 'favorites') {
-              favoriteCountClass = "show-activity-detail-favorite-item-favorite-count";
+              favoriteCountClass = 'show-activity-detail-favorite-item-favorite-count';
             }
 
             var pushPath = '/questions/' + item.id;
@@ -173,31 +173,34 @@ var ShowActivityDetail = React.createClass({
     if (!this.props.items) {
       return <div />;
     }
-
-    switch (this.state.active) {
-      case 'votes':
-        if (this.props.title === 'tags') {
-          Util.sortBy(this.props.items, 'answer_reputation', true);
-        } else {
-          Util.sortBy(this.props.items, 'vote_count', true);
-        }
-        break;
-      case 'newest':
-        Util.sortBy(this.props.items, 'created_at', true);
-        break;
-      case 'rank':
-        Util.sortBy(this.props.items, 'rank', true);
-        break;
-      case 'name':
-        Util.sortBy(this.props.items, 'name');
-        break;
-      case 'views':
-        Util.sortBy(this.props.items, 'view_count', true);
-        break;
-      case 'favorites':
-        Util.sortBy(this.props.items, 'favorite_count', true, 'vote_count');
-        break;
-    }
+    if (this.props.title === 'reputation') {
+      Util.sortBy(this.props.items, 'created_at', true);
+    } else {
+      switch (this.state.active) {
+        case 'votes':
+          if (this.props.title === 'tags') {
+            Util.sortBy(this.props.items, 'answer_reputation', true, 'name');
+          } else {
+            Util.sortBy(this.props.items, 'vote_count', true);
+          }
+          break;
+        case 'newest':
+          Util.sortBy(this.props.items, 'created_at', true);
+          break;
+        case 'rank':
+          Util.sortBy(this.props.items, 'rank', true);
+          break;
+        case 'name':
+          Util.sortBy(this.props.items, 'name');
+          break;
+        case 'views':
+          Util.sortBy(this.props.items, 'view_count', true);
+          break;
+        case 'favorites':
+          Util.sortBy(this.props.items, 'favorite_count', true, 'vote_count');
+          break;
+      }
+  }
 
     var headerValue = this.props.items.length;
     if (this.props.title === 'badges') {

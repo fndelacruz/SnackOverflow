@@ -19,9 +19,7 @@ var ShowActivityReputationItem = React.createClass({
       valueClass += ' show-activity-reputation-item-value-down';
     }
     return (
-      <div
-        onClick={this.handleClick}
-        className='show-activity-reputation-item-container group'>
+      <div className='show-activity-reputation-item-container group'>
         <div className={valueClass}>
           {(reputation > 0 ? '+' : '') + reputation}
         </div>
@@ -31,7 +29,9 @@ var ShowActivityReputationItem = React.createClass({
         <div className='show-activity-reputation-item-type'>
           {type}
         </div>
-        <div className='show-activity-reputation-item-title link'>
+        <div
+          onClick={this.handleClick}
+          className='show-activity-reputation-item-title link'>
           {this.props.title}
         </div>
       </div>
