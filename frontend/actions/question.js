@@ -31,5 +31,11 @@ module.exports = {
       action: tag,
       actionType: QuestionConstants.RECEIVE_QUESTIONS_TAG
     });
+  },
+  receiveAnswerUpdateOK: function(question) {
+    AppDispatcher.dispatch({
+      action: question,
+      actionType: QuestionConstants.RECEIVE_ANSWER_UPDATE_OK
+    });
   }
 };

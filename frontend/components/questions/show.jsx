@@ -68,31 +68,6 @@ var QuestionShow = React.createClass({
   handleTagClick: function() {
     alert('TODO handleTagClick');
   },
-  handleToolClick: function(toolType, itemType, id) {
-    if (toolType === 'edit') {
-      switch (itemType) {
-        case 'Question':
-          var path = '/questions/' + id + '/edit';
-          console.log('pushing to:', path);
-          hashHistory.push(path);
-          break;
-        case 'Answer':
-
-          break;
-        default:
-          alert('TODO handleToolClick edit');
-          break;
-      }
-    } else if (toolType === 'delete') {
-      if (itemType === 'Question') {
-        ApiUtil.destroyQuestion(id, function() {
-          hashHistory.push('/questions/');
-        });
-      } else if (itemType === 'Answer') {
-        ApiUtil.destroyAnswer(id);
-      }
-    }
-  },
   render: function() {
     var question = this.state.question, tags, answerSection;
 
@@ -122,8 +97,7 @@ var QuestionShow = React.createClass({
           <AnswersIndex
             answers={question.answers}
             answerSortBy={this.state.answerSortBy}
-            handleVote={this.handleVote}
-            handleToolClick={this.handleToolClick} />
+            handleVote={this.handleVote} />
           <AnswersNew question={question} />
         </div>
       );
@@ -139,8 +113,7 @@ var QuestionShow = React.createClass({
             type='Question'
             item={question}
             handleVote={this.handleVote}
-            handleFavorite={this.handleFavorite}
-            handleToolClick={this.handleToolClick} />
+            handleFavorite={this.handleFavorite} />
           {answerSection}
         </div>
 

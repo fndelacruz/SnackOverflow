@@ -1,0 +1,25 @@
+.answer-edit-container {
+  position: relative;
+  border-bottom: 1px solid #ddd;
+  padding: 25px 0;
+}
+.answer-edit-container textarea {
+  width: 728px - 10px;
+  margin-bottom: 20px;
+}
+
+.answer-edit-container button {
+  margin-right: 20px;
+}
+
+.answer-edit-title-required, .answer-edit-title-required:focus {
+  outline: 2px solid #f00;
+}
+
+.text-area-no-content-warning:after {
+  display: block;
+  position: absolute;
+  right: 0;
+  content: 'Answer content is required.';
+  color: #f00;
+}

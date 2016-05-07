@@ -11,6 +11,7 @@ var _questions;
 var _questionSortBy = 'newest';
 var _tag;
 var _indexLoaded;
+var _answerSubmissionOK;
 
 function formatDates(question) {
   Util.formatDateHelper(question);
@@ -53,6 +54,10 @@ function resetQuestion(question) {
 function setQuestionsTag(tag) {
   _tag = tag;
 }
+
+QuestionStore.getAnswerSubmissionStatus = function() {
+  return _answerSubmissionOK;
+};
 
 QuestionStore.getIndexLoaded = function() {
   return _indexLoaded;
@@ -150,6 +155,10 @@ QuestionStore.__onDispatch = function(payload) {
       break;
     case QuestionConstants.RECEIVE_QUESTIONS_TAG:
       setQuestionsTag(payload.action);
+      break;
+    case QuestionConstants.RECEIVE_ANSWER_UPDATE_OK:
+      resetQuestion(payload.action);
+      _answerSubmissionOK = true;
       break;
   }
   this.__emitChange();

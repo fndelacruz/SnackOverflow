@@ -91,17 +91,21 @@
 
 .question-show-item-main-footer-tools span {
   margin-right: 5px;
+}
+
+.tool-link {
   cursor: pointer;
   color: #777;
+}
+
+.tool-link:hover {
+  color: #000;
 }
 
 .question-show-item-main-footer-tools span:last-child {
   margin-right: 0;
 }
 
-.question-show-item-main-footer-tools span:hover {
-  color: #000;
-}
 
 .stub-date-user-container-created-at {
   background: #e2e2ff;

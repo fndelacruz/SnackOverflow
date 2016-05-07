@@ -5,6 +5,8 @@ var TagStub = require('../tags/stub');
 var TagStubIndex = require('../tags/stub_index');
 var UserLinkStub = require('../users/link_stub');
 var hashHistory = require('react-router').hashHistory;
+var AnswersEdit = require('../answers/edit');
+var ApiUtil = require('../../util/api_util');
 
 function voteClass(userVote, type) {
   var className;
@@ -61,12 +63,54 @@ function renderFavoriteContainer(item) {
 }
 
 var ShowItem = React.createClass({ // used for question show and answers index item
+  getInitialState: function() {
+    if (this.props.type === 'Answer') {
+      return { editToggle: false };
+    } else {
+      return null;
+    }
+  },
   handleUserClick: function() {
     var path = '/users/' + this.props.item.user.id;
     hashHistory.push(path);
   },
+  handleToolClick: function(toolType, itemType, id) {
+    if (toolType === 'edit') {
+      switch (itemType) {
+        case 'Question':
+          var path = '/questions/' + id + '/edit';
+          hashHistory.push(path);
+          break;
+        case 'Answer':
+          this.setState({ editToggle: true });
+          break;
+        default:
+          alert('TODO handleToolClick edit');
+          break;
+      }
+    } else if (toolType === 'delete') {
+      if (itemType === 'Question') {
+        ApiUtil.destroyQuestion(id, function() {
+          hashHistory.push('/questions/');
+        });
+      } else if (itemType === 'Answer') {
+        ApiUtil.destroyAnswer(id);
+      }
+    }
+  },
+  cancelAnswerEdit: function() {
+    this.setState({ editToggle: false });
+  },
   render: function() {
     var item = this.props.item, type = this.props.type, tags;
+    if (type === 'Answer' && this.state.editToggle) {
+      return (
+        <AnswersEdit
+          {...item}
+          cancelAnswerEdit={this.cancelAnswerEdit} />
+        );
+    }
+
     if (item.tags && item.tags.length) {
       tags = (
         <TagStubIndex
@@ -77,17 +121,18 @@ var ShowItem = React.createClass({ // used for question show and answers index i
       );
     }
 
-
     var tools;
     if (item.owned) {
       tools = (
         <div className='question-show-item-main-footer-tools'>
-          <span onClick={this.props.handleToolClick
-            .bind(null, 'edit', type, item.id)}>
+          <span
+            className='tool-link'
+            onClick={this.handleToolClick.bind(null, 'edit', type, item.id)}>
             edit
           </span>
-          <span onClick={this.props.handleToolClick
-            .bind(null, 'delete', type, item.id)}>
+          <span
+            className='tool-link'
+            onClick={this.handleToolClick.bind(null, 'delete', type, item.id)}>
             delete
           </span>
         </div>

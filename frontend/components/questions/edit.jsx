@@ -21,7 +21,6 @@ var QuestionNew = React.createClass({
     };
   },
   componentDidMount: function() {
-    console.log('edit mounted');
     _callbackId = QuestionStore.addListener(this.onChange);
     ApiUtil.fetchQuestion(this.props.params.questionId);
   },

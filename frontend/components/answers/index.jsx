@@ -23,11 +23,10 @@ var AnswersIndex = React.createClass({
        AnswerIndexItems = this.props.answers.map(function(answer) {
         return (
           <ShowItem
-          key={'answer-' + answer.id}
-          type='Answer'
-          item={answer}
-          handleVote={this.props.handleVote}
-          handleToolClick={this.props.handleToolClick} />
+            key={'answer-' + answer.id}
+            type='Answer'
+            item={answer}
+            handleVote={this.props.handleVote} />
         );
 
       }.bind(this));

@@ -42,7 +42,7 @@ json.answers @question.answers do |answer|
 
   json.owned answer.user === current_user ? true : false
   json.extract!(answer,
-    :id, :content, :created_at, :vote_count)
+    :id, :content, :question_id, :created_at, :vote_count)
 
   if answer.updated_at != answer.created_at
     json.updated_at answer.updated_at

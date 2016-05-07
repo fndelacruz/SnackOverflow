@@ -129,6 +129,26 @@ module.exports = {
     });
   },
 
+  updateAnswer: function(answer) {
+    var data = {
+      '[answer][content]': answer.content
+    };
+    $.ajax({
+      method: 'PATCH',
+      url: '/api/answers/' + answer.id,
+      data: data,
+      dataType: 'json',
+      success: function(question) {
+        QuestionActions.receiveAnswerUpdateOK(question);
+        // var path = '/questions/' + question.id + '/answer/' + answer.id;
+        // hashHistory.push(path);
+      },
+      error: function() {
+        debugger
+      }
+    });
+  },
+
   // POST and DELETE
 
   createVote: function(vote) {
