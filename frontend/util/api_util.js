@@ -88,6 +88,27 @@ module.exports = {
     });
   },
 
+  // UPDATE
+
+  updateCurrentUser: function(currentUserDetails) {
+    var data = {
+      '[user][display_name]': currentUserDetails.displayName,
+      '[user][email]': currentUserDetails.email,
+      '[user][location]': currentUserDetails.location,
+      '[user][bio]': currentUserDetails.bio,
+      '[user][password]': currentUserDetails.password,
+    };
+
+    $.ajax({
+      method: 'PATCH',
+      url: '/api/users/' + currentUserDetails.id,
+      data: data,
+      dataType: 'json',
+      success: CurrentUserActions.receiveCurrentUserUpdateStatusOK,
+      error: CurrentUserActions.receiveCurrentUserUpdateStatusBAD
+    });
+  },
+
   // POST and DELETE
 
   createVote: function(vote) {

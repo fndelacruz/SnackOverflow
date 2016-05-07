@@ -36,6 +36,10 @@ function resetUser(user) {
   _users[user.id] = user;
 }
 
+function resetUserShallow(userInfo) {
+  $.extend(_users[userInfo.id], userInfo);
+}
+
 function resetPostsSortBy(sortBy) {
   _postsSortBy = sortBy;
 }
@@ -174,6 +178,9 @@ UserStore.__onDispatch = function(payload) {
       break;
     case UserConstants.CHANGE_ACTIVITY_SORT_BY:
       resetActivitySortBy(payload.action);
+      break;
+    case UserConstants.RECEIVE_USER_SHALLOW:
+      resetUserShallow(payload.action);
       break;
   }
   this.__emitChange();

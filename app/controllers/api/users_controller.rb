@@ -26,4 +26,27 @@ class Api::UsersController < ApplicationController
       render json: {}, error: :not_found
     end
   end
+
+  def update
+    @user = User.find_with_reputation(params[:id])
+    if @user == current_user
+      if @user.is_password?(user_params[:password])
+        if @user.update(user_params)
+          # implicit render
+        else
+          render json: @user.errors.full_messages, status: :unprocessable_entity
+        end
+      else
+        render json: ['Invalid password. Please try again'], status: :forbidden
+      end
+    else
+      render json: {}, status: :forbidden
+    end
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:display_name, :bio, :location, :email, :password)
+  end
 end

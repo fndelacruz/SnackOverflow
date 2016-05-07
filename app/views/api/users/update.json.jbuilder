@@ -1,3 +1,3 @@
-json.extract!(@current_user,
+json.extract!(@user,
   :id, :display_name, :bio, :location, :reputation, :email
 )

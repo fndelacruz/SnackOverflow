@@ -83,7 +83,7 @@ class User < ActiveRecord::Base
       ORDER BY
         users.id
     SQL
-    user_id.is_a?(Integer) ? users.first : users
+    user_id.is_a?(Array) ? users : users.first
   end
 
   def self.find_with_reputation_hash(user_ids)

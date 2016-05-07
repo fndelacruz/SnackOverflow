@@ -101,7 +101,7 @@ var UserShow = React.createClass({
       );
     } else if (this.state.tab === 'Edit Profile Settings') {
       return (
-        <UserShowSettings currentUser={this.state.currentUser} />
+        <UserShowSettings {...this.state.currentUser} />
       );
     }
   },
@@ -121,7 +121,6 @@ var UserShow = React.createClass({
         parseInt(this.props.params.userId) !== this.state.currentUser.id) {
       return <NotFound />;
     }
-    debugger
 
     if (this.state.tab === 'Activity') {
       userInfo = {
