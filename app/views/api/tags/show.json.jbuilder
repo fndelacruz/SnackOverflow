@@ -1,1 +1,1 @@
-json.partial!('tag', tag: @tag, options: { questions_header: true })
+json.extract!(@tag, :id, :name, :created_at, :description)

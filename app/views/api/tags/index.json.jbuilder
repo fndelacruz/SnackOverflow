@@ -1,3 +1,5 @@
 json.array!(@tags) do |tag|
-  json.partial!('tag', tag: tag, options: { index: true })
+  json.extract!(tag, :id, :name, :created_at, :description, :question_count,
+    :weekly_question_count, :monthly_question_count
+  )
 end
