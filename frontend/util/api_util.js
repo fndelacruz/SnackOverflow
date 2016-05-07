@@ -109,6 +109,26 @@ module.exports = {
     });
   },
 
+  updateQuestion: function(question) {
+    var data = {
+      '[question][title]': question.title,
+      '[question][content]': question.content
+    };
+    $.ajax({
+      method: 'PATCH',
+      url: '/api/questions/' + question.id,
+      data: data,
+      dataType: 'json',
+      success: function(question) {
+        QuestionActions.receiveQuestion(question);
+        hashHistory.push('/questions/' + question.id);
+      },
+      error: function() {
+        debugger
+      }
+    });
+  },
+
   // POST and DELETE
 
   createVote: function(vote) {
@@ -184,10 +204,14 @@ module.exports = {
     });
   },
   createQuestion: function(question) {
+    var data = {
+      'question[title]': question.title,
+      'question[content]': question.content
+    };
     $.ajax({
       method: 'POST',
       url: 'api/questions',
-      data: question,
+      data: data,
       dataType: 'json',
       success: function(question) {
         QuestionActions.receiveQuestion(question);

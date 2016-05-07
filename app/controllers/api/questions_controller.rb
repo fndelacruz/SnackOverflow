@@ -29,6 +29,19 @@ class Api::QuestionsController < ApplicationController
     end
   end
 
+  def update
+    @question = Question.find(params[:id])
+    if @question.user == current_user
+      if @question.update!(question_params)
+        @users = User.find_with_reputation_hash(parse_question_user_ids(@question))
+      else
+        render json: @question.errors.full_messages, status: :unprocessable_entity
+      end
+    else
+      render json: {}, status: :forbidden
+    end
+  end
+
   def destroy
     question = Question.find(params[:id])
     if question

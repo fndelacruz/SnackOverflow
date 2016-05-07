@@ -15,7 +15,7 @@ function renderBody(focus) {
   switch (focus) {
     case 'title':
       return (
-        <ul className='ask-double-sidebar-content'>
+        <ul className='question-form-double-sidebar-content'>
           <li>title</li>
           <li>title</li>
           <li>title</li>
@@ -23,7 +23,7 @@ function renderBody(focus) {
       );
     case 'content':
       return (
-        <ul className='ask-double-sidebar-content'>
+        <ul className='question-form-double-sidebar-content'>
           <li>content</li>
           <li>content</li>
           <li>content</li>
@@ -31,7 +31,7 @@ function renderBody(focus) {
       );
     case 'tags':
       return (
-        <ul className='ask-double-sidebar-content'>
+        <ul className='question-form-double-sidebar-content'>
           <li>tags</li>
           <li>tags</li>
           <li>tags</li>
@@ -40,7 +40,7 @@ function renderBody(focus) {
   }
 }
 
-var QuestionsNewSidebar = React.createClass({
+var QuestionsFormSidebar = React.createClass({
   renderHeader: function() {
     switch (this.props.focus) {
       case 'title':
@@ -51,11 +51,11 @@ var QuestionsNewSidebar = React.createClass({
   },
   render: function() {
     return (
-      <div className='ask-double-sidebar'>
-        <div className='ask-double-sidebar-header'>
+      <div className='question-form-double-sidebar'>
+        <div className='question-form-double-sidebar-header'>
           {renderHeader(this.props.focus)}
         </div>
-        <div className='ask-double-sidebar-title'>
+        <div className='question-form-double-sidebar-title'>
         </div>
         {renderBody(this.props.focus)}
       </div>
@@ -63,4 +63,4 @@ var QuestionsNewSidebar = React.createClass({
   }
 });
 
-module.exports = QuestionsNewSidebar;
+module.exports = QuestionsFormSidebar;

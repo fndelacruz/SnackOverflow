@@ -3,6 +3,8 @@ var QuestionStore = require('../../stores/question');
 var CurrentUserStore = require('../../stores/current_user');
 var ApiUtil = require('../../util/api_util');
 var hashHistory = require('react-router').hashHistory;
+var NotFound = require('../shared/not_found');
+var QuestionsForm = require('./form');
 
 var _callbackId;
 
@@ -20,29 +22,19 @@ var QuestionNew = React.createClass({
   },
   componentDidMount: function() {
     console.log('edit mounted');
-    if (!this.state.question) {
-      _callbackId = QuestionStore.addListener(this.onChange);
-      ApiUtil.fetchQuestion(this.props.params.questionId);
-    } else {
-      if (!this.isOwner(this.state.question)) {
-        redirect(this.state.question);
-      }
-    }
+    _callbackId = QuestionStore.addListener(this.onChange);
+    ApiUtil.fetchQuestion(this.props.params.questionId);
   },
-  isOwner: function(question) {
-    return this.CurrentUserStore.fetch().id === question.user.id;
+  isOwner: function() {
+    return this.CurrentUserStore.fetch().id === this.state.question.user.id;
   },
   componentWillReceiveProps: function(newProps) {
-
+    ApiUtil.fetchQuestion(this.props.params.questionId);
   },
   onChange: function() {
     var question = QuestionStore.getQuestion(this.props.params.questionId);
     if (this.CurrentUserStore.fetch()) {
-      if (this.isOwner(question)) {
-        this.setState({ question: question });
-      } else {
-        redirect(question);
-      }
+      this.setState({ question: question });
     }
   },
   componentWillUnmount: function() {
@@ -52,16 +44,14 @@ var QuestionNew = React.createClass({
   },
   render: function() {
     if (!this.state.question) {
-      return (
-        <div>
-          Question NOT loaded
-        </div>
-      );
+      return <div />;
+    }
+
+    if (!this.isOwner()) {
+      return <NotFound />;
     }
     return (
-      <div>
-        Question is loaded
-      </div>
+      <QuestionsForm {...this.state.question} />
     );
   }
 });

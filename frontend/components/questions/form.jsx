@@ -1,10 +1,14 @@
 var React = require('react');
-var QuestionsNewSidebar = require('./new_sidebar');
+var QuestionsFormSidebar = require('./form_sidebar');
 var ApiUtil = require('../../util/api_util');
 
-var QuestionsNew = React.createClass({
+var QuestionsForm = React.createClass({
   getInitialState: function() {
-    return { title: '', content: '', focus: 'title'};
+    return {
+      title: this.props.title || '',
+      content: this.props.content ||'',
+      focus: 'title'
+    };
   },
   handleChange: function(type, e) {
     switch (type) {
@@ -21,10 +25,14 @@ var QuestionsNew = React.createClass({
   },
   handleSubmit: function() {
     if (this.state.title.length && this.state.content.length) {
-      ApiUtil.createQuestion({
-        'question[title]': this.state.title,
-        'question[content]': this.state.content
-      });
+
+      if (this.props.id) {
+        ApiUtil.updateQuestion(
+          $.extend({}, { id: this.props.id }, this.state)
+        );
+      } else {
+        ApiUtil.createQuestion(this.state);
+      }
     }
   },
   handleFocus: function(type) {
@@ -39,10 +47,10 @@ var QuestionsNew = React.createClass({
       buttonClass = 'button-disabled';
     }
     return (
-      <div className='ask-double'>
+      <div className='question-form-double'>
         <div className='item-new-double-main'>
-          <div className='ask-title-container group'>
-            <div className='ask-title-label'>
+          <div className='question-form-title-container group'>
+            <div className='question-form-title-label'>
               Title
             </div>
             <input
@@ -51,7 +59,7 @@ var QuestionsNew = React.createClass({
               value={this.state.title}
               onFocus={this.handleFocus.bind(this, 'title')}
               onChange={this.handleChange.bind(this, 'title')}
-              className='ask-title-input' />
+              className='question-form-title-input' />
           </div>
           <textarea
             value={this.state.content}
@@ -61,15 +69,15 @@ var QuestionsNew = React.createClass({
           <button
             className={buttonClass}
             onClick={this.handleSubmit}>
-            Post Question
+            {(this.props.id ? 'Update' : 'Post') + ' Question'}
           </button>
         </div>
-        <QuestionsNewSidebar
-          key='ask-double-sidebar-component'
+        <QuestionsFormSidebar
+          key='question-form-double-sidebar-component'
           focus={this.state.focus} />
       </div>
     );
   }
 });
 
-module.exports = QuestionsNew;
+module.exports = QuestionsForm;

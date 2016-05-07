@@ -1,8 +1,8 @@
-.ask-title-container {
+.question-form-title-container {
   position: relative;
 }
 
-.ask-title-label {
+.question-form-title-label {
   font-weight: 700;
   width: 40px;
   position: absolute;
@@ -10,14 +10,14 @@
   transform: translateY(-50%);
 }
 
-.ask-title-input {
+.question-form-title-input {
   padding: 0 8px;
   height: 30px;
   width: 602px;
   float: right;
 }
 
-.ask-double-sidebar {
+.question-form-double-sidebar {
   padding: 15px;
   float: right;
   width: 335px;
@@ -25,10 +25,10 @@
   border: 1px solid #cc8;
 }
 
-.ask-double-sidebar-header {
+.question-form-double-sidebar-header {
   font-size: 18px;
 }
 
-.ask-double-sidebar-content li {
+.question-form-double-sidebar-content li {
   margin: 10px 0;
 }

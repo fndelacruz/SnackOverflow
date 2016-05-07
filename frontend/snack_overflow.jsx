@@ -7,7 +7,7 @@ var NavBar = require('./components/nav/nav_bar');
 var QuestionsIndex = require('./components/questions/index');
 var hashHistory = require('react-router').hashHistory;
 var QuestionShow = require('./components/questions/show');
-var QuestionsNew = require('./components/questions/new');
+var QuestionsForm = require('./components/questions/form');
 var QuestionEdit = require('./components/questions/edit');
 var UsersIndex = require('./components/users/index');
 var TagsIndex = require('./components/tags/index');
@@ -22,7 +22,7 @@ var App = (
       <Route path='questions/tagged/:tagName' component={QuestionsIndex} />
       <Route path='questions/:questionId(/answer/:answerId)' component={QuestionShow} />
       <Route path='questions/:questionId/edit' component={QuestionEdit} />
-      <Route path='ask' component={QuestionsNew} />
+      <Route path='ask' component={QuestionsForm} />
       <Route path='users' component={UsersIndex} />
       <Route path='tags' component={TagsIndex} />
       <Route path='users/:userId(/:tab)' component={UserShow} />

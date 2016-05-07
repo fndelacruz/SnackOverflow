@@ -105,7 +105,16 @@ var ShowItem = React.createClass({ // used for question show and answers index i
       createdAt = 'answered ' + createdAt;
       id = 'answer-' + id;
     }
-    var updatedAt = 'edited ' + item.updated_at.toLocaleString();
+    var updatedAt;
+    if (item.updated_at) {
+      updatedAt = (
+        <div className='stub-date-user-container'>
+          <div className='stub-date'>
+            {item.updated_at_words}
+          </div>
+        </div>
+      );
+    }
     return (
       <div className={rootClassName} id={id}>
         <div className='question-show-item-sidebar'>
@@ -149,22 +158,7 @@ var ShowItem = React.createClass({ // used for question show and answers index i
               </div>
             </div>
 
-            <div className='stub-date-user-container'>
-              <div className='stub-date'>
-                {updatedAt}
-              </div>
-              <div className='question-index-item-user-container'>
-                <div
-                  className='question-index-item-user-pic'
-                  onClick={this.handleUserClick} />
-                <div className='question-index-item-user-display-name-container'>
-                  <UserLinkStub {...item.user} />
-                </div>
-                <div className='question-index-item-user-score'>
-                  {item.user.reputation}
-                </div>
-              </div>
-            </div>
+            {updatedAt}
           </div>
           <CommentsIndex
             comments={item.comments}
