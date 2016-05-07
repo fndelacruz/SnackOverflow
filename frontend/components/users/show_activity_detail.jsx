@@ -208,6 +208,11 @@ var ShowActivityDetail = React.createClass({
       this.props.items.forEach(function(item) {
         headerValue += item.count;
       });
+    } else if (this.props.title === 'reputation') {
+      headerValue = 0;
+      this.props.items.forEach(function(item) {
+        headerValue += item.reputation;
+      });
     }
 
     return (
