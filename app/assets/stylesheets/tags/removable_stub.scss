@@ -1,0 +1,27 @@
+.removable-tag-stub-container {
+  font-size: 12px;
+  background: #e2e2ff;
+  color: #00f;
+  transition: background 100ms;
+  line-height: 36px;
+  margin-left: 5px;
+  padding: 5px 5px;
+}
+
+.removable-tag-stub-container:last-of-type {
+  margin-right: 5px;
+}
+
+.removable-tag-stub-container:hover {
+  background: #ccf;
+}
+
+.removable-tag-stub-cancel {
+  font-size: 10px;
+  margin-left: 5px;
+  padding: 0 3px 1px 3px;
+  cursor: pointer;
+  border-radius: 100%;
+  background: #f00;
+  color: #fff;
+}

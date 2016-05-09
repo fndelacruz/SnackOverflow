@@ -17,6 +17,24 @@
   float: right;
 }
 
+.question-form-tags-label-and-tags {
+  height: 37px;
+  line-height: 37px;
+}
+
+.question-form-tags-label {
+  font-weight: 700;
+  margin: 10px 0;
+}
+
+.question-form-tags-container {
+  margin: 20px 0;
+}
+
+.question-form-tags-container > input {
+  width: 660px - 10px;
+}
+
 .question-form-double-sidebar {
   padding: 15px;
   float: right;
