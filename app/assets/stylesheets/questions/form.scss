@@ -24,16 +24,73 @@
 
 .question-form-tags-label {
   font-weight: 700;
-  margin: 10px 0;
 }
 
 .question-form-tags-container {
+  position: relative;
   margin: 20px 0;
 }
 
-.question-form-tags-container > input {
-  width: 660px - 10px;
+#question-form-tags-input {
+  width: 650px;
 }
+
+.question-form-tags-input-disabled {
+  cursor: not-allowed;
+}
+
+.question-form-tags-input-error,
+.question-form-tags-input-error:hover {
+  outline: 1px solid #96281B !important;
+}
+
+.question-form-tags-error {
+  position: absolute;
+  color: #96281B;
+  right: 4px;
+  bottom: 5px;
+  // bottom: -21px;
+  font-weight: 700;
+}
+
+.question-form-tags-search-popout {
+  position: absolute;
+  width: 650px;
+  outline: 1px solid #666;
+  padding: 5px;
+  background: #fff;
+}
+
+.found-tag-item {
+  float: left;
+  padding: 5px;
+  width: 206.666px;
+  cursor: pointer;
+  transition: background 200ms ease-out;
+}
+
+.found-tag-item:hover {
+  background: #9f9;
+  transition: background 0ms ease-out;
+}
+
+.found-tag-description {
+  margin-top: 3px;
+  font-size: 11px;
+}
+
+// new tag form
+
+.question-form-tags-new-header {
+  font-weight: 700;
+}
+
+.question-form-tags-search-popout > textarea {
+  width: 640px;
+  margin: 10px 0 5px 0;
+}
+
+// sidebar
 
 .question-form-double-sidebar {
   padding: 15px;

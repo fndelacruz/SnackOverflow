@@ -3,15 +3,41 @@ var QuestionsFormSidebar = require('./form_sidebar');
 var ApiUtil = require('../../util/api_util');
 var QuestionFormTag = require('./form_tag');
 var RemovableTagStub = require('../tags/removable_stub.jsx');
+var TagStore = require('../../stores/tag');
+var TagActions = require('../../actions/tag');
+var TagStub = require('../tags/stub');
+
+var _callbackId;
 var QuestionsForm = React.createClass({
   getInitialState: function() {
     return {
       title: this.props.title || '',
       content: this.props.content ||'',
-      tags: ['hello', 'tag1'],
+      tags: [],
+      newTags: [],
       tagString: '',
-      focus: 'title'
+      focus: 'title',
+      foundTags: null,
+      tagStringError: false,
+      newTagDescription: '',
+      isCreatingNewTag: false
     };
+  },
+  componentDidMount: function() {
+    _callbackId = TagStore.addListener(this.onTagChange);
+    ApiUtil.fetchTags();
+  },
+  onTagChange: function() {
+    var foundTags = TagStore.all().slice(0, 6);
+    this.setState({
+      foundTags: foundTags,
+      newTagDescription: '',
+      isCreatingNewTag: false
+    });
+  },
+  componentWillUnmount: function() {
+    TagActions.resetTagStoreSettings();
+    _callbackId.remove();
   },
   handleRemoveTag: function(tagName) {
     var tags = this.state.tags;
@@ -48,15 +74,31 @@ var QuestionsForm = React.createClass({
       this.setState({ focus: type });
     }
   },
+  handleBlur: function(type) {
+    switch (type) {
+      case 'tags':
+        this.setState({ tagStringError: false });
+        break;
+    }
+  },
   handleTagChange: function(e) {
+    this.setState({ tagStringError: '' });
     var value = e.currentTarget.value;
-    if (value === ',') {
-      this.setState({ tagString: ''});
-    } else if (value.match(/(\w+),$/)) {
+
+    if (value.match(/(\w+),$/)) {
       newTag =  value.match(/(\w+),$/)[1];
       this.handleAddTag(newTag);
     } else {
-      this.setState({ tagString: e.currentTarget.value });
+      if (value.length > 25) {
+        this.setState({ tagStringError: 'Tag name is 25 characters max.' });
+      } else if (value && value.search(/^[-a-z0-9]+$/i) === -1) {
+        this.setState({
+          tagStringError: 'Permitted tag characters: [a-z 0-9 -]'
+        });
+      } else {
+        TagActions.changeTagSearchTerm(value.toLowerCase());
+        this.setState({ tagString: value });
+      }
     }
   },
   handleTagsKeyDown: function(e) {
@@ -64,18 +106,97 @@ var QuestionsForm = React.createClass({
       if (this.state.tagString.length) {
         this.handleAddTag(this.state.tagString);
       }
-    } else {
-      this.handleTagChange(e);
     }
   },
   handleAddTag: function(tagName) {
-    if (this.state.tags.indexOf(tagName) === -1) {
-      this.state.tags.push(tagName);
+    var tag = this.state.foundTags.find(function(tag) {
+      return tag.name === this.state.tagString;
+    }.bind(this));
+
+    if (tag) {
+      if (!this.tagAlreadyChosen(tag.name)) {
+        this.state.tags.push(tag.name);
+      }
+      this.setState({ tagString: '' });
+    } else {
+      this.setState({ isCreatingNewTag: true });
     }
-    this.setState({ tagString: '' });
+  },
+  tagAlreadyChosen: function(prospectiveTagName) {
+    return this.state.tags.find(function(tagName) {
+      return tagName === prospectiveTagName;
+    });
+  },
+  selectableTags: function() {
+    return this.state.foundTags.filter(function(tag) {
+      return !this.state.tags.find(function(tagName) {
+        return tagName === tag.name;
+      });
+    }.bind(this));
+  },
+  handleAddTagClick: function(tagName) {
+    console.log('handleAddTagClick');
+    this.state.tags.push(tagName);
+    this.setState({ tagString: ''});
+    document.getElementById('question-form-tags-input').focus();
+  },
+  handleNewTagDescriptionChange: function(e) {
+    this.setState({ newTagDescription: e.currentTarget.value });
+  },
+  handleNewTagSubmit: function() {
+    if (this.state.newTagDescription) {
+      ApiUtil.createTag(this.state);
+    }
+  },
+  renderFoundTagsSlice: function(start, stop) {
+    return (
+      <div className='question-form-tags-search-results-row group'>
+        {this.selectableTags().slice(start, stop).map(function(tag) {
+          return (
+            <div
+              onClick={this.handleAddTagClick.bind(this, tag.name)}
+              className='found-tag-item' key={tag.name}>
+              <div className='found-tag-name group'>
+                <TagStub
+                  clickOverride={function() {}}
+                  tagName={tag.name} />
+                <div className='tags-question-count'>
+                  {'× ' + tag.question_count}
+                </div>
+              </div>
+              <div className='found-tag-description'>
+                {tag.description}
+              </div>
+            </div>
+          );
+        }.bind(this))}
+      </div>
+    );
+  },
+  renderNewTagForm: function() {
+    var newTagSubmitClass;
+    if (!this.state.newTagDescription) {
+      newTagSubmitClass = 'button-disabled';
+    }
+    return (
+      <div className='question-form-tags-search-popout'>
+        <div className='question-form-tags-new-header'>
+          Tag '{this.state.tagString.toLowerCase()}' not found. Enter a
+          description of this tag to create it.
+        </div>
+        <textarea
+          onChange={this.handleNewTagDescriptionChange}
+          value={this.state.newTagDescription} />
+        <button
+          onClick={this.handleNewTagSubmit}
+          className={newTagSubmitClass}>
+          Create Tag
+        </button>
+      </div>
+    );
   },
   render: function() {
-    var buttonClass;
+    var buttonClass, tagSearchResults;
 
     if (!this.state.title.length || !this.state.content.length) {
       buttonClass = 'button-disabled';
@@ -88,6 +209,48 @@ var QuestionsForm = React.createClass({
           name={tagName} />
       );
     }.bind(this));
+
+    var tagSearchError;
+    if (this.state.tagStringError) {
+      tagSearchError = (
+        <div className='question-form-tags-error'>
+          {this.state.tagStringError}
+        </div>
+      );
+    }
+
+    var tagSearchFooter;
+    if (this.state.tagString.length) {
+      if (this.state.foundTags.length) {
+        if (this.state.isCreatingNewTag || (this.state.foundTags.length &&
+            !this.selectableTags().length)) {
+          if (!this.tagAlreadyChosen(this.state.tagString)) {
+            tagSearchFooter = this.renderNewTagForm();
+          }
+        } else {
+          tagSearchFooter = (
+            <div className='question-form-tags-search-popout'>
+              {this.renderFoundTagsSlice(0, 3)}
+              {this.renderFoundTagsSlice(4, 6)}
+            </div>
+          );
+        }
+      } else {
+        tagSearchFooter = this.renderNewTagForm();
+      }
+    }
+
+    var tagsInputDisabled, tagsInputClass = '', tagsInputPlaceholder;
+    if (this.state.tags.length === 5) {
+      tagsInputClass += ' question-form-tags-input-disabled';
+      tagsInputDisabled = true;
+      tagsInputPlaceholder = '5 tags max.';
+    }
+
+    if (this.state.tagStringError) {
+      tagsInputClass += ' question-form-tags-input-error';
+    }
+
     return (
       <div className='question-form-double'>
         <div className='item-new-double-main'>
@@ -112,15 +275,24 @@ var QuestionsForm = React.createClass({
 
           <div className='question-form-tags-container'>
             <div className='question-form-tags-label-and-tags'>
-              Tags
+              <span className='question-form-tags-label'>
+                Tags
+              </span>
               {tags}
             </div>
             <input
               type='text'
+              className={tagsInputClass}
+              id='question-form-tags-input'
+              placeholder={tagsInputPlaceholder}
+              disabled={tagsInputDisabled}
               value={this.state.tagString}
               onFocus={this.handleFocus.bind(this, 'tags')}
+              onBlur={this.handleBlur.bind(this, 'tags')}
               onKeyDown={this.handleTagsKeyDown}
-              onChange={this.handleTagChange}/>
+              onChange={this.handleTagChange} />
+            {tagSearchError}
+            {tagSearchFooter}
           </div>
 
           <button

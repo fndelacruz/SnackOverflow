@@ -26,6 +26,7 @@ var TagsIndex = React.createClass({
     ApiUtil.fetchTags();
   },
   componentWillUnmount: function() {
+    TagActions.resetTagStoreSettings();
     _callbackId.remove();
   },
   handleSortChange: function(sortBy) {

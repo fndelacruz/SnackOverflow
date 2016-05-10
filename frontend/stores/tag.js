@@ -7,10 +7,16 @@ var TagStore = new Store(AppDispatcher);
 
 // NOTE: Using an array instead of an object for _tags because I don't think I
 // need to store by id
+var DEFAULT_SORT_BY = 'popular';
+
 var _tags = [];
-var _sortBy = 'popular';
+var _sortBy = DEFAULT_SORT_BY;
 var _searchTerm = '';
 var _indexLoaded;
+
+function addTag(tag) {
+  _tags.push(tag);
+}
 
 function resetTags(tags) {
   Util.sortBy(tags, 'question_count', true, 'id');
@@ -61,11 +67,18 @@ TagStore.__onDispatch = function(payload) {
     case TagConstants.RECEIVE_TAGS:
       resetTags(payload.action);
       break;
+    case TagConstants.RECEIVE_TAG:
+      addTag(payload.action);
+      break;
     case TagConstants.CHANGE_TAG_SORT:
       resetTagSort(payload.action);
       break;
     case TagConstants.CHANGE_TAG_SEARCH_TERM:
       resetTagSearchTerm(payload.action);
+      break;
+    case TagConstants.RESET_TAG_STORE_SETTINGS:
+      resetTagSearchTerm('');
+      resetTagSort(DEFAULT_SORT_BY);
       break;
   }
   this.__emitChange();

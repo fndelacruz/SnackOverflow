@@ -22,8 +22,9 @@ class Api::QuestionsController < ApplicationController
   def create
     @question = Question.new(question_params)
     @question.user = current_user
+    @question.tags = Tag.where(name: question_params[:tag_names])
     if @question.save!
-      # TODO: anything here?
+      # implicit render
     else
       render json: @question.errors.full_messages, status: :unprocessable_entity
     end
@@ -59,6 +60,6 @@ class Api::QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:content, :title)
+    params.require(:question).permit(:content, :title, tag_names: [])
   end
 end

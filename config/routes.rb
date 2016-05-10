@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     resources :favorites, only: [:create, :destroy]
     resources :comments, only: [:create, :destroy]
     resources :answers, only: [:create, :destroy, :update]
-    resources :tags, only: [:index, :show]
+    resources :tags, only: [:index, :show, :create]
     resources :badges, only: [:index, :show]
   end
 end

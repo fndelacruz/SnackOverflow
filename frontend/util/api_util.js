@@ -150,7 +150,22 @@ module.exports = {
   },
 
   // POST and DELETE
-
+  createTag: function(tag) {
+    var data = {
+      '[tag][name]': tag.tagString,
+      '[tag][description]': tag.newTagDescription,
+    };
+    $.ajax({
+      method: 'POST',
+      url: '/api/tags/',
+      data: data,
+      dataType: 'json',
+      success: TagActions.receiveTag,
+      error: function() {
+        debugger
+      }
+    });
+  },
   createVote: function(vote) {
     $.ajax({
       method: 'POST',
@@ -226,7 +241,8 @@ module.exports = {
   createQuestion: function(question) {
     var data = {
       'question[title]': question.title,
-      'question[content]': question.content
+      'question[content]': question.content,
+      'question[tag_names]': question.tags
     };
     $.ajax({
       method: 'POST',

@@ -3,17 +3,21 @@ var hashHistory = require('react-router').hashHistory;
 
 var TagStub = React.createClass({
   handleClick: function() {
-    var path = '/questions/tagged/' + this.props.tagName;
-    if (!this.props.currentPathTagName) {
-      // if outside of /questions/ path, push immediately
-      hashHistory.push(path);
-    }
-    else if (this.props.currentPathTagName !== this.props.tagName) {
-      if (this.props.tagPrePushCallback) {
-        this.props.tagPrePushCallback();
-        setTimeout(function() {
-          hashHistory.push(path);
-        }, 250);
+    if (this.props.clickOverride) {
+      this.props.clickOverride();
+    } else {
+      var path = '/questions/tagged/' + this.props.tagName;
+      if (!this.props.currentPathTagName) {
+        // if outside of /questions/ path, push immediately
+        hashHistory.push(path);
+      }
+      else if (this.props.currentPathTagName !== this.props.tagName) {
+        if (this.props.tagPrePushCallback) {
+          this.props.tagPrePushCallback();
+          setTimeout(function() {
+            hashHistory.push(path);
+          }, 250);
+        }
       }
     }
   },

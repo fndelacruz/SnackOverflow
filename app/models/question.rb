@@ -16,6 +16,8 @@ class Question < ActiveRecord::Base
   include Viewable
   include Badgeable
 
+  attr_accessor :tag_names
+
   validates :user, :title, :content, presence: true
   # validate tag_ids?
 
