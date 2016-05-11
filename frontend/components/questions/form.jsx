@@ -10,10 +10,16 @@ var TagStub = require('../tags/stub');
 var _callbackId;
 var QuestionsForm = React.createClass({
   getInitialState: function() {
+    var tags = [];
+    if (this.props.tags) {
+      tags = this.props.tags.map(function(tag) {
+        return tag.name;
+      });
+    }
     return {
       title: this.props.title || '',
       content: this.props.content ||'',
-      tags: [],
+      tags: tags,
       newTags: [],
       tagString: '',
       focus: 'title',
@@ -231,7 +237,7 @@ var QuestionsForm = React.createClass({
           tagSearchFooter = (
             <div className='question-form-tags-search-popout'>
               {this.renderFoundTagsSlice(0, 3)}
-              {this.renderFoundTagsSlice(4, 6)}
+              {this.renderFoundTagsSlice(3, 6)}
             </div>
           );
         }

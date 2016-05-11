@@ -112,7 +112,8 @@ module.exports = {
   updateQuestion: function(question) {
     var data = {
       '[question][title]': question.title,
-      '[question][content]': question.content
+      '[question][content]': question.content,
+      '[question][tag_names]': question.tags
     };
     $.ajax({
       method: 'PATCH',
@@ -240,9 +241,9 @@ module.exports = {
   },
   createQuestion: function(question) {
     var data = {
-      'question[title]': question.title,
-      'question[content]': question.content,
-      'question[tag_names]': question.tags
+      '[question][title]': question.title,
+      '[question][content]': question.content,
+      '[question][tag_names]': question.tags
     };
     $.ajax({
       method: 'POST',

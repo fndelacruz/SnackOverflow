@@ -32,6 +32,13 @@ class Api::QuestionsController < ApplicationController
 
   def update
     @question = Question.find(params[:id])
+
+    new_tags = Tag.where(name: question_params[:tag_names])
+    if @question.tags != new_tags
+      @question.tags = Tag.where(name: question_params[:tag_names])
+      @question.updated_at = Time.now
+    end
+
     if @question.user == current_user
       if @question.update!(question_params)
         @users = User.find_with_reputation_hash(parse_question_user_ids(@question))
