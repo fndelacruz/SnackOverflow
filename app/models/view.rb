@@ -21,15 +21,15 @@ class View < ActiveRecord::Base
   private
 
   def handle_badges
-    badging = Badging.joins(:badge)
-      .where(badgeable_type: viewable_type, badgeable_id: viewable_id,
-        badges: { name: [
-          Badge.SCHEMA[:questions][:views][:bronze][:label],
-          Badge.SCHEMA[:questions][:views][:silver][:label],
-          Badge.SCHEMA[:questions][:views][:gold][:label]
-        ]}
-      ).first
     if viewable_type == 'Question'
+      badging = Badging.joins(:badge)
+        .where(badgeable_type: viewable_type, badgeable_id: viewable_id,
+          badges: { name: [
+            Badge.SCHEMA[:questions][:views][:bronze][:label],
+            Badge.SCHEMA[:questions][:views][:silver][:label],
+            Badge.SCHEMA[:questions][:views][:gold][:label]
+          ]}
+        ).first
       handle_question_view_badges(badging)
     end
   end
@@ -41,40 +41,28 @@ class View < ActiveRecord::Base
           Badge.question_views[:gold][:criteria]
         ActiveRecord::Base.transaction do
           badging.destroy!
-          Badging.create!(
-            user: viewable.user,
-            badgeable_id: viewable_id,
-            badgeable_type: viewable_type,
-            badge: Badge.find_by_name(Badge.question_views[:gold][:label]),
-            created_at: created_at,
-            updated_at: updated_at
-          )
+          create_badging!(Badge.find_by_name(Badge.question_views[:gold][:label]))
         end
       elsif badging.badge.rank == 'bronze' && viewable.view_count ==
           Badge.question_views[:silver][:criteria]
         ActiveRecord::Base.transaction do
           badging.destroy!
-          Badging.create!(
-            user: viewable.user,
-            badgeable_id: viewable_id,
-            badgeable_type: viewable_type,
-            badge: Badge.find_by_name(Badge.question_views[:silver][:label]),
-            created_at: created_at,
-            updated_at: updated_at
-          )
+          create_badging!(Badge.find_by_name(Badge.question_views[:silver][:label]))
         end
       end
-    else
-      if viewable.view_count == Badge.question_views[:bronze][:criteria]
-        Badging.create!(
-          user: viewable.user,
-          badgeable_id: viewable_id,
-          badgeable_type: viewable_type,
-          badge: Badge.find_by_name(Badge.question_views[:bronze][:label]),
-          created_at: created_at,
-          updated_at: updated_at
-        )
-      end
+    elsif viewable.view_count == Badge.question_views[:bronze][:criteria]
+      create_badging!(Badge.find_by_name(Badge.question_views[:bronze][:label]))
     end
+  end
+
+  def create_badging!(badge)
+    Badging.create!(
+      user: viewable.user,
+      badgeable_id: viewable_id,
+      badgeable_type: viewable_type,
+      badge: badge,
+      created_at: created_at,
+      updated_at: updated_at
+    )
   end
 end

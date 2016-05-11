@@ -41,19 +41,19 @@ class Tag < ActiveRecord::Base
         rank: 'bronze',
         category: 'Tag',
         subcategory: "#{name}",
-        description: "Awarded for every 100 reputation earned from answers in the #{snake_case_to_camel_space(name)} tag.",
+        description: "Awarded for having at least #{Badge.SCHEMA[:tags][:post_tag_reputation][:bronze][:criteria]} total score in the #{snake_case_to_camel_space(name)} tag.",
       }, {
         name: "#{name}",
         rank: 'silver',
         category: 'Tag',
         subcategory: "#{name}",
-        description: "Awarded for every 500 reputation earned from answers in the #{snake_case_to_camel_space(name)} tag.",
+        description: "Awarded for having at least #{Badge.SCHEMA[:tags][:post_tag_reputation][:silver][:criteria]} total score in the #{snake_case_to_camel_space(name)} tag.",
       }, {
         name: "#{name}",
         rank: 'gold',
         category: 'Tag',
         subcategory: "#{name}",
-        description: "Awarded for every 1000 reputation earned from answers in the #{snake_case_to_camel_space(name)} tag.",
+        description: "Awarded for having at least #{Badge.SCHEMA[:tags][:post_tag_reputation][:gold][:criteria]} total score in the #{snake_case_to_camel_space(name)} tag.",
       }
     ])
   end

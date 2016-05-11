@@ -21,7 +21,8 @@ end
 
 json.badges do
   json.array!(@badges) do |badge|
-    json.extract!(badge, :id, :name, :rank, :description, :count, :created_at)
+    json.extract!(badge, :id, :name, :rank, :description, :count, :category,
+      :created_at)
   end
 end
 

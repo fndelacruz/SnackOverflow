@@ -108,6 +108,7 @@ class Vote < ActiveRecord::Base
           ]}
         ).first
 
+      Badging.handle_tag_badgings(votable.tags, votable.user, votable, created_at)
       handle_question_and_answer_vote_badges(badging, item_votes)
     elsif votable_type == 'Answer'
       item_votes = Badge.answer_votes
@@ -120,6 +121,7 @@ class Vote < ActiveRecord::Base
           ]}
         ).first
 
+      Badging.handle_tag_badgings(votable.associated_tags, votable.user, votable, created_at)
       handle_question_and_answer_vote_badges(badging, item_votes)
     end
   end
@@ -131,40 +133,28 @@ class Vote < ActiveRecord::Base
           item_votes[:gold][:criteria]
         ActiveRecord::Base.transaction do
           badging.destroy!
-          Badging.create!(
-            user: votable.user,
-            badgeable_id: votable_id,
-            badgeable_type: votable_type,
-            badge: Badge.find_by_name(item_votes[:gold][:label]),
-            created_at: created_at,
-            updated_at: updated_at
-          )
+          create_badging!(Badge.find_by_name(item_votes[:gold][:label]))
         end
       elsif badging.badge.rank == 'bronze' && votable.vote_count ==
           item_votes[:silver][:criteria]
         ActiveRecord::Base.transaction do
           badging.destroy!
-          Badging.create!(
-            user: votable.user,
-            badgeable_id: votable_id,
-            badgeable_type: votable_type,
-            badge: Badge.find_by_name(item_votes[:silver][:label]),
-            created_at: created_at,
-            updated_at: updated_at
-          )
+          create_badging!(Badge.find_by_name(item_votes[:silver][:label]))
         end
       end
-    else
-      if votable.vote_count == item_votes[:bronze][:criteria]
-        Badging.create!(
-          user: votable.user,
-          badgeable_id: votable_id,
-          badgeable_type: votable_type,
-          badge: Badge.find_by_name(item_votes[:bronze][:label]),
-          created_at: created_at,
-          updated_at: updated_at
-        )
-      end
+    elsif votable.vote_count == item_votes[:bronze][:criteria]
+      create_badging!(Badge.find_by_name(item_votes[:bronze][:label]))
     end
+  end
+
+  def create_badging!(badge)
+    Badging.create!(
+      user: votable.user,
+      badgeable_id: votable_id,
+      badgeable_type: votable_type,
+      badge: badge,
+      created_at: created_at,
+      updated_at: updated_at
+    )
   end
 end

@@ -31,3 +31,13 @@
   transition: background 0ms;
   background: #000;
 }
+
+.tag-badge-stub-container {
+  background: #F2F1EF;
+  color: #000;
+  border: 1px solid #D2D7D3;
+}
+
+.tag-badge-stub-container:hover {
+  background: #DADFE1;
+}

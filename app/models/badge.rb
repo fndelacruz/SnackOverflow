@@ -72,6 +72,13 @@ SCHEMA = {
         label: 'great_answer'
       }
     }
+  },
+  tags: {
+    post_tag_reputation: {
+      bronze: { criteria: 100 },
+      silver: { criteria: 250 },
+      gold: { criteria: 500 },
+    }
   }
 }
 
@@ -104,8 +111,12 @@ class Badge < ActiveRecord::Base
     SCHEMA[:questions][:favorites]
   end
 
+  def self.tag_criteria(rank)
+    Badge.SCHEMA[:tags][:post_tag_reputation][rank][:criteria]
+  end
+
   def self.grouped_with_stats_by_user_id(user_id)
-    Badge.select("badges.id, badges.name, badges.rank, badges.description, " +
+    Badge.select("badges.id, badges.name, badges.rank, badges.description, badges.category, " +
           "COUNT(badges.*) AS count, " +
           "MAX(badgings.created_at) AS created_at")
       .joins("JOIN badgings ON badges.id = badgings.badge_id")
