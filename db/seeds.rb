@@ -1,5 +1,6 @@
 require_relative './helpers/helper'
-require_relative './helpers/markov_text_generator'
+require_relative './helpers/markov_question_title_generator'
+require_relative './helpers/scraper'
 
 # ActiveRecord::Base.transaction do
   create_nontag_badges!

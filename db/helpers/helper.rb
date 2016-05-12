@@ -72,8 +72,13 @@ def create_random_user!
 end
 
 def create_random_question!
-  title = @markov ? @question_generator.build_question : FFaker::BaconIpsum.sentence
+  if @markov
+    title = @markov_question_title_generator.build_sentence
+  else
+    title = FFaker::BaconIpsum.sentence
+  end
   sometime = random_time_ago
+
   random_user.questions.create!(
     title: title,
     content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
@@ -380,33 +385,17 @@ def generate_fixed_content!
   View.create!(viewable: dan_q1, user: hal)
 end
 
-def scrape
-  @question_titles = []
+def setup_markov_scraper
+  @scraper = Scraper.new
+  @scraper.scrape
 
-  # scrape X pages of question titles
-  275.downto(1).each do |i|
-    puts "parsing questions index page##{i}"
-    url = "http://cooking.stackexchange.com/questions?page=#{i}&sort=newest"
-    page = HTTParty.get(url)
-    parse_page = Nokogiri::HTML(page)
-
-    question_elements = parse_page.css(".question-hyperlink")
-
-    question_elements.each do |question_element|
-      # gsub removes title meta content like '[duplicate]', etc.
-      @question_titles << question_element.children[0].to_s.gsub(/ \[.+\]$/, '')
-    end
-  end
-
-  # TODO: question_contents, answer_contents, comment_contents
+  @markov_question_title_generator =
+    MarkovQuestionTitleGenerator.new(@scraper.question_titles)
+  @markov_question_title_generator.setup
 end
 
 def generate_random_content!
-  if @markov
-    scrape
-    @question_generator = Generator.new(@question_titles)
-    @question_generator.setup
-  end
+  setup_markov_scraper if @markov
 
   25.times { create_random_user! }
 
@@ -416,14 +405,14 @@ def generate_random_content!
   75.times { create_random_question! }
   400.times { create_random_answer! }
   50.times { create_random_question_comment! }
-  400.times { create_random_answer_comment! }
-
-  2000.times { create_random_vote!(random_question) }
-  6400.times { create_random_vote!(random_answer) }
-  1600.times { create_random_vote!(random_comment) }
-
-  1000.times { create_random_view!(random_question) }
-  1000.times { create_random_view!(random_user) }
-
-  500.times { toggle_random_favorite! }
+  # 400.times { create_random_answer_comment! }
+  #
+  # 2000.times { create_random_vote!(random_question) }
+  # 6400.times { create_random_vote!(random_answer) }
+  # 1600.times { create_random_vote!(random_comment) }
+  #
+  # 1000.times { create_random_view!(random_question) }
+  # 1000.times { create_random_view!(random_user) }
+  #
+  # 500.times { toggle_random_favorite! }
 end

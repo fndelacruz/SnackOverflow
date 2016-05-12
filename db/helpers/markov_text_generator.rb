@@ -1,4 +1,4 @@
-class Generator
+class MarkovTextGenerator
   attr_accessor :raw_counts, :probabilities, :counts_grouped, :table
 
   def initialize(input, order=8)
@@ -18,20 +18,17 @@ class Generator
     nil
   end
 
-  def build_question(maximum=120, minimum=30)
+  def build_sentence(max=120, min=30)
     phrase = random_capitalized_element.dup
-    until phrase.length == maximum
+    until phrase.length == max
       last_char = phrase[-@order..-1]
       next_char = next_char(last_char)
 
-      if !next_char
-        phrase = chop_phrase_and_add_question_mark(phrase)
-        return phrase.length < minimum ? build_question(maximum, minimum) : phrase
-      end
+      return handle_early_phrase_termination(phrase, max, min) if !next_char
       phrase << next_char
     end
 
-    chop_phrase_and_add_question_mark(phrase)
+    process_phrase_ending(phrase)
   end
 
   def capitalized_elements
@@ -42,13 +39,14 @@ class Generator
 
   private
 
-  def chop_phrase_and_add_question_mark(phrase)
-    if phrase[-1] == '?'
-      phrase
-    else
-      phrase = phrase.gsub(/[ .!,]$/, '?')
-      phrase.gsub(/ \S+$/, '?')
-    end
+  def handle_early_phrase_termination(phrase, max, min)
+    phrase = process_phrase_ending(phrase)
+    return phrase.length < min ? build_sentence(max, min) : phrase
+  end
+
+  def process_phrase_ending(phrase)
+    # TODO: should not be called yet. will write this in as adding a period
+    debugger
   end
 
   def next_char(char)
