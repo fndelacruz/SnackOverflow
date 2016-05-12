@@ -43,9 +43,11 @@ var ShowActivitySummaryItem = React.createClass({
             break;
         }
         return (items.slice(0,5).map(function(item) {
-          var path = 'questions/' + item.question_id;
+          var path = 'questions/';
           if (this.props.title === 'Answers') {
-            path += '/answer/' + item.id;
+            path +=  + item.question_id + '/answer/' + item.id;
+          } else {
+            path += item.id;
           }
           var key = this.props.title === 'Answers' ? 'answer-' : 'question-';
 

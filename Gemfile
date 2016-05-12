@@ -32,6 +32,10 @@ gem 'bcrypt'
 gem 'ffaker'
 gem 'active_record_union'
 
+# for scraping content for markov based seed generator
+gem 'httparty'
+gem 'nokogiri'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

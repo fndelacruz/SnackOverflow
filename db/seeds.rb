@@ -1,4 +1,5 @@
-require_relative 'helper'
+require_relative './helpers/helper'
+require_relative './helpers/markov_text_generator'
 
 # ActiveRecord::Base.transaction do
   create_nontag_badges!
@@ -27,29 +28,29 @@ require_relative 'helper'
     email: 'bob@bob.bob', display_name: 'bob', password: 'bobbob'
   )
 
-  ann_q1 = ann.questions.create!(
-    title: FFaker::BaconIpsum.sentence,
-    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
-    associated_tag_ids: [1, 2, 3]
-  )
-  ann_q2 = ann.questions.create!(
-    title: FFaker::BaconIpsum.sentence,
-    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
-    associated_tag_ids: [3, 4, 5]
-  )
-  ann_q3 = ann.questions.create!(
-    title: FFaker::BaconIpsum.sentence,
-    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
-    associated_tag_ids: [1, 3, 5]
-  )
-  ann_q1_a1 = ann_q1.answers.create!(
-    user: bob,
-    content: FFaker::BaconIpsum.sentences(rand(3) + 1).join(' '),
-  )
-  ann_q3_a1 = ann_q3.answers.create!(
-    user: bob,
-    content: FFaker::BaconIpsum.sentences(rand(3) + 1).join(' '),
-  )
+  # ann_q1 = ann.questions.create!(
+  #   title: FFaker::BaconIpsum.sentence,
+  #   content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
+  #   associated_tag_ids: [1, 2, 3]
+  # )
+  # ann_q2 = ann.questions.create!(
+  #   title: FFaker::BaconIpsum.sentence,
+  #   content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
+  #   associated_tag_ids: [3, 4, 5]
+  # )
+  # ann_q3 = ann.questions.create!(
+  #   title: FFaker::BaconIpsum.sentence,
+  #   content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
+  #   associated_tag_ids: [1, 3, 5]
+  # )
+  # ann_q1_a1 = ann_q1.answers.create!(
+  #   user: bob,
+  #   content: FFaker::BaconIpsum.sentences(rand(3) + 1).join(' '),
+  # )
+  # ann_q3_a1 = ann_q3.answers.create!(
+  #   user: bob,
+  #   content: FFaker::BaconIpsum.sentences(rand(3) + 1).join(' '),
+  # )
 
   # 25.times { create_random_user! }
 
@@ -64,6 +65,7 @@ require_relative 'helper'
   # Vote.create!(user: bob, votable: ann_q1, value: 1)
 
   # generate_fixed_content!
+  @markov = true
   generate_random_content!
 
 # end

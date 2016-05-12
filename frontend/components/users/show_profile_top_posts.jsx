@@ -68,7 +68,13 @@ var ShowProfileTopPosts = React.createClass({
     return (
       <div className='user-show-profile-top-posts-main'>
         {posts.slice(0,10).map(function(post) {
-          var answerId;
+
+          var postTitle;
+          if (post.title.length > 100) {
+            postTitle = post.title.slice(0, 100) + '...';
+          } else {
+            postTitle = post.title;
+          }
           return (
             <div
               onClick={this.handlePostClick.bind(null, post.id, post.question_id)}
@@ -81,7 +87,7 @@ var ShowProfileTopPosts = React.createClass({
                 <span>{post.vote_count}</span>
               </div>
               <div className='user-show-profile-top-posts-main-element-post-title'>
-                {post.title}
+                {postTitle}
               </div>
               <div className='user-show-profile-top-posts-main-element-create-date'>
                 {post.created_at.toLocaleDateString()}

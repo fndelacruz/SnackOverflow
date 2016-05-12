@@ -72,9 +72,10 @@ def create_random_user!
 end
 
 def create_random_question!
+  title = @markov ? @question_generator.build_question : FFaker::BaconIpsum.sentence
   sometime = random_time_ago
   random_user.questions.create!(
-    title: FFaker::BaconIpsum.sentence,
+    title: title,
     content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
     updated_at: sometime,
     created_at: sometime,
@@ -379,7 +380,34 @@ def generate_fixed_content!
   View.create!(viewable: dan_q1, user: hal)
 end
 
+def scrape
+  @question_titles = []
+
+  # scrape X pages of question titles
+  275.downto(1).each do |i|
+    puts "parsing questions index page##{i}"
+    url = "http://cooking.stackexchange.com/questions?page=#{i}&sort=newest"
+    page = HTTParty.get(url)
+    parse_page = Nokogiri::HTML(page)
+
+    question_elements = parse_page.css(".question-hyperlink")
+
+    question_elements.each do |question_element|
+      # gsub removes title meta content like '[duplicate]', etc.
+      @question_titles << question_element.children[0].to_s.gsub(/ \[.+\]$/, '')
+    end
+  end
+
+  # TODO: question_contents, answer_contents, comment_contents
+end
+
 def generate_random_content!
+  if @markov
+    scrape
+    @question_generator = Generator.new(@question_titles)
+    @question_generator.setup
+  end
+
   25.times { create_random_user! }
 
   # NOTE: the following dates as used DO NOT respect reality (ex: a user can

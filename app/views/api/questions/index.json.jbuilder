@@ -1,8 +1,13 @@
 json.array!(@questions) do |question|
-  json.extract!(question, :id, :title, :content, :updated_at, :created_at,
-    :vote_count, :answer_count, :view_count)
+  json.extract!(question, :id, :title, :content, :created_at, :vote_count,
+    :answer_count, :view_count)
+
+  if question.updated_at != question.created_at
+    json.updated_at question.updated_at
+    json.updated_at_words "edited #{time_ago_in_words(@question.updated_at)} ago"
+  end
+
   json.created_at_words "asked #{time_ago_in_words(question.created_at)} ago"
-  json.updated_at_words "edited #{time_ago_in_words(question.updated_at)} ago"
 
   json.user do
     json.extract!(question.user, :id, :display_name)
