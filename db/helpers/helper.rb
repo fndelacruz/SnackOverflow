@@ -73,15 +73,17 @@ end
 
 def create_random_question!
   if @markov
-    title = @markov_question_title_generator.build_sentence
+    title = @markov_question_title_generator.build_element
+    content = @markov_question_content_generator.build_element(600, 100)
   else
     title = FFaker::BaconIpsum.sentence
+    content = FFaker::BaconIpsum.sentences(rand(15) + 3).join(' ')
   end
   sometime = random_time_ago
 
   random_user.questions.create!(
     title: title,
-    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
+    content: content,
     updated_at: sometime,
     created_at: sometime,
     associated_tag_ids: random_tags
@@ -392,27 +394,31 @@ def setup_markov_scraper
   @markov_question_title_generator =
     MarkovQuestionTitleGenerator.new(@scraper.question_titles)
   @markov_question_title_generator.setup
+
+  @markov_question_content_generator =
+    MarkovTextGenerator.new(@scraper.question_content_elements, 12)
+  @markov_question_content_generator.setup
 end
 
 def generate_random_content!
   setup_markov_scraper if @markov
 
-  25.times { create_random_user! }
+  50.times { create_random_user! }
 
   # NOTE: the following dates as used DO NOT respect reality (ex: a user can
   # create an answer before joining the site). Will fix this for deployment.
 
-  75.times { create_random_question! }
+  100.times { create_random_question! }
   400.times { create_random_answer! }
   50.times { create_random_question_comment! }
-  # 400.times { create_random_answer_comment! }
-  #
-  # 2000.times { create_random_vote!(random_question) }
-  # 6400.times { create_random_vote!(random_answer) }
-  # 1600.times { create_random_vote!(random_comment) }
-  #
-  # 1000.times { create_random_view!(random_question) }
-  # 1000.times { create_random_view!(random_user) }
-  #
-  # 500.times { toggle_random_favorite! }
+  400.times { create_random_answer_comment! }
+
+  2000.times { create_random_vote!(random_question) }
+  6400.times { create_random_vote!(random_answer) }
+  1600.times { create_random_vote!(random_comment) }
+
+  1000.times { create_random_view!(random_question) }
+  1000.times { create_random_view!(random_user) }
+
+  500.times { toggle_random_favorite! }
 end

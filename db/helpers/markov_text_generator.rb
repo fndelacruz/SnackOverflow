@@ -18,7 +18,7 @@ class MarkovTextGenerator
     nil
   end
 
-  def build_sentence(max=120, min=30)
+  def build_element(max=120, min=30)
     phrase = random_capitalized_element.dup
     until phrase.length == max
       last_char = phrase[-@order..-1]
@@ -33,7 +33,7 @@ class MarkovTextGenerator
 
   def capitalized_elements
     @capitalized_elements ||= @table.keys.select do |word|
-      word.match(/^[A-Z][a-z]+/)
+      word.match(/\A[A-Z][a-z]+/)
     end
   end
 
@@ -41,12 +41,17 @@ class MarkovTextGenerator
 
   def handle_early_phrase_termination(phrase, max, min)
     phrase = process_phrase_ending(phrase)
-    return phrase.length < min ? build_sentence(max, min) : phrase
+    return phrase.length < min ? build_element(max, min) : phrase
   end
 
   def process_phrase_ending(phrase)
-    # TODO: should not be called yet. will write this in as adding a period
-    debugger
+    if phrase[-1].match(/[.!?;]/)
+      phrase
+    elsif phrase[-1] == ' '
+      phrase.gsub(/ $/, '.')
+    else
+      phrase.gsub(/ \S+$/, '.')
+    end
   end
 
   def next_char(char)
