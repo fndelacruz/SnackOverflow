@@ -1,9 +1,13 @@
 var React = require('react');
 var Util = require('../../util/util');
+var hashHistory = require('react-router').hashHistory;
 
 var BadgeStub = React.createClass({
   handleClick: function() {
-    alert('TODO handleClick BadgeStub');
+    if (this.props.badge.id) {
+      var path = '/badges/' + this.props.badge.id;
+      hashHistory.push(path);
+    }
   },
   render: function() {
     var className = 'badge-stub-container + badge-stub-' + this.props.badge.rank;

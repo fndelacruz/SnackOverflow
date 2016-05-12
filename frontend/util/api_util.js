@@ -87,6 +87,14 @@ module.exports = {
       success: BadgeActions.receiveBadges
     });
   },
+  fetchBadge: function(badgeId) {
+    $.ajax({
+      method: 'GET',
+      url: '/api/badges/' + badgeId,
+      dataType: 'json',
+      success: BadgeActions.receiveBadge
+    });
+  },
 
   // UPDATE
 

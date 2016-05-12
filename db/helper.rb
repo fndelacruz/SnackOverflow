@@ -198,7 +198,7 @@ def create_nontag_badges!
       rank: rank,
       category: 'Question',
       subcategory: 'votes',
-      description: "Question with score of #{Badge.SCHEMA[:questions][:votes][rank][:criteria]} or more."
+      description: "Question with score of #{Badge.SCHEMA[:questions][:votes][rank][:criteria]} or more. This badge is still held if future downvotes bring score below score criteria."
     )
   end
 
@@ -218,7 +218,7 @@ def create_nontag_badges!
       rank: rank,
       category: 'Answer',
       subcategory: 'votes',
-      description: "Answer with score of #{Badge.SCHEMA[:answers][:votes][rank][:criteria]} or more."
+      description: "Answer with score of #{Badge.SCHEMA[:answers][:votes][rank][:criteria]} or more. This badge is still held if future downvotes bring score below score criteria."
     )
   end
 

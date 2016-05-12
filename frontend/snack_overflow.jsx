@@ -13,7 +13,7 @@ var UsersIndex = require('./components/users/index');
 var TagsIndex = require('./components/tags/index');
 var UserShow = require('./components/users/show');
 var BadgesIndex = require('./components/badges/index');
-
+var BadgeShow = require('./components/badges/show');
 
 var App = (
   <Router history={hashHistory}>
@@ -24,9 +24,10 @@ var App = (
       <Route path='questions/:questionId/edit' component={QuestionEdit} />
       <Route path='ask' component={QuestionsForm} />
       <Route path='users' component={UsersIndex} />
-      <Route path='tags' component={TagsIndex} />
       <Route path='users/:userId(/:tab)' component={UserShow} />
+      <Route path='tags' component={TagsIndex} />
       <Route path='badges' component={BadgesIndex} />
+      <Route path='badges/:badgeId' component={BadgeShow} />
     </Route>
   </Router>
 );

@@ -1,0 +1,28 @@
+$badgeItemContainerWidth: 510px;
+$badgeItemTitleContainerWidth: 355px;
+$badgeItemDetailContainerMarginLeft: 10px;
+$badgeItemDetailContainerWidth: $badgeItemContainerWidth -
+  $badgeItemTitleContainerWidth - $badgeItemDetailContainerMarginLeft;
+
+.badging-item-container {
+  padding: 10px;
+  float: left;
+  width: $badgeItemContainerWidth;
+  height: 75px;
+  outline: 1px dashed green;
+}
+
+.badging-item-container > div {
+  float: left;
+}
+
+.badging-item-title-container {
+  outline: 1px dashed blue;
+  width: $badgeItemTitleContainerWidth;
+}
+
+.badging-item-detail-container {
+  outline: 1px dashed red;
+  margin-left: $badgeItemDetailContainerMarginLeft;
+  width: $badgeItemDetailContainerWidth;
+}

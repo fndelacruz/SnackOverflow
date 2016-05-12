@@ -8,6 +8,12 @@ module.exports = {
       actionType: BadgeConstants.RECEIVE_BADGES
     });
   },
+  receiveBadge: function(badge) {
+    AppDispatcher.dispatch({
+      action: badge,
+      actionType: BadgeConstants.RECEIVE_BADGE
+    });
+  },
   resetBadgesSelect: function(select) {
     AppDispatcher.dispatch({
       action: select,

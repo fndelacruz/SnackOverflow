@@ -91,6 +91,10 @@ class Badge < ActiveRecord::Base
   has_many :badgings
   has_many :users, through: :badgings, source: :user
 
+  def self.show_find(badgeId)
+    Badge.includes(badgings: :user)
+  end
+
   def self.SCHEMA
     SCHEMA
   end
@@ -123,6 +127,37 @@ class Badge < ActiveRecord::Base
       .where(badgings: { user_id: user_id })
       .group("badges.id")
       .order("created_at DESC")
+  end
+
+  def badgings_detailed
+    case category
+    when 'Question'
+      Badging.select("badgings.*, questions.title, questions.id AS question_id")
+        .joins("JOIN questions ON badgings.badgeable_id = questions.id AND
+            badgings.badgeable_type = 'Question'")
+        .where(badge_id: id)
+        .order(created_at: :desc)
+    when 'Answer'
+      Badging.select("badgings.*, questions.title, questions.id AS question_id")
+        .joins("JOIN answers ON badgings.badgeable_id = answers.id AND
+            badgings.badgeable_type = 'Answer'")
+        .joins("JOIN questions ON answers.question_id = questions.id")
+        .where(badge_id: id)
+        .order(created_at: :desc)
+    when 'Tag'
+      (
+        Badging.select("badgings.*, questions.title, questions.id AS question_id")
+          .joins("JOIN questions ON badgings.badgeable_id = questions.id AND
+              badgings.badgeable_type = 'Question'")
+          .where(badge_id: id)
+          .order(created_at: :desc)
+        .union_all Badging.select("badgings.*, questions.title, questions.id AS question_id")
+          .joins("JOIN answers ON badgings.badgeable_id = answers.id AND
+              badgings.badgeable_type = 'Answer'")
+          .joins("JOIN questions ON answers.question_id = questions.id")
+          .where(badge_id: id)
+      ).order(created_at: :desc)
+    end
   end
 
   def badgings_count

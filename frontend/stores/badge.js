@@ -1,6 +1,7 @@
 var Store = require('flux/utils').Store;
 var AppDispatcher = require('../dispatcher/dispatcher');
 var BadgeConstants = require('../constants/badge');
+var Util = require('../util/util');
 
 var _badges;
 var _select = 'all';
@@ -14,9 +15,23 @@ function resetBadges(badges) {
   });
 }
 
+function resetBadge(badge) {
+  badge.badgings.forEach(Util.formatDateHelper);
+  if (!_badges) {
+    _badges = {};
+  }
+  _badges[badge.id] = badge;
+}
+
 function resetBadgeSelect(select) {
   _select = select;
 }
+
+BadgeStore.getBadge = function(badgeId) {
+  if (_badges) {
+    return _badges[badgeId];
+  }
+};
 
 BadgeStore.all = function() {
   if (_badges) {
@@ -56,6 +71,9 @@ BadgeStore.__onDispatch = function(payload) {
   switch (payload.actionType) {
     case BadgeConstants.RECEIVE_BADGES:
       resetBadges(payload.action);
+      break;
+    case BadgeConstants.RECEIVE_BADGE:
+      resetBadge(payload.action);
       break;
     case BadgeConstants.RESET_BADGES_SELECT:
       resetBadgeSelect(payload.action);
