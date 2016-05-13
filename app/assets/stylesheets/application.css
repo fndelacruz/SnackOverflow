@@ -265,3 +265,10 @@ button:hover {
   opacity: 0.01;
   transition: opacity 250ms ease-in;
 }
+
+/* misc common */
+
+.user-reputation {
+  font-weight: 700;
+  color: #777;
+}

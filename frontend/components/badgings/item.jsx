@@ -1,5 +1,6 @@
 var React = require('react');
 var hashHistory = require('react-router').hashHistory;
+var UserLinkStub = require('../users/link_stub');
 
 var BadgingItem = React.createClass({
   handleClick: function() {
@@ -22,7 +23,15 @@ var BadgingItem = React.createClass({
             {this.props.created_at_words}
           </div>
           <div className='badging-item-detail-user-container'>
-            {'user_id: ' + this.props.user_id}
+            <div
+              className='question-index-item-user-pic'
+              onClick={this.handleUserClick} />
+            <UserLinkStub
+              {...{id: this.props.user_id,
+                display_name: this.props.user_display_name}}/>
+            <div className='user-reputation'>
+              {this.props.user_reputation}
+            </div>
           </div>
         </div>
       </div>
@@ -31,5 +40,3 @@ var BadgingItem = React.createClass({
 });
 
 module.exports = BadgingItem;
-
-// {JSON.stringify(this.props)}

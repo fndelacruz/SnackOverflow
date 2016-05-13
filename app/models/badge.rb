@@ -132,29 +132,33 @@ class Badge < ActiveRecord::Base
   def badgings_detailed
     case category
     when 'Question'
-      Badging.select("badgings.*, questions.title, questions.id AS question_id")
+      Badging.select("badgings.*, questions.title, questions.id AS question_id, users.display_name AS user_display_name")
         .joins("JOIN questions ON badgings.badgeable_id = questions.id AND
             badgings.badgeable_type = 'Question'")
+        .joins("JOIN users on badgings.user_id = users.id")
         .where(badge_id: id)
         .order(created_at: :desc)
     when 'Answer'
-      Badging.select("badgings.*, questions.title, questions.id AS question_id")
+      Badging.select("badgings.*, questions.title, questions.id AS question_id, users.display_name AS user_display_name")
         .joins("JOIN answers ON badgings.badgeable_id = answers.id AND
             badgings.badgeable_type = 'Answer'")
         .joins("JOIN questions ON answers.question_id = questions.id")
+        .joins("JOIN users on badgings.user_id = users.id")
         .where(badge_id: id)
         .order(created_at: :desc)
     when 'Tag'
       (
-        Badging.select("badgings.*, questions.title, questions.id AS question_id")
+        Badging.select("badgings.*, questions.title, questions.id AS question_id, users.display_name AS user_display_name")
           .joins("JOIN questions ON badgings.badgeable_id = questions.id AND
               badgings.badgeable_type = 'Question'")
+          .joins("JOIN users on badgings.user_id = users.id")
           .where(badge_id: id)
           .order(created_at: :desc)
-        .union_all Badging.select("badgings.*, questions.title, questions.id AS question_id")
+        .union_all Badging.select("badgings.*, questions.title, questions.id AS question_id, users.display_name AS user_display_name")
           .joins("JOIN answers ON badgings.badgeable_id = answers.id AND
               badgings.badgeable_type = 'Answer'")
           .joins("JOIN questions ON answers.question_id = questions.id")
+          .joins("JOIN users on badgings.user_id = users.id")
           .where(badge_id: id)
       ).order(created_at: :desc)
     end

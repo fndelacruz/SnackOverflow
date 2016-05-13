@@ -197,7 +197,7 @@ var ShowItem = React.createClass({ // used for question show and answers index i
                 <div className='question-index-item-user-display-name-container'>
                   <UserLinkStub {...item.user} />
                 </div>
-                <div className='question-index-item-user-score'>
+                <div className='user-reputation'>
                   {item.user.reputation}
                 </div>
               </div>

@@ -1,5 +1,5 @@
 $badgeItemContainerWidth: 510px;
-$badgeItemTitleContainerWidth: 355px;
+$badgeItemTitleContainerWidth: 335px;
 $badgeItemDetailContainerMarginLeft: 10px;
 $badgeItemDetailContainerWidth: $badgeItemContainerWidth -
   $badgeItemTitleContainerWidth - $badgeItemDetailContainerMarginLeft;
@@ -9,7 +9,11 @@ $badgeItemDetailContainerWidth: $badgeItemContainerWidth -
   float: left;
   width: $badgeItemContainerWidth;
   height: 75px;
-  outline: 1px dashed green;
+}
+
+.badging-item-container:nth-of-type(4n + 2),
+.badging-item-container:nth-of-type(4n + 3) {
+  background: #eee;
 }
 
 .badging-item-container > div {
@@ -17,12 +21,14 @@ $badgeItemDetailContainerWidth: $badgeItemContainerWidth -
 }
 
 .badging-item-title-container {
-  outline: 1px dashed blue;
   width: $badgeItemTitleContainerWidth;
 }
 
 .badging-item-detail-container {
-  outline: 1px dashed red;
   margin-left: $badgeItemDetailContainerMarginLeft;
   width: $badgeItemDetailContainerWidth;
+}
+
+.badging-item-detail-date {
+  margin-bottom: 20px;
 }
