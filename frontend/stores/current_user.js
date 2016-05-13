@@ -39,6 +39,7 @@ CurrentUserStore.__onDispatch = function(payload) {
       resetCurrentUser(payload.action);
       break;
     case CurrentUserConstants.RECEIVED_CURRENT_USER_UPDATE_STATUS_OK:
+      debugger
       resetCurrentUser(payload.action);
       resetUpdateSubmissionErrors([]);
       _submissionComplete = true;

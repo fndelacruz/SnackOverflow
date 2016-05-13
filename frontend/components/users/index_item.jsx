@@ -56,9 +56,10 @@ var UsersIndexItem = React.createClass({
     return (
       <div className='users-index-item'>
         <div className='users-index-item-non-tag-container group'>
-          <div
+          <img
             onClick={this.handleUserClick}
-            className='users-index-item-user-pic' />
+            className='users-index-item-user-pic'
+            src={'https://robohash.org/' + user.id + '?bgset=any'}/>
           <div className='link-container'>
             <UserLinkStub {...user} />
           </div>

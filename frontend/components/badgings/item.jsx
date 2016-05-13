@@ -10,6 +10,10 @@ var BadgingItem = React.createClass({
     }
     hashHistory.push(path);
   },
+  handleUserClick: function() {
+    var path = '/users/' + this.props.user_id;
+    hashHistory.push(path);
+  },
   render: function() {
     return (
       <div className='badging-item-container group'>
@@ -23,9 +27,10 @@ var BadgingItem = React.createClass({
             {this.props.created_at_words}
           </div>
           <div className='badging-item-detail-user-container'>
-            <div
+            <img
               className='question-index-item-user-pic'
-              onClick={this.handleUserClick} />
+              onClick={this.handleUserClick}
+              src={'https://robohash.org/' + this.props.user_id + '?bgset=any'} />
             <UserLinkStub
               {...{id: this.props.user_id,
                 display_name: this.props.user_display_name}}/>

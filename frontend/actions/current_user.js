@@ -10,6 +10,7 @@ module.exports = {
     });
   },
   receiveCurrentUserUpdateStatusOK: function(currentUser) {
+    debugger
     AppDispatcher.dispatch({
       action: currentUser,
       actionType: CurrentUserConstants.RECEIVED_CURRENT_USER_UPDATE_STATUS_OK

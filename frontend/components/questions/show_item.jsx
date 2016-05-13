@@ -191,9 +191,10 @@ var ShowItem = React.createClass({ // used for question show and answers index i
                 {createdAt}
               </div>
               <div className='question-index-item-user-container'>
-                <div
+                <img
                   className='question-index-item-user-pic'
-                  onClick={this.handleUserClick} />
+                  onClick={this.handleUserClick}
+                  src={'https://robohash.org/' + item.user.id + '?bgset=any'} />
                 <div className='question-index-item-user-display-name-container'>
                   <UserLinkStub {...item.user} />
                 </div>

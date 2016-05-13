@@ -28,11 +28,9 @@ QuestionsIndexItem = React.createClass({
   handleTitleClick: function() {
     hashHistory.push('/questions/' + this.props.id);
   },
-  handleTagClick: function() {
-    alert('TODO handleTagClick');
-  },
   handleUserClick: function() {
-    alert('TODO handleUserClick');
+    var path = '/users/' + this.props.user.id;
+    hashHistory.push(path);
   },
   render: function() {
     var question = this.props, tags;
@@ -83,13 +81,14 @@ QuestionsIndexItem = React.createClass({
                 {question.created_at_words}
               </div>
               <div className='question-index-item-user-container'>
-                <div
+                <img
                   className='question-index-item-user-pic'
-                  onClick={this.handleUserClick} />
+                  onClick={this.handleUserClick}
+                  src={'https://robohash.org/' + question.user.id + '?bgset=any'} />
                 <div className='question-index-item-user-display-name-container'>
                   <UserLinkStub {...question.user} />
                 </div>
-                <div className='question-index-item-user-score'>
+                <div className='user-reputation'>
                   {question.user.reputation}
                 </div>
               </div>
