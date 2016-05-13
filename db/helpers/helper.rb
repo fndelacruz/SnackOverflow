@@ -59,6 +59,11 @@ def random_word
 end
 
 def create_random_user!
+  if @markov
+    bio = @markov_user_bio_generator.build_element(400, 5)
+  else
+    bio = FFaker::BaconIpsum.sentences(rand(15)).join(' ')
+  end
   sometime = random_time_ago
   User.create(
     email: FFaker::Internet.email,
@@ -67,14 +72,49 @@ def create_random_user!
     location: random_location,
     updated_at: sometime,
     created_at: sometime,
-    bio: FFaker::BaconIpsum.sentences(rand(15)).join(' ')
+    bio: bio
   )
+end
+
+def create_random_tags!(count)
+  if @markov
+    tag_names = @scraper.tag_names.sample(count)
+    count.times do |idx|
+      puts "creating tag ##{idx}"
+      begin
+        Tag.create!(
+        name: tag_names[idx],
+        description: @markov_tag_description_generator.build_element(200, 30)
+        )
+      rescue => e
+        if e.message != 'Validation failed: Name has already been taken'
+          puts e.message
+          debugger
+        end
+      end
+    end
+  else
+    count.times do |idx|
+      puts "creating tag ##{idx}"
+      begin
+        Tag.create!(
+        name: random_word.downcase,
+        description: FFaker::DizzleIpsum.sentences(3 + rand(2)).join(' ')
+        )
+      rescue => e
+        if e.message != 'Validation failed: Name has already been taken'
+          puts e.message
+          debugger
+        end
+      end
+    end
+  end
 end
 
 def create_random_question!
   if @markov
     title = @markov_question_title_generator.build_element
-    content = @markov_question_content_generator.build_element(600, 100)
+    content = @markov_question_content_generator.build_element(700, 100)
   else
     title = FFaker::BaconIpsum.sentence
     content = FFaker::BaconIpsum.sentences(rand(15) + 3).join(' ')
@@ -107,30 +147,45 @@ def toggle_random_favorite!
 end
 
 def create_random_answer!
+  if @markov
+    content = @markov_answer_content_generator.build_element(700, 100)
+  else
+    content = FFaker::BaconIpsum.sentences(rand(6) + 1).join(' ')
+  end
   sometime = random_time_ago
   random_question.answers.create!(
     user: random_user,
-    content: FFaker::BaconIpsum.sentences(rand(6) + 1).join(' '),
+    content: content,
     updated_at: sometime,
     created_at: sometime,
   )
 end
 
 def create_random_question_comment!
+  if @markov
+    content = @markov_comment_content_generator.build_element(500, 50)
+  else
+    content = FFaker::BaconIpsum.sentences(rand(2) + 1).join(' ')
+  end
   sometime = random_time_ago
   random_question.comments.create!(
     user: random_user,
-    content: FFaker::BaconIpsum.sentences(rand(2) + 1).join(' '),
+    content: content,
     updated_at: sometime,
     created_at: sometime,
   )
 end
 
 def create_random_answer_comment!
+  if @markov
+    content = @markov_comment_content_generator.build_element(500, 50)
+  else
+    content = FFaker::BaconIpsum.sentences(rand(2) + 1).join(' ')
+  end
   sometime = random_time_ago
   random_answer.comments.create!(
     user: random_user,
-    content: FFaker::BaconIpsum.sentences(rand(2) + 1).join(' '),
+    content: content,
     updated_at: sometime,
     created_at: sometime,
   )
@@ -242,11 +297,6 @@ def create_nontag_badges!
   #     name: 'necromancer',
   #     rank: 'silver',
   #     description: 'Answer score of 5 or higher to a question asked 1 month ago or longer.'
-  #
-  #   # NOTE: Tag badges must be dynamically generated when a tag is created!
-  #   # TODO: bronze awarded every 100 tag answer score
-  #   # TODO: silver awarded every 500 tag answer score
-  #   # TODO: gold awarded every 1000 tag answer score
   # }])
 end
 
@@ -391,34 +441,59 @@ def setup_markov_scraper
   @scraper = Scraper.new
   @scraper.scrape
 
+
+  puts "setting up markov_question_title_generator..."
   @markov_question_title_generator =
     MarkovQuestionTitleGenerator.new(@scraper.question_titles)
   @markov_question_title_generator.setup
 
+
+  puts "setting up markov_question_content_generator..."
   @markov_question_content_generator =
     MarkovTextGenerator.new(@scraper.question_content_elements, 12)
   @markov_question_content_generator.setup
+
+
+  puts "setting up markov_answer_content_generator..."
+  @markov_answer_content_generator =
+    MarkovTextGenerator.new(@scraper.answer_content_elements, 12)
+  @markov_answer_content_generator.setup
+
+  puts "setting up markov_comment_content_generator..."
+  @markov_comment_content_generator =
+    MarkovTextGenerator.new(@scraper.comment_content_elements, 12)
+  @markov_comment_content_generator.setup
+
+  puts "setting up markov_tag_description_generator..."
+  @markov_tag_description_generator =
+    MarkovTextGenerator.new(@scraper.tag_description_elements, 8)
+  @markov_tag_description_generator.setup
+
+
+  @markov_user_bio_generator =
+    MarkovTextGenerator.new(@scraper.user_bio_elements, 8)
+  @markov_user_bio_generator.setup
 end
 
 def generate_random_content!
   setup_markov_scraper if @markov
 
-  50.times { create_random_user! }
+  50.times { |i| puts "creating user #{i}"; create_random_user! }
 
   # NOTE: the following dates as used DO NOT respect reality (ex: a user can
   # create an answer before joining the site). Will fix this for deployment.
+  # random tag creation
 
-  100.times { create_random_question! }
-  400.times { create_random_answer! }
-  50.times { create_random_question_comment! }
-  400.times { create_random_answer_comment! }
+  create_random_tags!(100)
 
-  2000.times { create_random_vote!(random_question) }
-  6400.times { create_random_vote!(random_answer) }
-  1600.times { create_random_vote!(random_comment) }
-
-  1000.times { create_random_view!(random_question) }
-  1000.times { create_random_view!(random_user) }
-
-  500.times { toggle_random_favorite! }
+  125.times { |i| puts "creating question #{i}"; create_random_question! }
+  300.times { |i| puts "creating answer #{i}"; create_random_answer! }
+  250.times { |i| puts "creating q_comment #{i}"; create_random_question_comment! }
+  800.times { |i| puts "creating a_comment #{i}"; create_random_answer_comment! }
+  2000.times { |i| puts "creating q_vote #{i}"; create_random_vote!(random_question) }
+  6400.times { |i| puts "creating a_vote #{i}"; create_random_vote!(random_answer) }
+  1600.times { |i| puts "creating c_vote #{i}"; create_random_vote!(random_comment) }
+  1000.times { |i| puts "creating q_view #{i}"; create_random_view!(random_question) }
+  1000.times { |i| puts "creating u_view #{i}"; create_random_view!(random_user) }
+  500.times { |i| puts "toggling favorite #{i}"; toggle_random_favorite! }
 end

@@ -18,6 +18,13 @@ var ShowActivityReputationItem = React.createClass({
     } else {
       valueClass += ' show-activity-reputation-item-value-down';
     }
+    var title;
+    if (this.props.title.length > 110) {
+      title = this.props.title.slice(0, 110) + ' ...';
+    } else {
+      title = this.props.title;
+    }
+
     return (
       <div className='show-activity-reputation-item-container group'>
         <div className={valueClass}>
@@ -32,7 +39,7 @@ var ShowActivityReputationItem = React.createClass({
         <div
           onClick={this.handleClick}
           className='show-activity-reputation-item-title link'>
-          {this.props.title}
+          {title}
         </div>
       </div>
     );

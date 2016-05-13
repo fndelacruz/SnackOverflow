@@ -85,6 +85,13 @@ var ShowActivityDetail = React.createClass({
 
             var pushPath = '/questions/' + item.id;
 
+            var itemTitle;
+            if (item.title.length > 100) {
+              itemTitle = item.title.slice(0, 100) + ' ...';
+            } else {
+              itemTitle = item.title;
+            }
+
             return (
               <div
                 key={'item-' + item.id}
@@ -123,7 +130,7 @@ var ShowActivityDetail = React.createClass({
                  <div
                    onClick={hashHistory.push.bind(this, pushPath)}
                    className='quick-question-title link'>
-                  {item.title}
+                  {itemTitle}
                  </div>
                  <div className='quick-question-tags'>
                    <TagStubIndex tags={item.tags} questionId={item.id} />
