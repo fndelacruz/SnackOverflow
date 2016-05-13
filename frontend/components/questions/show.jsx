@@ -12,7 +12,7 @@ var QuestionShow = React.createClass({
     return {
       question: QuestionStore.getQuestion(this.props.params.questionId),
       firstLoad: true,
-      firstAnswerLoad: true
+      firstPageLoad: true
     };
   },
   componentDidMount: function() {
@@ -75,15 +75,23 @@ var QuestionShow = React.createClass({
       return (<div />);
     }
 
-    if (this.props.params.answerId) {
-      var answerId = 'answer-' + this.props.params.answerId;
-      var answerEl = document.getElementById(answerId);
-      if (answerEl && this.state.firstAnswerLoad) {
-        var answerElClassName = answerEl.getAttribute('class');
-        answerEl.setAttribute('class', answerElClassName + ' active-show-item');
-        answerEl.scrollIntoView();
-        answerEl.setAttribute('class', answerElClassName);
-        this.state.firstAnswerLoad = false;
+    if (this.props.params.answerId || this.props.params.commentId) {
+      var activeId;
+      if (this.props.params.answerId) {
+        activeId = 'answer-' + this.props.params.answerId;
+      } else {
+        activeId = 'comment-' + this.props.params.commentId;
+      }
+
+      var activeEl = document.getElementById(activeId);
+      if (activeEl && this.state.firstPageLoad) {
+        var activeElClassName = activeEl.getAttribute('class');
+        activeEl.setAttribute('class', activeElClassName + ' active-show-item');
+        activeEl.scrollIntoView();
+        setTimeout(function() {
+          activeEl.setAttribute('class', activeElClassName);
+        }, 0);
+        this.state.firstPageLoad = false;
       }
     } else {
       if (this.state.firstLoad) {

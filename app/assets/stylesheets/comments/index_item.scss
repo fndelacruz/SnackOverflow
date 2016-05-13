@@ -1,6 +1,7 @@
 .comment-index-item-container {
   padding: 10px 0px;
   border-bottom: 1px solid #ddd;
+  transition: background 2000ms ease-out;
 }
 
 .comment-index-item-container:first-child {

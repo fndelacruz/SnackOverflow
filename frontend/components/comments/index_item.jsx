@@ -40,7 +40,9 @@ var CommentsIndexItem = React.createClass({
         delete comment
       </span>;
     return (
-      <div className='comment-index-item-container group'>
+      <div
+        id={'comment-' + this.props.comment.id}
+        className='comment-index-item-container group'>
         <div className='comment-index-item-vote-container'>
           <div className={commentVoteClass(comment.user_vote, 'score')}>
             {comment.vote_count === 0 ? '' : comment.vote_count}

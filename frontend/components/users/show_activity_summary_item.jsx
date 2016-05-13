@@ -65,6 +65,8 @@ var ShowActivitySummaryItem = React.createClass({
           var path = 'questions/' + item.question_id;
           if (item.votable_type === 'Answer') {
             path += '/answer/' + item.votable_id;
+          } else if (item.votable_type === 'Comment') {
+            path += '/comment/' + item.votable_id;
           }
           var key = 'vote-' + item.id + '-reputation-' + item.reputation;
           return (

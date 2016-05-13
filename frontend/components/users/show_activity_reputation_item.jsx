@@ -6,6 +6,8 @@ var ShowActivityReputationItem = React.createClass({
     var path = '/questions/' + this.props.question_id;
     if (this.props.votable_type === 'Answer') {
       path += '/answer/' + this.props.votable_id;
+    } else if (this.props.votable_type === 'Comment') {
+      path += '/comment/' + this.props.votable_id;
     }
     hashHistory.push(path);
   },

@@ -21,6 +21,7 @@ var App = (
       <Route path='questions' component={QuestionsIndex} />
       <Route path='questions/tagged/:tagName' component={QuestionsIndex} />
       <Route path='questions/:questionId(/answer/:answerId)' component={QuestionShow} />
+      <Route path='questions/:questionId(/comment/:commentId)' component={QuestionShow} />
       <Route path='questions/:questionId/edit' component={QuestionEdit} />
       <Route path='ask' component={QuestionsForm} />
       <Route path='users' component={UsersIndex} />
