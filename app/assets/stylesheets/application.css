@@ -16,7 +16,7 @@
 
 /* reset */
 
-html, body, div, span, p, h1, h2, h3, h4, h5, h6, ul, li, button, strong, em, i,
+body, div, span, p, h1, h2, h3, h4, h5, h6, ul, li, button, strong, em, i,
 img, article, header, footer, nav, small, form, label, input, textarea, time {
   margin: 0;
   border: 0;

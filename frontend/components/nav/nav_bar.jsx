@@ -94,7 +94,7 @@ var NavBar = React.createClass({
           </ul>
         </div>
 
-        <main className='main-content group'>
+        <main id='main-panel' className='main-content group'>
           {this.props.children}
         </main>
       </div>
