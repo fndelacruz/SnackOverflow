@@ -478,22 +478,22 @@ end
 def generate_random_content!
   setup_markov_scraper if @markov
 
-  50.times { |i| puts "creating user #{i}"; create_random_user! }
+  32.times { |i| puts "creating user #{i}"; create_random_user! }
 
   # NOTE: the following dates as used DO NOT respect reality (ex: a user can
   # create an answer before joining the site). Will fix this for deployment.
   # random tag creation
 
-  create_random_tags!(100)
+  create_random_tags!(60)
 
-  125.times { |i| puts "creating question #{i}"; create_random_question! }
-  300.times { |i| puts "creating answer #{i}"; create_random_answer! }
-  250.times { |i| puts "creating q_comment #{i}"; create_random_question_comment! }
-  800.times { |i| puts "creating a_comment #{i}"; create_random_answer_comment! }
-  2000.times { |i| puts "creating q_vote #{i}"; create_random_vote!(random_question) }
-  6400.times { |i| puts "creating a_vote #{i}"; create_random_vote!(random_answer) }
-  1600.times { |i| puts "creating c_vote #{i}"; create_random_vote!(random_comment) }
-  1000.times { |i| puts "creating q_view #{i}"; create_random_view!(random_question) }
-  1000.times { |i| puts "creating u_view #{i}"; create_random_view!(random_user) }
-  500.times { |i| puts "toggling favorite #{i}"; toggle_random_favorite! }
+  65.times { |i| puts "creating question #{i}"; create_random_question! }
+  150.times { |i| puts "creating answer #{i}"; create_random_answer! }
+  125.times { |i| puts "creating q_comment #{i}"; create_random_question_comment! }
+  400.times { |i| puts "creating a_comment #{i}"; create_random_answer_comment! }
+  1000.times { |i| puts "creating q_vote #{i}"; create_random_vote!(random_question) }
+  2000.times { |i| puts "creating a_vote #{i}"; create_random_vote!(random_answer) }
+  800.times { |i| puts "creating c_vote #{i}"; create_random_vote!(random_comment) }
+  500.times { |i| puts "creating q_view #{i}"; create_random_view!(random_question) }
+  500.times { |i| puts "creating u_view #{i}"; create_random_view!(random_user) }
+  250.times { |i| puts "toggling favorite #{i}"; toggle_random_favorite! }
 end

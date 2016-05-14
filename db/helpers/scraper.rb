@@ -4,7 +4,7 @@ class Scraper
     :tag_description_elements, :user_bio_elements
 
   def initialize(
-      last_question_page_idx=275,
+      last_question_page_idx=250,
       base_url="http://cooking.stackexchange.com/"
     )
     @last_question_page_idx = last_question_page_idx
@@ -51,7 +51,7 @@ class Scraper
   end
 
   def scrape_question_shows
-    question_ids = @question_ids.sample(2000)
+    question_ids = @question_ids.sample(1000)
 
     puts "Starting scraping of #{question_ids.length} questions."
     question_ids.each_with_index do |id, idx|
@@ -133,7 +133,7 @@ class Scraper
   end
 
   def scrape_user_shows
-    user_ids = @user_ids.sample(1000)
+    user_ids = @user_ids.sample(500)
 
     puts "Starting scraping of #{user_ids.length} users."
     user_ids.each_with_index do |id, idx|
