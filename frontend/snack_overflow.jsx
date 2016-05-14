@@ -14,6 +14,7 @@ var TagsIndex = require('./components/tags/index');
 var UserShow = require('./components/users/show');
 var BadgesIndex = require('./components/badges/index');
 var BadgeShow = require('./components/badges/show');
+var Search = require('./components/search/search');
 
 var App = (
   <Router history={hashHistory}>
@@ -29,6 +30,7 @@ var App = (
       <Route path='tags' component={TagsIndex} />
       <Route path='badges' component={BadgesIndex} />
       <Route path='badges/:badgeId' component={BadgeShow} />
+      <Route path='search(/:query)' component={Search} />
     </Route>
   </Router>
 );

@@ -14,10 +14,19 @@ class Answer < ActiveRecord::Base
   include Commentable
   include Votable
 
+  attr_accessor :matches
+
   validates :user, :question, :content, presence: true
 
   belongs_to :user
   belongs_to :question
   has_many :associated_tags, through: :question, source: :associated_tags
 
+  def self.search(query)
+    Answer.includes(:associated_tags, :votes)
+      .select("answers.*, questions.title AS title")
+      .joins(:question)
+      .where("lower(answers.content) like :query", query: "%#{query}%")
+
+  end
 end

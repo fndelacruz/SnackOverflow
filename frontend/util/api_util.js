@@ -4,6 +4,7 @@ var QuestionActions = require('../actions/question');
 var UserActions = require('../actions/user');
 var TagActions = require('../actions/tag');
 var BadgeActions = require('../actions/badge');
+var SearchActions = require('../actions/search');
 var hashHistory = require('react-router').hashHistory;
 
 module.exports = {
@@ -93,6 +94,18 @@ module.exports = {
       url: '/api/badges/' + badgeId,
       dataType: 'json',
       success: BadgeActions.receiveBadge
+    });
+  },
+  searchPosts: function(query) {
+    $.ajax({
+      method: 'GET',
+      url: 'api/search/query',
+      data: { q: query },
+      dataType: 'json',
+      success: SearchActions.receivePosts,
+      error: function() {
+        debugger
+      }
     });
   },
 

@@ -1,0 +1,4 @@
+module.exports = {
+  RECEIVED_SEARCH: 'RECEIVED_SEARCH',
+  CHANGE_SORT_BY: 'CHANGE_SORT_BY'
+};
