@@ -1,8 +1,11 @@
 var React = require('react');
 var TagStub = require('../tags/stub');
 var Util = require('../../util/util');
-function handleClick(userId, tagName) {
-  alert('TODO clickOverride');
+var hashHistory = require('react-router').hashHistory;
+
+function handleClick(tagName) {
+  var path = '/questions/tagged/' + tagName;
+  hashHistory.push(path);
 }
 
 var ShowProfileTopTags = React.createClass({
@@ -25,7 +28,7 @@ var ShowProfileTopTags = React.createClass({
               key={'tag-' + tag.name}>
               <span
                 title=''
-                onClick={handleClick.bind(null, this.props.userId, tag.name)}
+                onClick={handleClick.bind(null, tag.name)}
                 className='user-show-profile-top-tags-main-element-tag'>
                 {tag.name}
               </span>

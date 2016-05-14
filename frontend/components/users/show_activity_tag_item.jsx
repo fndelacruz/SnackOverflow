@@ -1,21 +1,20 @@
 var React = require('react');
 var Util = require('../../util/util');
+var hashHistory = require('react-router').hashHistory;
 
 var ShowActivityTagItem = React.createClass({
-  handleTagClick: function()  {
-    alert('TODO handle handleTagClick');
-  },
   render: function() {
+
+    var pushPath = '/questions/tagged/' + this.props.name;
     return (
       <div className='show-activity-tag-item-container group'>
         <div
           title={Util.handleTagTitleAttr(this.props)}
-          onClick={this.handleTagClick}
           className='show-activity-tag-item-answer-reputation'>
           {this.props.answer_reputation}
         </div>
         <div
-          onClick={this.handleTagClick}
+          onClick={hashHistory.push.bind(null, pushPath)}
           className='show-activity-tag-item-tag'>
           {this.props.name}
         </div>

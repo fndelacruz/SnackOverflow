@@ -103,8 +103,9 @@ var ShowActivitySummaryItem = React.createClass({
         }
         return (items.slice(0,10).map(function(item) {
           // TODO: handleClick as search query
+          var key = 'badge-' + item.name + '-rank-' + item.rank;
           return (
-            <ShowActivityBadgeItem key={'badge-' + item.name} badge={item} />
+            <ShowActivityBadgeItem key={key} badge={item} />
           );
         }));
       case 'Votes Cast':

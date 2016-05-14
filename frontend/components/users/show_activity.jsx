@@ -9,8 +9,10 @@ var USER_SHOW_ACTIVITY_TABS = ['summary', 'answers', 'questions', 'tags', 'badge
 
 var UserShowActivity = React.createClass({
   handleSortChange: function(tab) {
-    var path = '/users/' + this.props.id + '/' + tab;
-    hashHistory.push(path);
+    if (this.props.active !== tab) {
+      var path = '/users/' + this.props.id + '/' + tab;
+      hashHistory.push(path);
+    }
   },
   renderMain: function() {
     var items;

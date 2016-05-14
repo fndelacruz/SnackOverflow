@@ -24,7 +24,18 @@ module.exports = {
               a.rank === 'silver' && b.rank === 'bronze') {
             return isDescending ? -1 : 1;
           } else if (a.rank === b.rank) {
-            return 0;
+            if (sortType2) {
+              if (a[sortType2] < b[sortType2]) {
+                return isDescending2 ? 1 : -1;
+              } else if (a[sortType2] > b[sortType2]) {
+                return isDescending2 ? -1 : 1;
+              } else if (a[sortType2] === b[sortType2]) {
+                return 0;
+              }
+
+            } else {
+              return 0;
+            }
           }
         });
       } else {

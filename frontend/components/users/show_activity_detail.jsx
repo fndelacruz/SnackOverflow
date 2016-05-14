@@ -30,7 +30,41 @@ var ShowActivityDetail = React.createClass({
     }
   },
   onChange: function(link) {
-    this.setState({ active: link });
+    if (this.state.active !== link) {
+      this.state.active = link;
+      this.handleSort();
+      this.setState({ active: link });
+    }
+  },
+  handleSort: function() {
+    if (this.props.title === 'reputation') {
+      Util.sortBy(this.props.items, 'created_at', true);
+    } else {
+      switch (this.state.active) {
+        case 'votes':
+          if (this.props.title === 'tags') {
+            Util.sortBy(this.props.items, 'answer_reputation', true, 'name');
+          } else {
+            Util.sortBy(this.props.items, 'vote_count', true);
+          }
+          break;
+        case 'newest':
+          Util.sortBy(this.props.items, 'created_at', true, 'id');
+          break;
+        case 'rank':
+          Util.sortBy(this.props.items, 'rank', true, 'name');
+          break;
+        case 'name':
+          Util.sortBy(this.props.items, 'name');
+          break;
+        case 'views':
+          Util.sortBy(this.props.items, 'view_count', true);
+          break;
+        case 'favorites':
+          Util.sortBy(this.props.items, 'favorite_count', true, 'vote_count');
+          break;
+      }
+    }
   },
   renderMiniNav: function() {
     if (SUB_TABS[this.props.title]) {
@@ -47,6 +81,7 @@ var ShowActivityDetail = React.createClass({
       case 'answers':
         return (
           this.props.items.map(function(item) {
+            var pushPath = '/questions/' + item.question_id + '/answer/' + item.id;
             return (
               <div
                 key={'item-' + item.id}
@@ -55,7 +90,9 @@ var ShowActivityDetail = React.createClass({
                   <div className='show-activity-summary-item-line-item-counter'>
                     {item.vote_count}
                   </div>
-                  <div className='show-activity-summary-item-line-item-title link'>
+                  <div
+                    onClick={hashHistory.push.bind(null, pushPath)}
+                    className='show-activity-summary-item-line-item-title link'>
                     {item.title}
                   </div>
                   <div className='show-activity-detail-answer-item-date'>
@@ -128,7 +165,7 @@ var ShowActivityDetail = React.createClass({
 
                 <div className='quick-question-title-tags-container'>
                  <div
-                   onClick={hashHistory.push.bind(this, pushPath)}
+                   onClick={hashHistory.push.bind(null, pushPath)}
                    className='quick-question-title link'>
                   {itemTitle}
                  </div>
@@ -147,19 +184,15 @@ var ShowActivityDetail = React.createClass({
       case 'tags':
         return (
           this.props.items.map(function(item) {
-            return (
-              <ShowActivityTagItem
-                key={'item-' + item.id}
-                handleClick={function() {alert('TODO handleTagClick');}}
-                {...item} />
-            );
+            return <ShowActivityTagItem key={'item-' + item.id} {...item} />;
           })
         );
       case 'badges':
         return (
           this.props.items.map(function(item) {
+            var key = 'badge-' + item.name + '-rank-' + item.rank;
             return (
-              <ShowActivityBadgeItem key={'badge-' + item.name} badge={item} />
+              <ShowActivityBadgeItem key={key} badge={item} />
             );
           })
         );
@@ -180,34 +213,6 @@ var ShowActivityDetail = React.createClass({
     if (!this.props.items) {
       return <div />;
     }
-    if (this.props.title === 'reputation') {
-      Util.sortBy(this.props.items, 'created_at', true);
-    } else {
-      switch (this.state.active) {
-        case 'votes':
-          if (this.props.title === 'tags') {
-            Util.sortBy(this.props.items, 'answer_reputation', true, 'name');
-          } else {
-            Util.sortBy(this.props.items, 'vote_count', true);
-          }
-          break;
-        case 'newest':
-          Util.sortBy(this.props.items, 'created_at', true);
-          break;
-        case 'rank':
-          Util.sortBy(this.props.items, 'rank', true);
-          break;
-        case 'name':
-          Util.sortBy(this.props.items, 'name');
-          break;
-        case 'views':
-          Util.sortBy(this.props.items, 'view_count', true);
-          break;
-        case 'favorites':
-          Util.sortBy(this.props.items, 'favorite_count', true, 'vote_count');
-          break;
-      }
-  }
 
     var headerValue = this.props.items.length;
     if (this.props.title === 'badges') {
