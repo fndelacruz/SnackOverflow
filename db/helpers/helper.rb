@@ -450,28 +450,28 @@ def setup_markov_scraper
 
   puts "setting up markov_question_content_generator..."
   @markov_question_content_generator =
-    MarkovTextGenerator.new(@scraper.question_content_elements, 12)
+    MarkovTextGenerator.new(@scraper.question_content_elements, 9)
   @markov_question_content_generator.setup
 
 
   puts "setting up markov_answer_content_generator..."
   @markov_answer_content_generator =
-    MarkovTextGenerator.new(@scraper.answer_content_elements, 12)
+    MarkovTextGenerator.new(@scraper.answer_content_elements, 9)
   @markov_answer_content_generator.setup
 
   puts "setting up markov_comment_content_generator..."
   @markov_comment_content_generator =
-    MarkovTextGenerator.new(@scraper.comment_content_elements, 12)
+    MarkovTextGenerator.new(@scraper.comment_content_elements, 9)
   @markov_comment_content_generator.setup
 
   puts "setting up markov_tag_description_generator..."
   @markov_tag_description_generator =
-    MarkovTextGenerator.new(@scraper.tag_description_elements, 8)
+    MarkovTextGenerator.new(@scraper.tag_description_elements, 6)
   @markov_tag_description_generator.setup
 
 
   @markov_user_bio_generator =
-    MarkovTextGenerator.new(@scraper.user_bio_elements, 8)
+    MarkovTextGenerator.new(@scraper.user_bio_elements, 6)
   @markov_user_bio_generator.setup
 end
 

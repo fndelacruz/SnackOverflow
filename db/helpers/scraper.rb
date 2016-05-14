@@ -26,9 +26,19 @@ class Scraper
     scrape_tags_index
     scrape_users_index
     scrape_user_shows
+    cleanup
   end
 
   private
+
+  def cleanup
+    @question_titles = @question_titles.sample(500)
+    @question_content_elements = @question_content_elements.sample(500)
+    @answer_content_elements = @answer_content_elements.sample(500)
+    @comment_content_elements = @comment_content_elements.sample(500)
+    @question_ids = nil
+    @user_ids = nil
+  end
 
   def scrape_question_index
     @last_question_page_idx.downto(1).each do |i|
@@ -51,7 +61,7 @@ class Scraper
   end
 
   def scrape_question_shows
-    question_ids = @question_ids.sample(1000)
+    question_ids = @question_ids.sample(500)
 
     puts "Starting scraping of #{question_ids.length} questions."
     question_ids.each_with_index do |id, idx|
