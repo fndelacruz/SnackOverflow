@@ -95,7 +95,11 @@ class Scraper
       when "ul", "ol", "pre"
         el.text.split("\n").reject(&:empty?)
           .each { |el| collection << el.strip}
+<<<<<<< HEAD
       when "hr", "br", "a", "b", "i", "code", "sup", "img", "sub", "div"
+=======
+      when "hr", "br", "a", "b", "i", "code", "sup", "img", "sub"
+>>>>>>> 4f877046ccd8bec66732d6308370593270786e31
         next
       else
         next
