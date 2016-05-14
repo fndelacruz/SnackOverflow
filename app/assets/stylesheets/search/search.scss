@@ -1,5 +1,13 @@
-.search-container input {
+.search-bar-container {
+  margin-bottom: 20px;
+}
+.search-bar-container input {
   outline: 1px solid #ddd;
   padding: 10px;
-  width: 700px;
+  margin-right: 20px;
+  width: 623px;
+}
+
+.search-bar-container button {
+  padding: 10px;
 }

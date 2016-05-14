@@ -18,8 +18,12 @@ function resetPosts(posts) {
   _posts = posts;
 }
 
-SearchStore.all = function () {
+SearchStore.all = function() {
   return _posts.slice();
+};
+
+SearchStore.getSortBy = function() {
+  return _sortBy;
 };
 
 SearchStore.__onDispatch = function(payload) {

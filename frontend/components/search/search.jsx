@@ -2,14 +2,18 @@ var React = require('react');
 var SearchStore = require('../../stores/search');
 var ApiUtil = require('../../util/api_util');
 var hashHistory = require('react-router').hashHistory;
+var SortNav = require('../shared/sort_nav');
 
 var _callbackId;
+
+var POST_SORT_TYPES = ['relevance', 'newest', 'votes'];
 
 var Search = React.createClass({
   getInitialState: function() {
     return {
       query: this.props.params.query || '',
-      posts: null
+      posts: null,
+      sortBy: SearchStore.getSortBy()
     };
   },
   componentDidMount: function() {
@@ -20,6 +24,7 @@ var Search = React.createClass({
   },
   componentWillReceiveProps: function(newProps) {
     this.state.posts = null;
+    this.state.query = newProps.params.query;
     ApiUtil.searchPosts(newProps.params.query);
   },
   receivePosts: function() {
@@ -31,20 +36,26 @@ var Search = React.createClass({
   handleChange: function(e) {
     this.setState({ query: e.currentTarget.value });
   },
+  handleKeyDown: function(e) {
+    if (e.keyCode === 13) {
+      var path = '/search/' + this.state.query;
+      hashHistory.push(path);
+    }
+  },
   handleSubmit: function() {
     if (this.state.query) {
       var path = '/search/' + this.state.query;
       hashHistory.push(path);
     }
   },
+  handleSortChange: function() {
+    alert('TODO handleSortChange search');
+  },
   render: function() {
-    var posts;
+    var posts, sortNavHeader, postWord;
     if (this.state.posts) {
       posts = (
         <div>
-          <div>
-            {this.state.posts.length + ' posts found.'}
-          </div>
           {this.state.posts.map(function(post) {
             var key = post.id;
             if (post.view_count) {
@@ -60,12 +71,29 @@ var Search = React.createClass({
           })}
         </div>
       );
+
+      postWord = this.state.posts === 1 ? 'post' : 'posts';
+      sortNavHeader = this.state.posts.length + ' ' + postWord + ' found';
     }
+
     return (
       <div className='search-container'>
-        <input value={this.state.query} onChange={this.handleChange} />
-        <button onClick={this.handleSubmit}>Search</button>
-        {posts}
+        <div className='content-double-main'>
+          <div className='search-bar-container'>
+            <input
+              value={this.state.query}
+              onChange={this.handleChange}
+              onKeyDown={this.handleKeyDown} />
+            <button onClick={this.handleSubmit}>Search</button>
+          </div>
+          <SortNav
+            tabShift='right'
+            links={POST_SORT_TYPES}
+            active={this.state.sortBy}
+            header={sortNavHeader}
+            handleSortChange={this.handleSortChange}/>
+          {posts}
+        </div>
       </div>
     );
   }

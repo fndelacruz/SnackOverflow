@@ -10,7 +10,7 @@ var HEADERS = ['questions', 'tags', 'users', 'badges', 'ask'];
 var _currentUserStoreCallbackId;
 var NavBar = React.createClass({
   getInitialState: function() {
-    return { currentUser: CurrentUserStore.fetch() };
+    return { currentUser: CurrentUserStore.fetch(), query: '' };
   },
   componentDidMount: function() {
     _currentUserStoreCallbackId = CurrentUserStore.addListener(this.onChange);
@@ -51,6 +51,19 @@ var NavBar = React.createClass({
       );
     }
   },
+  handleSearchChange: function(e) {
+    console.log('onChange');
+    this.setState({ query: e.currentTarget.value });
+  },
+  handleSearchKeyDown: function(e) {
+    console.log('onKeyDown');
+    if (e.keyCode === 13) {
+      var path = '/search/' + this.state.query;
+      this.state.query = '';
+      document.getElementById('nav-search-bar').blur();
+      hashHistory.push(path);
+    }
+  },
   render: function() {
     var currentUser = this.state.currentUser, currentUserDisplayName, currentUserReputation;
     if (currentUser) {
@@ -77,7 +90,14 @@ var NavBar = React.createClass({
             <ul className='nav-right-container base'>
               {this.renderCurrentUser()}
               <li id='nav-search-container'>
-                <input className='nav-search' type='text' placeholder="? Search"/>
+                <input
+                  id='nav-search-bar'
+                  onChange={this.handleSearchChange}
+                  onKeyDown={this.handleSearchKeyDown}
+                  value={this.state.query}
+                  className='nav-search'
+                  type='text'
+                  placeholder="? Search Q&A"/>
               </li>
             </ul>
           </div>
