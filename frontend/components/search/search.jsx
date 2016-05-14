@@ -4,6 +4,7 @@ var ApiUtil = require('../../util/api_util');
 var hashHistory = require('react-router').hashHistory;
 var SortNav = require('../shared/sort_nav');
 var SearchActions = require('../../actions/search');
+var SearchItem = require('./item');
 
 var _callbackId;
 
@@ -58,7 +59,7 @@ var Search = React.createClass({
     var posts, sortNavHeader, postWord;
     if (this.state.posts) {
       posts = (
-        <div>
+        <div className='search-items-container'>
           {this.state.posts.map(function(post) {
             var key = post.id;
             if (post.view_count) {
@@ -67,20 +68,8 @@ var Search = React.createClass({
               key = 'answer-' + key;
             }
 
-            var title = post.title.slice(0, 100);
-            if (post.view_count) {
-              title = 'Q: ' + title;
-            } else {
-              title = 'A: ' + title;
-            }
-            return (
-              <div key={key}>
-                <div>{title}</div>
-                <div>{'matches: ' + post.matches}</div>
-                <div>{'created: ' + post.created_at.toLocaleString()}</div>
-                <div>{'votes: ' + post.vote_count}</div>
-              </div>);
-          })}
+            return <SearchItem key={key} {...post} query={this.props.params .query} />;
+          }.bind(this))}
         </div>
       );
 

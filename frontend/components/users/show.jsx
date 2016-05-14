@@ -114,6 +114,7 @@ var UserShow = React.createClass({
     return adjustedUserShowSortTypes;
   },
   render: function() {
+    window.scrollTo(0, 0);
     var userInfo;
     if (!this.state.currentUser || !this.state.user) {
       return <div />;

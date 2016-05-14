@@ -4,6 +4,8 @@ json.array!(@posts) do |post|
   if post.is_a?(Question)
     json.answer_count post.answer_count
     json.view_count post.view_count
+  else
+    json.question_id post.question_id
   end
 
   json.user do
