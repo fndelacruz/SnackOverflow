@@ -7,5 +7,11 @@ module.exports = {
       action: posts,
       actionType: SearchConstants.RECEIVED_SEARCH
     });
+  },
+  changeSortBy: function(sortBy) {
+    AppDispatcher.dispatch({
+      action: sortBy,
+      actionType: SearchConstants.CHANGE_SORT_BY
+    });
   }
 };

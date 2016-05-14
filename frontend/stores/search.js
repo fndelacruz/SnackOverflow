@@ -2,23 +2,47 @@ var Store = require('flux/utils').Store;
 var AppDispatcher = require('../dispatcher/dispatcher');
 var SearchStore = new Store(AppDispatcher);
 var SearchConstants = require('../constants/search');
+var Util = require('../util/util');
 
 var _posts;
 var _sortBy = 'relevance';
+var _sorted = false;
 
 function changeSortBy(sortBy) {
   if (_sortBy !== sortBy) {
-    // TODO: SORT POSTS HERE if _sortBy != sortBy
     _sortBy = sortBy;
+    _sorted = false;
     this.__emitChange();
   }
 }
 
 function resetPosts(posts) {
+  posts.forEach(Util.formatDateHelper);
+  _sorted = false;
   _posts = posts;
 }
 
+function sortPosts() {
+  var primarySortBy;
+  switch (_sortBy) {
+    case 'relevance':
+      primarySortBy = 'matches';
+      break;
+    case 'newest':
+      primarySortBy = 'created_at';
+      break;
+    case 'votes':
+      primarySortBy = 'vote_count';
+      break;
+  }
+  Util.sortBy(_posts, primarySortBy, true, 'id');
+}
+
 SearchStore.all = function() {
+  if (_sorted === false) {
+    sortPosts();
+    _sorted = true;
+  }
   return _posts.slice();
 };
 
@@ -33,7 +57,7 @@ SearchStore.__onDispatch = function(payload) {
       this.__emitChange();
       break;
     case SearchConstants.CHANGE_SORT_BY:
-      changeSortBy(payload.action);
+      changeSortBy.call(this, payload.action);
       break;
   }
 };

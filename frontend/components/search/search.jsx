@@ -3,6 +3,7 @@ var SearchStore = require('../../stores/search');
 var ApiUtil = require('../../util/api_util');
 var hashHistory = require('react-router').hashHistory;
 var SortNav = require('../shared/sort_nav');
+var SearchActions = require('../../actions/search');
 
 var _callbackId;
 
@@ -17,7 +18,7 @@ var Search = React.createClass({
     };
   },
   componentDidMount: function() {
-    _callbackId = SearchStore.addListener(this.receivePosts);
+    _callbackId = SearchStore.addListener(this.onPostStoreChange);
     if (this.props.params.query) {
       ApiUtil.searchPosts(this.props.params.query);
     }
@@ -27,8 +28,8 @@ var Search = React.createClass({
     this.state.query = newProps.params.query;
     ApiUtil.searchPosts(newProps.params.query);
   },
-  receivePosts: function() {
-    this.setState({ posts: SearchStore.all() });
+  onPostStoreChange: function() {
+    this.setState({ posts: SearchStore.all(), sortBy: SearchStore.getSortBy() });
   },
   componentWillUnmount: function() {
     _callbackId.remove();
@@ -48,8 +49,10 @@ var Search = React.createClass({
       hashHistory.push(path);
     }
   },
-  handleSortChange: function() {
-    alert('TODO handleSortChange search');
+  handleSortChange: function(sortBy) {
+    if (this.sortBy !== this.state.sortBy) {
+      SearchActions.changeSortBy(sortBy);
+    }
   },
   render: function() {
     var posts, sortNavHeader, postWord;
@@ -63,10 +66,19 @@ var Search = React.createClass({
             } else {
               key = 'answer-' + key;
             }
+
+            var title = post.title.slice(0, 100);
+            if (post.view_count) {
+              title = 'Q: ' + title;
+            } else {
+              title = 'A: ' + title;
+            }
             return (
               <div key={key}>
-                <div>{post.title}</div>
-                <div>{post.content}</div>
+                <div>{title}</div>
+                <div>{'matches: ' + post.matches}</div>
+                <div>{'created: ' + post.created_at.toLocaleString()}</div>
+                <div>{'votes: ' + post.vote_count}</div>
               </div>);
           })}
         </div>
