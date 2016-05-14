@@ -51,7 +51,7 @@ class Scraper
   end
 
   def scrape_question_shows
-    question_ids = @question_ids.sample(1000)
+    question_ids = @question_ids.sample(2000)
 
     puts "Starting scraping of #{question_ids.length} questions."
     question_ids.each_with_index do |id, idx|
@@ -98,10 +98,10 @@ class Scraper
       when "ul", "ol", "pre"
         el.text.split("\n").reject(&:empty?)
           .each { |el| collection << el.strip}
-      when "hr", "br", "a", "b", "i", "code", "sup", "img"
+      when "hr", "br", "a", "b", "i", "code", "sup", "img", "sub"
         next
       else
-        debugger
+        next
       end
     end
   end
