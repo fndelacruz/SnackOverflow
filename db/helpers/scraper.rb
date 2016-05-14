@@ -51,7 +51,7 @@ class Scraper
   end
 
   def scrape_question_shows
-    question_ids = @question_ids.sample(1000)
+    question_ids = @question_ids.sample(2000)
 
     puts "Starting scraping of #{question_ids.length} questions."
     question_ids.each_with_index do |id, idx|
@@ -92,16 +92,13 @@ class Scraper
       when "p", "blockquote", "h1", "h2", "h3", "h4", "h5", "h6"
         next if el.text.match(/Apparently, this user prefers to keep an air of mystery about them./)
         collection << el.text.strip
-      when "div"
-        debugger unless el.text.match(/This question already has an answer here/)
-        next
       when "ul", "ol", "pre"
         el.text.split("\n").reject(&:empty?)
           .each { |el| collection << el.strip}
-      when "hr", "br", "a", "b", "i", "code", "sup", "img"
+      when "hr", "br", "a", "b", "i", "code", "sup", "img", "sub", "div"
         next
       else
-        debugger
+        next
       end
     end
   end
@@ -146,7 +143,6 @@ class Scraper
 
       user_bio_element = parsed_user_show_page.css('.bio')[0]
 
-      debugger if !user_bio_element
       if user_bio_element
         scrapable_user_elements = user_bio_element.children
           .reject { |el| el.is_a?(Nokogiri::XML::Text) }
