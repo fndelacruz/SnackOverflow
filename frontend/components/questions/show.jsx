@@ -21,6 +21,8 @@ var QuestionShow = React.createClass({
   },
   componentWillReceiveProps: function(nextProps) {
     ApiUtil.fetchQuestion(nextProps.params.questionId);
+    this.state.question.given_answers = [];
+    this.state.firstPageLoad = true;
   },
   componentWillUnmount: function() {
     _callbackId.remove();
@@ -65,9 +67,6 @@ var QuestionShow = React.createClass({
       ApiUtil.destroyFavorite(question.favorite.id);
     }
   },
-  handleTagClick: function() {
-    alert('TODO handleTagClick');
-  },
   render: function() {
     var question = this.state.question, tags, answerSection;
 
@@ -91,13 +90,16 @@ var QuestionShow = React.createClass({
         setTimeout(function() {
           activeEl.setAttribute('class', activeElClassName);
         }, 0);
+        console.log('firstPageLoad');
         this.state.firstPageLoad = false;
       }
     } else {
+      console.log('firstLoad');
       if (this.state.firstLoad) {
         window.scrollTo(0,0);
       }
     }
+    console.log('render');
 
     if (question.answers) {
       answerSection = (

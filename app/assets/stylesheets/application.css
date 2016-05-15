@@ -143,6 +143,10 @@ button:hover {
   visibility: hidden;
 }
 
+.absent {
+  display: none;
+}
+
 /* Navs */
 
 .nav-left-container {
@@ -213,13 +217,13 @@ button:hover {
 /* For QuestionsForm and AnswersNew)*/
 
 .item-new-double-main {
-  float: left;
+  float: right;
   width: 660px;
   margin-top: 15px;
 }
 
 .item-content-input {
-  margin-top: 20px;
+  margin: 20px 0;
   padding: 10px;
   width: 640px;
   height: 200px;

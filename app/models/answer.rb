@@ -22,6 +22,12 @@ class Answer < ActiveRecord::Base
   belongs_to :question
   has_many :associated_tags, through: :question, source: :associated_tags
 
+  def self.notifications_for_user_id(user_id)
+    Answer.select("answers.*, questions.title, 'Answer' AS category")
+      .joins(:question).where(questions: {user_id: user_id})
+      .order(created_at: :desc)
+  end
+
   def self.search(query)
     Answer.includes(:associated_tags, :votes)
       .select("answers.*, questions.title AS title")

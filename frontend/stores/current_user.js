@@ -2,6 +2,7 @@ var Store = require('flux/utils').Store;
 var AppDispatcher = require('../dispatcher/dispatcher');
 var CurrentUserConstants = require('../constants/current_user');
 var CurrentUserStore = new Store(AppDispatcher);
+var Util = require('../util/util');
 
 /*
  * TODO: add currentUser inbox, notifications
@@ -12,6 +13,7 @@ var _updateSubmissionErrors = [];
 var _submissionComplete;
 
 function resetCurrentUser(currentUser) {
+  currentUser.notifications.forEach(Util.formatDateHelper);
   _currentUser = currentUser;
 }
 
@@ -39,11 +41,9 @@ CurrentUserStore.__onDispatch = function(payload) {
       resetCurrentUser(payload.action);
       break;
     case CurrentUserConstants.RECEIVED_CURRENT_USER_UPDATE_STATUS_OK:
-      debugger
       resetCurrentUser(payload.action);
       resetUpdateSubmissionErrors([]);
       _submissionComplete = true;
-      console.log('ok');
       break;
     case CurrentUserConstants.RECEIVED_CURRENT_USER_UPDATE_STATUS_BAD:
       resetUpdateSubmissionErrors(payload.action);

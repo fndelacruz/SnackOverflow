@@ -4,7 +4,7 @@ var ApiUtil = require('../../util/api_util');
 function renderHeader(userAnswered, hidden) {
   if (userAnswered) {
     return (
-      <span onClick={this.toggleHidden} className='question-new-toggle-hidden'>
+      <span onClick={this.toggleDisplay} className='question-new-toggle-hidden'>
         Give Another Answer?
       </span>
     );
@@ -28,7 +28,7 @@ var AnswersNew = React.createClass({
       }, this.resetState);
     }
   },
-  toggleHidden: function() {
+  toggleDisplay: function() {
     if (this.state.hidden) {
       this.setState({ hidden: false });
     } else {
@@ -44,8 +44,13 @@ var AnswersNew = React.createClass({
       buttonClass += ' button-disabled';
     }
     if (this.state.hidden && this.props.question.user_answered) {
-      buttonClass += ' hidden';
-      textAreaClass += ' hidden';
+      buttonClass += ' absent';
+      textAreaClass += ' absent';
+
+    } else if (!this.state.hidden && this.props.question.user_answered) {
+      setTimeout(function() {
+        document.getElementById('answer-new-submit').scrollIntoView();
+      }, 0);
     }
     return (
       <div className='item-new-double-main'>
@@ -55,10 +60,12 @@ var AnswersNew = React.createClass({
           )}
         </div>
         <textarea
+          id='answer-new-input'
           value={this.state.content}
           onChange={this.handleChange}
           className={textAreaClass} />
         <button
+          id='answer-new-submit'
           className={buttonClass}
           onClick={this.handleSubmit}>
           Post Answer

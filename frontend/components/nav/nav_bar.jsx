@@ -4,13 +4,17 @@ var ApiUtil = require('../../util/api_util');
 var hashHistory = require('react-router').hashHistory;
 var NavHeaderLink = require('./header_link');
 var QuestionStore = require('../../stores/question');
+var NavNotifications = require('./notifications');
 
 var HEADERS = ['questions', 'tags', 'users', 'badges', 'ask'];
 
 var _currentUserStoreCallbackId;
 var NavBar = React.createClass({
   getInitialState: function() {
-    return { currentUser: CurrentUserStore.fetch(), query: '' };
+    return {
+      currentUser: CurrentUserStore.fetch(),
+      query: ''
+    };
   },
   componentDidMount: function() {
     _currentUserStoreCallbackId = CurrentUserStore.addListener(this.onChange);
@@ -38,14 +42,16 @@ var NavBar = React.createClass({
           title={currentUser.display_name}
           className='nav-current-user-container'
           onClick={this.handleCurrentUserClick}>
-          <div className='current-user-display-name'>
-            {currentUserDisplayName}
-          </div>
-          <img
-            className='nav-current-user-icon'
-            src={'https://robohash.org/' + currentUser.id + '?bgset=any'}/>
-          <div className='current-user-reputation'>
-            {currentUserReputation}
+          <div id='current-user-display-container'>
+            <div className='current-user-display-name'>
+              {currentUserDisplayName}
+            </div>
+            <img
+              className='nav-current-user-icon'
+              src={'https://robohash.org/' + currentUser.id + '?bgset=any'}/>
+            <div className='current-user-reputation'>
+              {currentUserReputation}
+            </div>
           </div>
         </li>
       );
@@ -65,11 +71,12 @@ var NavBar = React.createClass({
     }
   },
   render: function() {
-    var currentUser = this.state.currentUser, currentUserDisplayName, currentUserReputation;
-    if (currentUser) {
-      currentUserDisplayName = currentUser.display_name;
-      currentUserReputation = currentUser.reputation;
+    var currentUser = this.state.currentUser;
+    if (!currentUser) {
+      return <div />;
     }
+    var currentUserDisplayName = currentUser.display_name;
+    var currentUserReputation = currentUser.reputation;
     var NavHeaderLinks = HEADERS.map(function(name) {
       return (
         <NavHeaderLink
@@ -78,26 +85,37 @@ var NavBar = React.createClass({
           navigate={this.navigate}
           currentPath={this.props.location.pathname} />);
     }.bind(this));
+
+    var unreadNotifications = currentUser.notifications.filter(function(item) {
+      return item.unread;
+    }).length;
+
     return (
       <div>
         <div className='nav-container'>
           <div className='main-content group'>
             <ul className='nav-left-container base'>
-              <li>SnackOverflow</li>
-              <li>Inbox</li>
-              <li>Notifications</li>
+              <li><div>SnackOverflow</div></li>
+              <li><div>Inbox</div></li>
+              <NavNotifications
+                unreadCount={unreadNotifications}
+                toggleDisplay={this.toggleNotifications}
+                currentPath={this.props.location.pathname}
+                items={currentUser.notifications} />
             </ul>
             <ul className='nav-right-container base'>
               {this.renderCurrentUser()}
               <li id='nav-search-container'>
-                <input
-                  id='nav-search-bar'
-                  onChange={this.handleSearchChange}
-                  onKeyDown={this.handleSearchKeyDown}
-                  value={this.state.query}
-                  className='nav-search'
-                  type='text'
-                  placeholder="? Search Q&A"/>
+                <div>
+                  <input
+                    id='nav-search-bar'
+                    onChange={this.handleSearchChange}
+                    onKeyDown={this.handleSearchKeyDown}
+                    value={this.state.query}
+                    className='nav-search'
+                    type='text'
+                    placeholder="? Search Q&A"/>
+                </div>
               </li>
             </ul>
           </div>

@@ -1,6 +1,7 @@
 class Api::UsersController < ApplicationController
   def current
     @current_user = User.find_with_reputation(current_user.id)
+    @answers = Answer.notifications_for_user_id(current_user.id)
   end
 
   def index

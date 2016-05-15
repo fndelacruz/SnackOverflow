@@ -25,7 +25,13 @@ class Api::AnswersController < ApplicationController
 
   def update
     answer = Answer.find(params[:id])
-    if answer.user == current_user
+    if params[:current_user_update] && answer_params.keys == ['unread']
+      if answer.update!(answer_params)
+        render_current_user
+      else
+        render json: answer.errors.full_messages, status: :unprocessable_entity
+      end
+    elsif answer.user == current_user
       if answer.update!(answer_params)
         render_question_show(answer.question_id)
       else
@@ -39,6 +45,6 @@ class Api::AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:question_id, :content)
+    params.require(:answer).permit(:question_id, :content, :unread)
   end
 end

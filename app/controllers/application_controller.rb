@@ -31,4 +31,10 @@ class ApplicationController < ActionController::Base
     @users = User.find_with_reputation_hash(parse_question_user_ids(@question))
     render '/api/questions/show'
   end
+
+  def render_current_user
+    @current_user = User.find_with_reputation(current_user.id)
+    @answers = Answer.notifications_for_user_id(current_user.id)
+    render 'api/users/current'
+  end
 end

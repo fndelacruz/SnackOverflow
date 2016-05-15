@@ -130,6 +130,29 @@ module.exports = {
     });
   },
 
+  markItemRead: function(item) {
+    var url = '/api/' + (item.category === 'Answer' ? 'answers' : 'comments') +
+      '/' + item.id;
+
+    var data = { 'current_user_update': true };
+    if (item.category === 'Answer') {
+      data['[answer][unread]'] = false;
+    } else {
+      data['[comment][unread]'] = false;
+    }
+
+    $.ajax({
+      method: 'PATCH',
+      url: url,
+      data: data,
+      dataType: 'json',
+      success: CurrentUserActions.receiveCurrentUser,
+      error: function() {
+        debugger
+      }
+    });
+  },
+
   updateQuestion: function(question) {
     var data = {
       '[question][title]': question.title,
