@@ -14,6 +14,17 @@ $notifications-background: #F2F1EF;
   background: $notifications-background;
 }
 
+#notifications-container .notifications-tab {
+  font-size: 29px;
+  padding: 0 5px;
+  color: #888;
+}
+
+#notifications-container .notifications-tab-unread {
+  color: #26A65B;
+}
+
+
 .notification-dropdown {
   cursor: default;
   z-index: 1;

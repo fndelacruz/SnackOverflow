@@ -9,11 +9,14 @@ var NavNotifications = React.createClass({
   toggleNotifications: function() {
     this.setState({ notificationsOn: !this.state.notificationsOn });
   },
+  notificationsOff: function() {
+    this.setState({ notificationsOn: false });
+  },
   handleClick: function(item) {
     var type = item.category === 'Answer' ? '/answer/' : '/comment/';
     var path = '/questions/' + item.question_id + type + item.id;
     ApiUtil.markItemRead(item);
-    this.state.notificationsOn = false;
+    this.setState({ notificationsOn: false });
     setTimeout(hashHistory.push.bind(null, path), 0);
   },
   render: function() {
@@ -66,21 +69,24 @@ var NavNotifications = React.createClass({
     }
 
     var unreadNotificationsString;
+    var notificationsTabClass = 'notifications-tab';
     if (this.props.unreadCount) {
       unreadNotificationsString = (
         <div className='notification-dropdown-unread-count'>
           {this.props.unreadCount + ' new'}
         </div>
       );
+      notificationsTabClass += ' notifications-tab-unread';
     }
+    console.log(this.state.notificationsOn);
     return (
       <li
         className={notificationsContainerClass}
         id='notifications-container'>
-        <div onClick={this.toggleNotifications} className='notifications-tab'>
-          Notifications
+        <div onClick={this.toggleNotifications} className={notificationsTabClass}>
+          ✉
         </div>
-        <div onMouseLeave={this.toggleNotifications} className={dropdownClass}>
+        <div onMouseLeave={this.notificationsOff} className={dropdownClass}>
           <div className={dropdownHeaderClass}>
             <div className='notificiation-dropdown-header-label'>
               NOTIFICATIONS

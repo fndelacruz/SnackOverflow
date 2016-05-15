@@ -34,7 +34,9 @@ class ApplicationController < ActionController::Base
 
   def render_current_user
     @current_user = User.find_with_reputation(current_user.id)
-    @answers = Answer.notifications_for_user_id(current_user.id)
+    answers = Answer.notifications_for_user_id(current_user.id)
+    comments = Comment.notifications_for_user_id(current_user.id)
+    @notifications = (answers + comments).sort_by(&:created_at).reverse
     render 'api/users/current'
   end
 end
