@@ -90,16 +90,13 @@ var QuestionShow = React.createClass({
         setTimeout(function() {
           activeEl.setAttribute('class', activeElClassName);
         }, 0);
-        console.log('firstPageLoad');
         this.state.firstPageLoad = false;
       }
     } else {
-      console.log('firstLoad');
       if (this.state.firstLoad) {
         window.scrollTo(0,0);
       }
     }
-    console.log('render');
 
     if (question.answers) {
       answerSection = (

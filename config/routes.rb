@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     resources :questions, except: [:new, :edit]
     resources :votes, only: [:create, :destroy]
     resources :favorites, only: [:create, :destroy]
-    resources :comments, only: [:create, :destroy]
+    resources :comments, only: [:create, :destroy, :update]
     resources :answers, only: [:create, :destroy, :update]
     resources :tags, only: [:index, :show, :create]
     resources :badges, only: [:index, :show]

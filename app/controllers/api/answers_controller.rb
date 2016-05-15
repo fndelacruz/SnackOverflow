@@ -25,7 +25,8 @@ class Api::AnswersController < ApplicationController
 
   def update
     answer = Answer.find(params[:id])
-    if params[:current_user_update] && answer_params.keys == ['unread']
+    if params[:current_user_update] && answer_params.keys == ['unread'] &&
+          Question.find(answer.question_id).user == current_user
       if answer.update!(answer_params)
         render_current_user
       else

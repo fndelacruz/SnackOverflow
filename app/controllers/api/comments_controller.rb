@@ -23,9 +23,24 @@ class Api::CommentsController < ApplicationController
     end
   end
 
+  def update
+    comment = Comment.find(params[:id])
+    if params[:current_user_update] && comment_params.keys == ['unread'] &&
+        comment.commentable.user == current_user
+      if comment.update!(comment_params)
+        render_current_user
+      else
+        render json: comment.errors.full_messages, status: :unprocessable_entity
+      end
+    else
+      render json: {}, status: :forbidden
+    end
+  end
+
   private
 
   def comment_params
-    params.require(:comment).permit(:commentable_id, :commentable_type, :content)
+    params.require(:comment).permit(:commentable_id, :commentable_type, :content,
+        :unread)
   end
 end

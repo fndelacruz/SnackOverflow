@@ -13,6 +13,7 @@ var NavNotifications = React.createClass({
     var type = item.category === 'Answer' ? '/answer/' : '/comment/';
     var path = '/questions/' + item.question_id + type + item.id;
     ApiUtil.markItemRead(item);
+    this.state.notificationsOn = false;
     setTimeout(hashHistory.push.bind(null, path), 0);
   },
   render: function() {
