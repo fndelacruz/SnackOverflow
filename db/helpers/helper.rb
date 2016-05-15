@@ -486,7 +486,7 @@ def generate_random_content!
 
   create_random_tags!(60)
 
-  65.times { |i| puts "creating question #{i}"; create_random_question! }
+  93.times { |i| puts "creating question #{i}"; create_random_question! }
   150.times { |i| puts "creating answer #{i}"; create_random_answer! }
   125.times { |i| puts "creating q_comment #{i}"; create_random_question_comment! }
   400.times { |i| puts "creating a_comment #{i}"; create_random_answer_comment! }

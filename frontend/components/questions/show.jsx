@@ -139,13 +139,6 @@ var QuestionShow = React.createClass({
                 (question.view_count === 1 ? ' time' : ' times')}
             </div>
           </div>
-
-          <div className='question-show-sidebar-infostub-element group'>
-            <div className='question-show-sidebar-infostub-element-label'>active</div>
-            <div className='question-show-sidebar-infostub-element-value'>
-              TODO
-            </div>
-          </div>
         </div>
       </div>
 

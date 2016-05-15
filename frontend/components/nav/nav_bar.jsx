@@ -95,8 +95,6 @@ var NavBar = React.createClass({
         <div className='nav-container'>
           <div className='main-content group'>
             <ul className='nav-left-container base'>
-              <li><div>SnackOverflow</div></li>
-              <li><div>Inbox</div></li>
               <NavNotifications
                 unreadCount={unreadNotifications}
                 toggleDisplay={this.toggleNotifications}

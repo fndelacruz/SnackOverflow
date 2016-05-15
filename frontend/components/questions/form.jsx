@@ -258,8 +258,8 @@ var QuestionsForm = React.createClass({
     }
 
     return (
-      <div className='question-form-double'>
-        <div className='item-new-double-main'>
+      <div className='question-form-double group'>
+        <div className='question-form-main'>
           <div className='question-form-title-container group'>
             <div className='question-form-title-label'>
               Title

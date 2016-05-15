@@ -9,6 +9,7 @@
 #  value        :integer          not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  unread       :boolean          default("true")
 #
 
 class Vote < ActiveRecord::Base

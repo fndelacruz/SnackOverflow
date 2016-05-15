@@ -5,7 +5,7 @@ var QuestionActions = require('../../actions/question');
 var ShowItem = require('../questions/show_item');
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
-var ANSWER_SORT_TYPES = ['active', 'oldest', 'votes'];
+var ANSWER_SORT_TYPES = ['oldest', 'votes'];
 
 var AnswersIndex = React.createClass({
   handleSortChange: function(sortBy) {

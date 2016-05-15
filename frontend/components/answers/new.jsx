@@ -53,7 +53,7 @@ var AnswersNew = React.createClass({
       }, 0);
     }
     return (
-      <div className='item-new-double-main'>
+      <div className='answer-new-main'>
         <div className='answer-new-header'>
           {renderHeader.call(
             this, this.props.question.user_answered, this.state.hidden

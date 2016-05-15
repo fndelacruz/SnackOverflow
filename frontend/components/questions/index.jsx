@@ -9,8 +9,7 @@ var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 var _callbackId;
 
-var QUESTION_SORT_TYPES =
-  ['newest', 'featured', 'frequent', 'votes', 'active', 'views'];
+var QUESTION_SORT_TYPES = ['newest', 'votes', 'views'];
 
 var QuestionsIndex = React.createClass({
   getInitialState: function() {

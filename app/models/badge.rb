@@ -9,7 +9,7 @@
 #  created_at  :datetime
 #  updated_at  :datetime
 #  category    :string           not null
-#  subcategory :string
+#  subcategory :string           not null
 #
 
 SCHEMA = {
