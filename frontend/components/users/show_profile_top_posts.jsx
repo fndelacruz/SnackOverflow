@@ -54,7 +54,7 @@ var ShowProfileTopPosts = React.createClass({
       var message = 'This user has not ';
       switch (this.state.select) {
         case 'All':
-          message += ' posted yet.';
+          message += ' posted anything yet.';
           break;
         case 'Questions':
           message += ' asked any questions yet.';

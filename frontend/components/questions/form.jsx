@@ -99,7 +99,7 @@ var QuestionsForm = React.createClass({
         this.setState({ tagStringError: 'Tag name is 25 characters max.' });
       } else if (value && value.search(/^[-a-z0-9]+$/i) === -1) {
         this.setState({
-          tagStringError: 'Permitted tag characters: [a-z 0-9 -]'
+          tagStringError: 'Permitted tag characters: [ a-z 0-9 - ]'
         });
       } else {
         TagActions.changeTagSearchTerm(value.toLowerCase());

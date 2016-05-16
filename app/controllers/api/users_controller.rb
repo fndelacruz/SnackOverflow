@@ -1,10 +1,29 @@
 class Api::UsersController < ApplicationController
   def current
-    @current_user = User.find_with_reputation(current_user.id)
+    if current_user
+      @current_user = User.find_with_reputation(current_user.id)
+      answers = Answer.notifications_for_user_id(current_user.id)
+      comments = Comment.notifications_for_user_id(current_user.id)
+      @notifications = (answers + comments).sort_by(&:created_at).reverse
+    else
+      render json: { id: nil }
+    end
+  end
 
-    answers = Answer.notifications_for_user_id(current_user.id)
-    comments = Comment.notifications_for_user_id(current_user.id)
-    @notifications = (answers + comments).sort_by(&:created_at).reverse
+  def create
+    user = User.new(user_params)
+      if user.save
+        login!(user)
+        @current_user = User.find_with_reputation(user.id)
+        @notifications = []
+        render 'api/users/current'
+      else
+        user_object = {
+          id: nil,
+          errors: user.errors.full_messages
+        }
+        render json: user_object, status: :unprocessable_entity
+      end
   end
 
   def index
@@ -25,7 +44,7 @@ class Api::UsersController < ApplicationController
 
       @favorites = Favorite.questions_with_stats_and_tags_by_user_id(params[:id])
 
-      View.create!(user: current_user, viewable: @user)
+      View.create!(user: current_user, viewable: @user) if current_user
     else
       render json: {}, error: :not_found
     end
@@ -36,12 +55,12 @@ class Api::UsersController < ApplicationController
     if @user == current_user
       if @user.is_password?(user_params[:password])
         if @user.update(user_params)
-          # implicit render
+          render_current_user
         else
           render json: @user.errors.full_messages, status: :unprocessable_entity
         end
       else
-        render json: ['Invalid password. Please try again'], status: :forbidden
+        render json: ['Invalid password. Please try again.'], status: :forbidden
       end
     else
       render json: {}, status: :forbidden

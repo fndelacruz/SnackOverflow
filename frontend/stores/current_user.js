@@ -4,22 +4,28 @@ var CurrentUserConstants = require('../constants/current_user');
 var CurrentUserStore = new Store(AppDispatcher);
 var Util = require('../util/util');
 
-/*
- * TODO: add currentUser inbox, notifications
- */
-
 var _currentUser;
 var _updateSubmissionErrors = [];
 var _submissionComplete;
+var _signupModalOn = false;
+var _currentUserErrors = null;
 
 function resetCurrentUser(currentUser) {
-  currentUser.notifications.forEach(Util.formatDateHelper);
+  if (currentUser.id) {
+    currentUser.notifications.forEach(Util.formatDateHelper);
+  } else {
+    _currentUserErrors = currentUser.errors;
+  }
   _currentUser = currentUser;
 }
 
 function resetUpdateSubmissionErrors(errors) {
   _updateSubmissionErrors = errors;
 }
+
+CurrentUserStore.getSignupModalOnStatus = function() {
+  return _signupModalOn;
+};
 
 CurrentUserStore.fetch = function() {
   if (_currentUser) {
@@ -51,6 +57,13 @@ CurrentUserStore.__onDispatch = function(payload) {
       break;
     case CurrentUserConstants.RESET_UPDATE_SUBMISSION_STATUS:
       _submissionComplete = false;
+      break;
+    case CurrentUserConstants.TOGGLE_SIGNUP_MODAL_ON:
+      if (_signupModalOn) {
+        _signupModalOn = false;
+      } else {
+        _signupModalOn = { warning: payload.action };
+      }
       break;
   }
   this.__emitChange();

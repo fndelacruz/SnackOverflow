@@ -5,8 +5,12 @@
   height: 34px;
 }
 
+.base > li {
+  float: left;
+}
+
 .base > li > div:first-of-type, {
-  padding: 9px 5px;
+  padding: 9px 10px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -14,7 +18,7 @@
   -ms-user-select: none;
 }
 
-.base > li:hover {
+.base > li > div:hover {
   background: #2C3E50;
 }
 
@@ -61,7 +65,7 @@ div.nav-header {
 }
 
 #current-user-display-container {
-  padding: 0;
+  padding: 0 10px;
 }
 
 .nav-right-container > .nav-current-user-container {

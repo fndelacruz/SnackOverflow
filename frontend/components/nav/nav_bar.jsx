@@ -5,15 +5,20 @@ var hashHistory = require('react-router').hashHistory;
 var NavHeaderLink = require('./header_link');
 var QuestionStore = require('../../stores/question');
 var NavNotifications = require('./notifications');
+var AuthModal = require('./auth_modal');
+var CurrentUserActions = require('../../actions/current_user');
 
 var HEADERS = ['questions', 'tags', 'users', 'badges', 'ask'];
+var MODAL_TABS = ['Log In', 'Sign Up'];
 
 var _currentUserStoreCallbackId;
 var NavBar = React.createClass({
   getInitialState: function() {
     return {
       currentUser: CurrentUserStore.fetch(),
-      query: ''
+      query: '',
+      signupModalOn: false,
+      modalActiveTab: 'Log In'
     };
   },
   componentDidMount: function() {
@@ -24,7 +29,10 @@ var NavBar = React.createClass({
     _currentUserStoreCallbackId.remove();
   },
   onChange: function() {
-    this.setState({ currentUser: CurrentUserStore.fetch() });
+    this.setState({
+      currentUser: CurrentUserStore.fetch(),
+      signupModalOn: CurrentUserStore.getSignupModalOnStatus()
+    });
   },
   navigate: function(destination) {
     hashHistory.push(destination);
@@ -32,37 +40,62 @@ var NavBar = React.createClass({
   handleCurrentUserClick: function() {
     hashHistory.push('/users/' + this.state.currentUser.id);
   },
+  handleSignupClick: function() {
+    this.state.modalActiveTab = 'Sign Up';
+    CurrentUserActions.toggleSignupModalOn(false);
+  },
+  handleLoginClick: function() {
+    this.state.modalActiveTab = 'Log In';
+    CurrentUserActions.toggleSignupModalOn(false);
+  },
   renderCurrentUser: function() {
     var currentUser = this.state.currentUser;
-    if (this.state.currentUser) {
-      var currentUserDisplayName = currentUser.display_name;
-      var currentUserReputation = currentUser.reputation;
-      return (
-        <li
-          title={currentUser.display_name}
-          className='nav-current-user-container'
-          onClick={this.handleCurrentUserClick}>
-          <div id='current-user-display-container'>
-            <div className='current-user-display-name'>
-              {currentUserDisplayName}
+    if (currentUser) {
+      if (currentUser.id) {
+        var currentUserDisplayName = currentUser.display_name;
+        var currentUserReputation = currentUser.reputation;
+        return (
+          <li
+            title={currentUser.display_name}
+            className='nav-current-user-container'
+            onClick={this.handleCurrentUserClick}>
+            <div id='current-user-display-container'>
+              <div className='current-user-display-name'>
+                {currentUserDisplayName}
+              </div>
+              <img
+                className='nav-current-user-icon'
+                src={'https://robohash.org/' + currentUser.id + '?bgset=any'}/>
+              <div className='current-user-reputation'>
+                {currentUserReputation}
+              </div>
             </div>
-            <img
-              className='nav-current-user-icon'
-              src={'https://robohash.org/' + currentUser.id + '?bgset=any'}/>
-            <div className='current-user-reputation'>
-              {currentUserReputation}
-            </div>
-          </div>
-        </li>
-      );
+          </li>
+        );
+      } else {
+        return (
+          <li>
+            <ul className='base'>
+              <li>
+                <div onClick={this.handleLoginClick}>
+                  Log in
+                </div>
+              </li>
+              <li>
+                <div onClick={this.handleSignupClick}>
+                  Sign up
+                </div>
+              </li>
+            </ul>
+          </li>
+        );
+      }
     }
   },
   handleSearchChange: function(e) {
-    console.log('onChange');
     this.setState({ query: e.currentTarget.value });
   },
   handleSearchKeyDown: function(e) {
-    console.log('onKeyDown');
     if (e.keyCode === 13) {
       var path = '/search/' + this.state.query;
       this.state.query = '';
@@ -70,13 +103,40 @@ var NavBar = React.createClass({
       hashHistory.push(path);
     }
   },
+  handleModalTabClick: function(tab) {
+    this.setState({ modalActiveTab: tab });
+  },
+  resetModal: function() {
+    this.state.modalActiveTab = 'Log In';
+    CurrentUserActions.toggleSignupModalOn();
+  },
   render: function() {
-    var currentUser = this.state.currentUser;
+    var currentUser = this.state.currentUser, currentUserDisplayName,
+        currentUserReputation, unreadNotifications, notifications;
     if (!currentUser) {
       return <div />;
     }
-    var currentUserDisplayName = currentUser.display_name;
-    var currentUserReputation = currentUser.reputation;
+
+    if (currentUser.id) {
+      currentUserDisplayName = currentUser.display_name;
+      currentUserReputation = currentUser.reputation;
+      unreadNotifications = currentUser.notifications.filter(function(item) {
+        return item.unread;
+      }).length;
+
+      notifications = (
+        <NavNotifications
+          unreadCount={unreadNotifications}
+          toggleDisplay={this.toggleNotifications}
+          currentPath={this.props.location.pathname}
+          items={currentUser.notifications} />
+      );
+    } else {
+      notifications = (
+        <NavNotifications notAuthenticated={true} />
+      );
+    }
+
     var NavHeaderLinks = HEADERS.map(function(name) {
       return (
         <NavHeaderLink
@@ -86,20 +146,22 @@ var NavBar = React.createClass({
           currentPath={this.props.location.pathname} />);
     }.bind(this));
 
-    var unreadNotifications = currentUser.notifications.filter(function(item) {
-      return item.unread;
-    }).length;
+    var signupModal;
+    if (this.state.signupModalOn && !this.state.currentUser.id) {
+      signupModal = (
+        <AuthModal
+          resetModal={this.resetModal}
+          handleModalTabClick={this.handleModalTabClick}
+          active={this.state.modalActiveTab}
+          {...this.state.signupModalOn} />);
+    }
 
     return (
-      <div>
+      <div className='application-container'>
         <div className='nav-container'>
           <div className='main-content group'>
             <ul className='nav-left-container base'>
-              <NavNotifications
-                unreadCount={unreadNotifications}
-                toggleDisplay={this.toggleNotifications}
-                currentPath={this.props.location.pathname}
-                items={currentUser.notifications} />
+              {notifications}
             </ul>
             <ul className='nav-right-container base'>
               {this.renderCurrentUser()}
@@ -133,6 +195,7 @@ var NavBar = React.createClass({
         <main id='main-panel' className='main-content group'>
           {this.props.children}
         </main>
+        {signupModal}
       </div>
     );
   }

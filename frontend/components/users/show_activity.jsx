@@ -45,7 +45,7 @@ var UserShowActivity = React.createClass({
           tabShift='left'
           links={USER_SHOW_ACTIVITY_TABS}
           active={this.props.active}
-          handleSortChange={this.handleSortChange}/>
+          handleSortChange={this.handleSortChange} />
         {this.renderMain()}
       </div>
     );

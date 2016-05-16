@@ -10,7 +10,6 @@ module.exports = {
     });
   },
   receiveCurrentUserUpdateStatusOK: function(currentUser) {
-    debugger
     AppDispatcher.dispatch({
       action: currentUser,
       actionType: CurrentUserConstants.RECEIVED_CURRENT_USER_UPDATE_STATUS_OK
@@ -29,6 +28,12 @@ module.exports = {
   resetUpdateSubmissionStatus: function() {
     AppDispatcher.dispatch({
       actionType: CurrentUserConstants.RESET_UPDATE_SUBMISSION_STATUS
+    });
+  },
+  toggleSignupModalOn: function(warning) {
+    AppDispatcher.dispatch({
+      action: warning,
+      actionType: CurrentUserConstants.TOGGLE_SIGNUP_MODAL_ON
     });
   }
 };

@@ -14,7 +14,7 @@ var ShowProfileTopTags = React.createClass({
     if (this.props.tags.length === 0) {
       return (
         <div className='user-show-profile-top-tags-main-inactive'>
-          This user has not yet posted any questions or answers.
+          This user has not posted any tagged questions or answers.
         </div>
       );
     }

@@ -114,7 +114,6 @@ var UserShow = React.createClass({
     return adjustedUserShowSortTypes;
   },
   render: function() {
-    var userInfo;
     if (!this.state.currentUser || !this.state.user) {
       return <div />;
     } else if (this.state.tab === 'Edit Profile Settings' &&
@@ -122,7 +121,12 @@ var UserShow = React.createClass({
       return <NotFound />;
     }
 
-    if (this.state.tab === 'Activity') {
+
+    var displayLogout, userInfo;
+    if (this.state.tab === 'Profile' && this.state.currentUser.id === this.state.user.id) {
+      displayLogout = true;
+    }
+    else if (this.state.tab === 'Activity') {
       userInfo = {
         id: this.state.user.id,
         displayName: this.state.user.display_name
@@ -131,6 +135,7 @@ var UserShow = React.createClass({
     return (
       <div className='user-show-container'>
         <SortNav
+          displayLogout={displayLogout}
           userInfo={userInfo}
           tabShift='left'
           links={this.handleUserShowSortTypes()}

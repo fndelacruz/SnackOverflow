@@ -1,7 +1,12 @@
 var React = require('react');
 var hashHistory = require('react-router').hashHistory;
+var ApiUtil = require('../../util/api_util');
 
 var SortNav = React.createClass({
+  handleLogout: function() {
+    ApiUtil.destroySession();
+    hashHistory.push('/');
+  },
   render: function() {
     var liLinks = this.props.links.map(function(link) {
       var className = 'sort-nav';
@@ -25,11 +30,17 @@ var SortNav = React.createClass({
       ulClass = 'nav-right-container';
     }
 
-    var userInfo;
-    if (this.props.userInfo && this.props.userInfo.displayName) {
+    var rightContainer;
+    if (this.props.displayLogout) {
+      rightContainer = (
+        <div className='sort-nav-right-container'>
+          <button onClick={this.handleLogout}>Log out</button>
+        </div>
+      );
+    } else if (this.props.userInfo && this.props.userInfo.displayName) {
       var userPath = '/users/' + this.props.userInfo.id;
-      userInfo = (
-        <div className='sort-nav-user-container'>
+      rightContainer = (
+        <div className='sort-nav-right-container'>
           <span className='sort-nav-user-display-name'>
             {this.props.userInfo.displayName}
           </span>
@@ -47,7 +58,7 @@ var SortNav = React.createClass({
         <ul className={ulClass}>
           {liLinks}
         </ul>
-        {userInfo}
+        {rightContainer}
       </div>
     );
   }

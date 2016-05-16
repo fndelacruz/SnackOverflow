@@ -13,7 +13,7 @@ class Api::QuestionsController < ApplicationController
     @question = Question.show_find(params[:id])
 
     if @question
-      View.create!(user: current_user, viewable: @question)
+      View.create!(user: current_user, viewable: @question) if current_user
 
       @users = User.find_with_reputation_hash(parse_question_user_ids(@question))
     end

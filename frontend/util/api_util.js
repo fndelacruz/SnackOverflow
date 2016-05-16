@@ -6,6 +6,15 @@ var TagActions = require('../actions/tag');
 var BadgeActions = require('../actions/badge');
 var SearchActions = require('../actions/search');
 var hashHistory = require('react-router').hashHistory;
+var CurrentUserStore = require('../stores/current_user');
+
+function requireCurrentUser(callback) {
+  if (CurrentUserStore.fetch().id) {
+    callback();
+  } else {
+    CurrentUserActions.toggleSignupModalOn(true);
+  }
+}
 
 module.exports = {
   // GETs
@@ -195,6 +204,55 @@ module.exports = {
   },
 
   // POST and DELETE
+  createUser: function(userInfo) {
+    var data = {
+      '[user][display_name]': userInfo.displayName,
+      '[user][email]': userInfo.email,
+      '[user][password]': userInfo.password,
+    };
+    $.ajax({
+      method: 'POST',
+      url: '/api/users',
+      data: data,
+      dataType: 'json',
+      success: function(user) {
+        CurrentUserActions.receiveCurrentUser(user);
+        CurrentUserActions.toggleSignupModalOn();
+      },
+      error: function(obj) {
+        CurrentUserActions.receiveCurrentUser(JSON.parse(obj.responseText));
+      }
+    });
+  },
+  createSession: function(userInfo) {
+    var data = {
+      '[user][email]': userInfo.email,
+      '[user][password]': userInfo.password,
+    };
+    $.ajax({
+      method: 'POST',
+      url: '/api/session',
+      data: data,
+      dataType: 'json',
+      success: function(user) {
+        CurrentUserActions.receiveCurrentUser(user);
+        CurrentUserActions.toggleSignupModalOn();
+      },
+      error: function(obj) {
+        CurrentUserActions.receiveCurrentUser(JSON.parse(obj.responseText));
+      }
+    });
+  },
+  destroySession: function() {
+    $.ajax({
+      method: 'DELETE',
+      url: '/api/session',
+      success: CurrentUserActions.receiveCurrentUser,
+      error: function() {
+        debugger
+      }
+    });
+  },
   createTag: function(tag) {
     var data = {
       '[tag][name]': tag.tagString,
@@ -212,7 +270,7 @@ module.exports = {
     });
   },
   createVote: function(vote) {
-    $.ajax({
+    requireCurrentUser($.ajax.bind(null, {
       method: 'POST',
       url: '/api/votes',
       data: vote,
@@ -221,7 +279,7 @@ module.exports = {
       error: function() {
         debugger
       }
-    });
+    }));
   },
   destroyVote: function(voteId) {
     $.ajax({
@@ -235,7 +293,7 @@ module.exports = {
     });
   },
   createFavorite: function(questionId) {
-    $.ajax({
+    requireCurrentUser($.ajax.bind(null, {
       method: 'POST',
       url: '/api/favorites',
       data: { 'favorite[question_id]': questionId },
@@ -244,7 +302,7 @@ module.exports = {
       error: function() {
         debugger
       }
-    });
+    }));
   },
   destroyFavorite: function(favoriteId) {
     $.ajax({
@@ -258,7 +316,7 @@ module.exports = {
     });
   },
   createComment: function(comment, callback) {
-    $.ajax({
+    requireCurrentUser($.ajax.bind(null, {
       method: 'POST',
       url: '/api/comments',
       data: comment,
@@ -270,7 +328,7 @@ module.exports = {
       error: function() {
         debugger
       }
-    });
+    }));
   },
   destroyComment: function(commentId) {
     $.ajax({
@@ -289,7 +347,7 @@ module.exports = {
       '[question][content]': question.content,
       '[question][tag_names]': question.tags
     };
-    $.ajax({
+    requireCurrentUser($.ajax.bind(null, {
       method: 'POST',
       url: 'api/questions',
       data: data,
@@ -301,10 +359,10 @@ module.exports = {
       error: function() {
         debugger
       }
-    });
+    }));
   },
   createAnswer: function(answer, callback) {
-    $.ajax({
+    requireCurrentUser($.ajax.bind(null, {
       method: 'POST',
       url: '/api/answers',
       data: answer,
@@ -316,7 +374,7 @@ module.exports = {
       error: function() {
         debugger
       }
-    });
+    }));
   },
   destroyQuestion: function(questionId, callback) {
     $.ajax({

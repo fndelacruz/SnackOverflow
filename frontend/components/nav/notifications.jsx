@@ -1,6 +1,7 @@
 var React = require('react');
 var hashHistory = require('react-router').hashHistory;
 var ApiUtil = require('../../util/api_util');
+var CurrentUserActions = require('../../actions/current_user');
 
 var NavNotifications = React.createClass({
   getInitialState: function() {
@@ -20,6 +21,19 @@ var NavNotifications = React.createClass({
     setTimeout(hashHistory.push.bind(null, path), 0);
   },
   render: function() {
+    if (this.props.notAuthenticated) {
+      return (
+        <li
+          className='nav-tab-off'
+          id='notifications-container'>
+          <div
+            onClick={CurrentUserActions.toggleSignupModalOn.bind(null, true)}
+            className='notifications-tab'>
+            ✉
+          </div>
+        </li>
+      );
+    }
     var notificationItems = this.props.items.map(function(item) {
       var itemContentEl, key = 'notification-' + item.category  + '-'+ item.id,
           itemClassName = 'notification-item', itemContent = item.content,
@@ -78,7 +92,6 @@ var NavNotifications = React.createClass({
       );
       notificationsTabClass += ' notifications-tab-unread';
     }
-    console.log(this.state.notificationsOn);
     return (
       <li
         className={notificationsContainerClass}
