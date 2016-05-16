@@ -10,7 +10,7 @@ var BadgeStub = React.createClass({
     }
   },
   render: function() {
-    var className = 'badge-stub-container + badge-stub-' + this.props.badge.rank;
+    var className = 'no-highlight badge-stub-container badge-stub-' + this.props.badge.rank;
     var title = this.props.badge.rank + ' badge: ' + this.props.badge.description;
     var badgeDisplayName;
     if (this.props.badge.category === 'Tag') {

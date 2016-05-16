@@ -24,12 +24,6 @@ var AuthModal = React.createClass({
   },
   onChange: function() {
     var currentUser = CurrentUserStore.fetch();
-    // if (currentUser.id) {
-    //   this.setState({ authStatus: true });
-    // } else {
-    //   // TODO: instead of setting false, may set this to an array of errors,
-    //   this.setState({ authStatus: false });
-    // }
     if (currentUser.errors) {
       this.setState({ errors: currentUser.errors });
     }
@@ -70,7 +64,7 @@ var AuthModal = React.createClass({
   },
   render: function() {
     var displayNameInput, footer, displayNamePlaceholder, emailPlaceholder,
-      passwordPlaceholder, warning;
+      passwordPlaceholder, warning, authFormErrorsHeader;
     if (this.props.active === 'Sign Up') {
       displayNamePlaceholder = 'Zero Cool';
       emailPlaceholder = 'user@email.net';
@@ -87,6 +81,7 @@ var AuthModal = React.createClass({
             value={this.state.displayName} />
         </div>
       );
+      authFormErrorsHeader = 'Sign Up failed.';
     } else {
       if (this.props.warning) {
         warning = (
@@ -114,6 +109,21 @@ var AuthModal = React.createClass({
       );
     }
 
+    var errors;
+    if (this.state.errors.length) {
+      errors = (
+        <div className='auth-form-errors'>
+          <div className='auth-form-errors-header'>
+            {authFormErrorsHeader}
+          </div>
+          <ul>
+            {this.state.errors.map(function(error, idx){
+              return (<li key={'error-' + idx}>{error + '.'}</li>);
+            })}
+          </ul>
+        </div>
+      );
+    }
     return (
       <div className='authentication-modal'>
         <div
@@ -127,7 +137,6 @@ var AuthModal = React.createClass({
             active={this.props.active}
             handleSortChange={this.handleModalTabClick} />
           <div className='auth-form-container'>
-            {displayNameInput}
             <div className='auth-form-group'>
               <div className='auth-form-label'>
                 Email
@@ -138,12 +147,13 @@ var AuthModal = React.createClass({
                 onChange={this.handleChange.bind(this, 'email')}
                 value={this.state.email} />
             </div>
+            {displayNameInput}
             <div className='auth-form-group'>
               <div className='auth-form-label'>
                 Password
               </div>
               <input
-                type='text'
+                type='password'
                 placeholder={passwordPlaceholder}
                 onChange={this.handleChange.bind(this, 'password')}
                 value={this.state.password} />
@@ -151,11 +161,7 @@ var AuthModal = React.createClass({
             <button onClick={this.handleSubmit}>
               {this.props.active === 'Sign Up' ? 'Sign up' : 'Log in'}
             </button>
-            <ul className='auth-form-errors'>
-              {this.state.errors.map(function(error, idx){
-                return (<li key={'error-' + idx}>{error + '.'}</li>);
-              })}
-            </ul>
+            {errors}
             {footer}
           </div>
         </div>

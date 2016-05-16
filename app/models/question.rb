@@ -127,11 +127,6 @@ class Question < ActiveRecord::Base
 
   def remove_favorite(user)
     favorite = Favorite.find_by_user_id_and_question_id(user, id)
-    if favorite
-      favorite.destroy
-    else
-      debugger
-      # TODO: handle favorite not found
-    end
+    favorite.destroy if favorite
   end
 end

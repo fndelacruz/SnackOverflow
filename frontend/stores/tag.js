@@ -44,10 +44,6 @@ TagStore.all = function() {
     case 'name':
       Util.sortBy(_tags, 'name');
       break;
-    // TODO: Revisit this in future versions
-    // case 'new':
-    //   Util.sortBy(_tags, 'created_at');
-    //   break;
   }
   if (_searchTerm.length) {
     return _tags.filter(function(tag) {

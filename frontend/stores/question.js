@@ -87,22 +87,11 @@ QuestionStore.allQuestions = function() {
   }
 
   switch (_questionSortBy) {
-    // TODO: DRY this enumeration of sort types. combine with the array literal
-    // QuestionIndexItem. move to util constants?
     case 'newest':
       Util.sortBy(questions, 'created_at', true);
       break;
-    case 'featured':
-      console.error('TODO');
-      break;
-    case 'frequent':
-      console.error('TODO');
-      break;
     case 'votes':
       Util.sortBy(questions, 'vote_count', true);
-      break;
-    case 'active':
-      console.error('TODO');
       break;
     case 'views':
       Util.sortBy(questions, 'view_count', true);
@@ -170,10 +159,6 @@ var _sortAnswersBy = 'votes';
 
 function changeAnswerSort(sortAnswersBy) {
   _sortAnswersBy = sortAnswersBy;
-}
-
-function sortAnswersByActive(answers) {
-  alert('TODO sortAnswersByActive');
 }
 
 QuestionStore.getAnswerSortBy = function() {

@@ -1,6 +1,5 @@
 class Api::QuestionsController < ApplicationController
   def index
-    # TODO: implement pagination
     @questions = Question.index_all
     question_user_ids = @questions.map(&:user_id)
     answer_user_ids = @questions.map { |question| question.answers }.flatten

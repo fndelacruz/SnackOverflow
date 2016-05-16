@@ -84,9 +84,6 @@ var ShowItem = React.createClass({ // used for question show and answers index i
         case 'Answer':
           this.setState({ editToggle: true });
           break;
-        default:
-          alert('TODO handleToolClick edit');
-          break;
       }
     } else if (toolType === 'delete') {
       if (itemType === 'Question') {
@@ -160,6 +157,12 @@ var ShowItem = React.createClass({ // used for question show and answers index i
         </div>
       );
     }
+
+    var commentable = {
+      type: this.props.type,
+      id: this.props.item.id
+    };
+
     return (
       <div className={rootClassName} id={id}>
         <div className='question-show-item-sidebar'>
@@ -209,7 +212,7 @@ var ShowItem = React.createClass({ // used for question show and answers index i
           <CommentsIndex
             comments={item.comments}
             handleVote={this.props.handleVote}/>
-          <CommentsForm type={this.props.type} id={this.props.item.id} />
+          <CommentsForm commentable={commentable} />
         </div>
       </div>
     );

@@ -5,22 +5,26 @@ $notifications-background: #F2F1EF;
   position: relative;
 }
 
-.nav-tab-on#notifications-container {
+.nav-tab-on {
   background: $notifications-background;
   color: $notifications-primary;
 }
 
-.nav-tab-on#notifications-container:hover {
+.nav-tab-on:hover {
   background: $notifications-background;
 }
 
-#notifications-container .notifications-tab {
+.notifications-tab {
   font-size: 29px;
   padding: 0 5px;
   color: #888;
 }
 
-#notifications-container .notifications-tab-unread {
+.notifications-tab:hover {
+  background: #2C3E50;
+}
+
+.notifications-tab-unread {
   color: #26A65B;
 }
 

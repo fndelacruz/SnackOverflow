@@ -23,7 +23,10 @@
 
 .auth-warning-container {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  padding: 10px 0;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
 .auth-warning-header {
@@ -46,8 +49,12 @@
 }
 
 .auth-form-errors {
-  margin: 20px 0;
+  margin-top: 20px;
   color: #CF000F;
+}
+
+.auth-form-errors-header {
+  font-weight: 700;
 }
 
 .auth-form-errors li {
@@ -57,6 +64,9 @@
 .auth-footer {
   margin-top: 20px;
   text-align: center;
+  padding: 5px 0;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
 .auth-footer div {

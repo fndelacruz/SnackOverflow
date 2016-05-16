@@ -81,13 +81,7 @@ var ShowActivitySummaryItem = React.createClass({
         }.bind(this)));
       case 'Tags':
         return (items.slice(0,10).map(function(item) {
-          // TODO: handleClick as search query
-          return (
-            <ShowActivityTagItem
-              key={'tag-' + item.name}
-              handleClick={function() {alert('TODO handleTagClick');}}
-              {...item} />
-          );
+          return (<ShowActivityTagItem key={'tag-' + item.name} {...item} />);
         }));
       case 'Badges':
         switch (this.state.subTab) {
@@ -102,11 +96,8 @@ var ShowActivitySummaryItem = React.createClass({
             break;
         }
         return (items.slice(0,10).map(function(item) {
-          // TODO: handleClick as search query
           var key = 'badge-' + item.name + '-rank-' + item.rank;
-          return (
-            <ShowActivityBadgeItem key={key} badge={item} />
-          );
+          return (<ShowActivityBadgeItem key={key} badge={item} />);
         }));
       case 'Votes Cast':
         var byType = (

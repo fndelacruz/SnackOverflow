@@ -39,7 +39,6 @@ var UsersIndexItem = React.createClass({
         footer = this.handleTagList();
         break;
       case 'new users':
-        // TODO: pre-footer should be created_at_words (actually, score in past days...)
         prefooter = (<div>{'joined ' + user.created_at.toLocaleString()}</div>);
         footer = this.handleTagList();
         break;

@@ -58,6 +58,18 @@ var ShowProfileTopTags = React.createClass({
     );
   },
   render: function() {
+    var footer;
+    if (this.props.tags.length) {
+      footer = (
+        <div className='user-show-profile-main-footer'>
+          <span
+            onClick={this.props.handleViewMoreClick.bind(null, 'tags')}
+            className='link'>
+            View all tags →
+          </span>
+        </div>
+      );
+    }
     return (
       <div className='user-show-profile-top-tags'>
         <div className='user-show-common-header'>
@@ -66,16 +78,8 @@ var ShowProfileTopTags = React.createClass({
             {this.props.tags.length}
           </span>
         </div>
-
         {this.renderTopTags()}
-
-        <div className='user-show-profile-main-footer'>
-          <span
-            onClick={this.props.handleViewMoreClick.bind(null, 'tags')}
-            className='link'>
-            View all tags →
-          </span>
-        </div>
+        {footer}
       </div>
     );
   }

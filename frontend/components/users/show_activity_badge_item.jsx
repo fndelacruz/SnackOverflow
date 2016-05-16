@@ -14,8 +14,7 @@ var ShowActivityBadgeItem = React.createClass({
     return (
       <div
         className='show-activity-badge-item-container'
-        key={'tag-' + badge.name}
-        handleClick={function() {alert('TODO handleBadgeClick');}}>
+        key={'tag-' + badge.name}>
         <BadgeStub badge={badge} />
         {multipler}
       </div>

@@ -58,9 +58,6 @@ var QuestionsForm = React.createClass({
       case 'content':
         this.setState ({ content: e.currentTarget.value });
         break;
-      case 'tags':
-        alert('TODO handleChange tags');
-        break;
     }
   },
   handleSubmit: function() {
@@ -141,7 +138,6 @@ var QuestionsForm = React.createClass({
     }.bind(this));
   },
   handleAddTagClick: function(tagName) {
-    console.log('handleAddTagClick');
     this.state.tags.push(tagName);
     this.setState({ tagString: ''});
     document.getElementById('question-form-tags-input').focus();

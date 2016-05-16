@@ -99,6 +99,7 @@ var ShowProfileTopPosts = React.createClass({
     );
   },
   render: function() {
+    var miniNavs;
     return (
       <div className='user-show-profile-top-posts'>
         <div className='user-show-common-header'>

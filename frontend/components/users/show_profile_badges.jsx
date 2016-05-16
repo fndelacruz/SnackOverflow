@@ -68,6 +68,19 @@ var ShowProfileBadges = React.createClass({
     for (var badge in this.props.badges) {
       badgeCount += this.props.badges[badge].count;
     }
+
+    var footer;
+    if (badgeCount) {
+      footer = (
+        <div className='user-show-profile-main-footer'>
+          <span
+            onClick={this.props.handleViewMoreClick.bind(null, 'badges')}
+            className='link'>
+            View all badges →
+          </span>
+        </div>
+      );
+    }
     return (
       <div
         className='user-show-profile-badges'
@@ -83,13 +96,7 @@ var ShowProfileBadges = React.createClass({
         <div className='user-show-profile-badges-element-container-container'>
           {this.renderBadgeRanks()}
         </div>
-        <div className='user-show-profile-main-footer'>
-          <span
-            onClick={this.props.handleViewMoreClick.bind(null, 'badges')}
-            className='link'>
-            View all badges →
-          </span>
-        </div>
+        {footer}
       </div>
     );
   }

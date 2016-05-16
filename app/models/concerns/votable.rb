@@ -27,9 +27,7 @@ module Votable
     end
   end
 
-  # TODO: remove user argument after implementing current_user
   def cancel_vote(user)
-    # TODO: validation for vote existence
     votes.find_by_user_id(user.id).destroy
   end
 

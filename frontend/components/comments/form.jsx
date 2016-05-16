@@ -7,10 +7,9 @@ var CommentsForm = React.createClass({
   },
   handleSubmit: function() {
     if (this.state.content.length) {
-      // alert('TODO handleSubmit comment');
       ApiUtil.createComment({
-        'comment[commentable_type]': this.props.type,
-        'comment[commentable_id]': this.props.id,
+        'comment[commentable_type]': this.props.commentable.type,
+        'comment[commentable_id]': this.props.commentable.id,
         'comment[content]': this.state.content
       }, this.resetCommentForm);
     }
@@ -22,9 +21,11 @@ var CommentsForm = React.createClass({
     if (this.state.hidden) {
       this.setState({ hidden: false });
       setTimeout(function() {
-        var textareas = document.getElementsByClassName('comments-form-content');
-        textareas[0].focus();
-      },0);
+        var id = 'comment-form-' + this.props.commentable.type + '-' +
+            this.props.commentable.id;
+        var textarea = document.getElementById(id);
+        textarea.focus();
+      }.bind(this), 0);
     } else {
       this.setState({ hidden: true });
     }
@@ -41,12 +42,14 @@ var CommentsForm = React.createClass({
     if (this.state.hidden) {
       submissionContainerClass += ' hidden';
     }
+    var id = 'comment-form-' + this.props.commentable.type + '-' +
+        this.props.commentable.id;
     return (
       <div className='comments-form-container'>
         <div className='comments-form-display-toggle-container'>
           <span
             onClick={this.toggleCommentFormDisplay}
-            className='comments-form-display-toggle'>
+            className='comments-form-display-toggle no-highlight'>
             add a comment
           </span>
         </div>
@@ -54,11 +57,12 @@ var CommentsForm = React.createClass({
           <textarea
             value={this.state.content}
             onChange={this.handleChange}
+            id={id}
             className='comments-form-content' />
           <button
             onClick={this.handleSubmit}
             className={buttonClass}>
-          Post
+            Post
           </button>
         </div>
       </div>

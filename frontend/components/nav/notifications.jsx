@@ -83,7 +83,7 @@ var NavNotifications = React.createClass({
     }
 
     var unreadNotificationsString;
-    var notificationsTabClass = 'notifications-tab';
+    var notificationsTabClass = 'notifications-tab no-highlight';
     if (this.props.unreadCount) {
       unreadNotificationsString = (
         <div className='notification-dropdown-unread-count'>

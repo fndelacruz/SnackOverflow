@@ -137,7 +137,7 @@ var NavBar = React.createClass({
       );
     }
 
-    var NavHeaderLinks = HEADERS.map(function(name) {
+    var navHeaderLinks = HEADERS.map(function(name) {
       return (
         <NavHeaderLink
           key={'header-' + name}
@@ -160,7 +160,7 @@ var NavBar = React.createClass({
       <div className='application-container'>
         <div className='nav-container'>
           <div className='main-content group'>
-            <ul className='nav-left-container base'>
+            <ul className='nav-left-container'>
               {notifications}
             </ul>
             <ul className='nav-right-container base'>
@@ -188,7 +188,7 @@ var NavBar = React.createClass({
             </li>
           </ul>
           <ul className='nav-right-container base'>
-            {NavHeaderLinks}
+            {navHeaderLinks}
           </ul>
         </div>
 
