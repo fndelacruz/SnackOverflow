@@ -1,163 +1,126 @@
 class Scraper
-  attr_reader :question_titles, :question_content_elements,
-    :answer_content_elements, :comment_content_elements, :tag_names,
-    :tag_description_elements, :user_bio_elements
+  attr_reader :question_titles, :question_contents, :answer_contents,
+      :comment_contents, :tag_names, :tag_descriptions, :user_bio_contents
 
-  def initialize(
-      last_question_page_idx=250,
-      base_url="http://cooking.stackexchange.com/"
-    )
-    @last_question_page_idx = last_question_page_idx
-    @base_url = base_url
+  def initialize
+    @api_url = "https://api.stackexchange.com/2.2/"
+    @site_url = "http://cooking.stackexchange.com/"
+    @default_params = {
+      site: "seasonedadvice",
+      order: 'desc',
+      sort: 'activity',
+      pagesize: 100,
+      key: ENV['STACK_APPS_API_KEY']
+    }
     @question_titles = []
-    @question_ids = []
-    @question_content_elements = []
-    @answer_content_elements = []
-    @comment_content_elements = []
+    @question_contents = []
+    @answer_contents = []
+    @comment_contents = []
     @tag_names = []
-    @tag_description_elements = []
-    @user_ids = []
-    @user_bio_elements = []
+    @tag_descriptions = []
+    @user_bio_contents = []
   end
 
   def scrape
-    scrape_question_index
-    scrape_question_shows
+    fetch_questions
+    fetch_answers
+    fetch_comments
+    fetch_users
     scrape_tags_index
-    scrape_users_index
-    scrape_user_shows
-    cleanup
   end
 
   private
 
-  def cleanup
-    @question_titles = @question_titles.sample(500)
-    @question_content_elements = @question_content_elements.sample(500)
-    @answer_content_elements = @answer_content_elements.sample(500)
-    @comment_content_elements = @comment_content_elements.sample(500)
-    @question_ids = nil
-    @user_ids = nil
-  end
-
-  def scrape_question_index
-    @last_question_page_idx.downto(1).each do |i|
-      puts "parsing questions index page##{i}"
-      url = "#{@base_url}/questions?page=#{i}&sort=newest"
-      parse_page = Nokogiri::HTML(HTTParty.get(url))
-
-      # get question titles
-      parse_page.css(".question-hyperlink").each do |title_element|
-        # gsub removes title meta content like '[duplicate]', etc.
-        @question_titles << title_element.text.gsub(/ \[.+\]$/, '')
-      end
-
-      # get question ids
-      parse_page.css(".question-summary").each do |id_element|
-        @question_ids << id_element.attributes['id'].value.match(/(\d+)$/)
-          .captures[0]
+  def fetch_questions(max_page=10)
+    params = @default_params.merge(
+      filter: '!1hKclsMnzebK' # includes: .items, question.body, question.title
+    )
+    (1..max_page).each do |i|
+      puts "Questions: parsing page##{i}"
+      params[:page] = i
+      url = @api_url + 'questions?' + parameterize(params)
+      json = HTTParty.get(url)
+      json['items'].each do |item|
+        @question_titles << parse_html_chars(item['title'])
+        @question_contents << parse_body(item['body'])
       end
     end
   end
 
-  def scrape_question_shows
-    question_ids = @question_ids.sample(500)
-
-    puts "Starting scraping of #{question_ids.length} questions."
-    question_ids.each_with_index do |id, idx|
-      puts "Scraping question #{idx} of #{question_ids.length}. question##{id}"
-      url = "#{@base_url}/questions/#{id}"
-      parsed_question_show_page = Nokogiri::HTML(HTTParty.get(url))
-
-      scrapable_question_elements = parsed_question_show_page
-        .css('#question .post-text')[0].children
-        .reject { |el| el.is_a?(Nokogiri::XML::Text) }
-      scrape_elements(scrapable_question_elements, :question)
-
-      parsed_question_show_page.css('.answercell .post-text').each do |answer_el|
-        scrapable_answer_elements = answer_el.children
-          .reject { |el| el.is_a?(Nokogiri::XML::Text) }
-        scrape_elements(scrapable_answer_elements, :answer)
+  def fetch_answers(max_page=10)
+    params = @default_params.merge(
+      filter: '!VYNqt6k_i' # includes: .items, answer.body
+    )
+    (1..max_page).each do |i|
+      puts "Answers: parsing page##{i}"
+      params[:page] = i
+      url = @api_url + 'answers?' + parameterize(params)
+      json = HTTParty.get(url)
+      json['items'].each do |item|
+        @answer_contents << parse_body(item['body'])
       end
-
-      comments = parsed_question_show_page.css('.comment-copy').map(&:text)
-      @comment_content_elements.concat(comments)
     end
   end
 
-  def scrape_elements(elements, category)
-    case category
-    when :question
-      collection = @question_content_elements
-    when :answer
-      collection = @answer_content_elements
-    when :user
-      collection = @user_bio_elements
-    end
-
-    puts "parsing #{category}"
-    elements.each do |el|
-      puts "parsing #{el.name} element"
-      case el.name
-      when "p", "blockquote", "h1", "h2", "h3", "h4", "h5", "h6"
-        next if el.text.match(/Apparently, this user prefers to keep an air of mystery about them./)
-        collection << el.text.strip
-      when "ul", "ol", "pre"
-        el.text.split("\n").reject(&:empty?)
-          .each { |el| collection << el.strip}
-      when "hr", "br", "a", "b", "i", "code", "sup", "img", "sub", "div"
-        next
-      else
-        next
+  def fetch_comments(max_page=10)
+    params = @default_params.merge(
+      sort: 'creation',
+      filter: '!VYNqt8)cB' # includes: .items, comment.body
+    )
+    (1..max_page).each do |i|
+      puts "Comments: parsing page##{i}"
+      params[:page] = i
+      url = @api_url + 'comments?' + parameterize(params)
+      json = HTTParty.get(url)
+      json['items'].each do |item|
+        @comment_contents << parse_body(item['body'])
       end
     end
+  end
+
+  def fetch_users(max_page=10)
+    params = @default_params.merge(
+      sort: 'reputation',
+      filter: '!VYNqt(G2S' # includes: .items, user.about_me
+    )
+    (1..max_page).each do |i|
+      puts "Users: parsing page##{i}"
+      params[:page] = i
+      url = @api_url + 'users?' + parameterize(params)
+      json = HTTParty.get(url)
+      json['items'].each do |item|
+        if item['about_me']
+          about_me = parse_body(item['about_me'])
+          @user_bio_contents << about_me if about_me.length > 0
+        end
+      end
+    end
+  end
+
+  def parameterize(params)
+    params.to_a.map { |pair| "#{pair[0]}=#{pair[1]}" }.join('&')
+  end
+
+  def parse_body(body)
+    parse_html_chars(strip_tags(body).gsub(/\s+/, ' ').strip)
+  end
+
+  def parse_html_chars(string)
+    string.gsub(/&#39;/, "'").gsub(/&quot;/, "\"").gsub(/&amp;/, "&")
   end
 
   def scrape_tags_index
     puts "parsing tags index"
     23.downto(1).each do |i|
       puts "parsing tags index page##{i}"
-      url = "#{@base_url}/tags?page=#{i}&tab=popular"
+      url = "#{@site_url}/tags?page=#{i}&tab=popular"
       parse_page = Nokogiri::HTML(HTTParty.get(url))
 
       # get tag_names
       @tag_names.concat(parse_page.css(".post-tag").map(&:text))
 
       # get tag_descriptions
-      @tag_description_elements.concat(parse_page.css(".excerpt").map(&:text))
-    end
-  end
-
-  def scrape_users_index
-    puts "parsing users index"
-    200.downto(1).each do |i|
-      puts "parsing users index page##{i}"
-      url = "#{@base_url}/users?page=#{i}&tab=reputation&filter=month"
-      parse_page = Nokogiri::HTML(HTTParty.get(url))
-
-      # get user_ids
-      el = parse_page.css(".user-details a").map do |el|
-        @user_ids << el.attributes["href"].value.match(/\A\/users\/(\d+)/)[1]
-      end
-    end
-  end
-
-  def scrape_user_shows
-    user_ids = @user_ids.sample(500)
-
-    puts "Starting scraping of #{user_ids.length} users."
-    user_ids.each_with_index do |id, idx|
-      puts "Scraping user #{idx} of #{user_ids.length}. user##{id}"
-      url = "#{@base_url}/users/#{id}"
-      parsed_user_show_page = Nokogiri::HTML(HTTParty.get(url))
-
-      user_bio_element = parsed_user_show_page.css('.bio')[0]
-
-      if user_bio_element
-        scrapable_user_elements = user_bio_element.children
-          .reject { |el| el.is_a?(Nokogiri::XML::Text) }
-        scrape_elements(scrapable_user_elements, :user)
-      end
+      @tag_descriptions.concat(parse_page.css(".excerpt").map(&:text))
     end
   end
 end

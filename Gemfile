@@ -24,13 +24,13 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
 
-# Use Unicorn as the app server
-# gem 'unicorn'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 gem 'ffaker'
 gem 'active_record_union'
+
+gem 'figaro'
 
 # for scraping content for markov based seed generator
 gem 'httparty'

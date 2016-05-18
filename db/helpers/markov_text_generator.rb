@@ -97,6 +97,7 @@ class MarkovTextGenerator
     if @input.is_a?(Array)
       word_soup = @input
     else
+      debugger
       word_soup = File.readlines(@input).map(&:chomp)
     end
 

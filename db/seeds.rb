@@ -3,6 +3,8 @@ require_relative './helpers/markov_question_title_generator'
 require_relative './helpers/markov_text_generator'
 require_relative './helpers/scraper'
 
+include ActionView::Helpers::SanitizeHelper
+
 create_nontag_badges!
 
 ann = User.create!(
