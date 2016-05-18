@@ -33,7 +33,7 @@ class Answer < ActiveRecord::Base
     Answer.includes(:associated_tags, :votes)
       .select("answers.*, questions.title AS title")
       .joins(:question)
-      .where("lower(answers.content) like :query", query: "%#{query}%")
+      .where("lower(answers.content) like :query", query: "%#{query.downcase}%")
 
   end
 end

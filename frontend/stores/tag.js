@@ -29,7 +29,7 @@ function resetTagSort(sortBy) {
 }
 
 function resetTagSearchTerm(searchTerm) {
-  _searchTerm = searchTerm;
+  _searchTerm = searchTerm.trim().toLowerCase();
 }
 
 TagStore.getIndexLoaded = function() {

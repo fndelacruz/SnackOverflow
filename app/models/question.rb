@@ -39,7 +39,7 @@ class Question < ActiveRecord::Base
   def self.search(query)
     Question.includes(:associated_tags, :votes, :views, :answers)
         .where("lower(content) like :query OR lower(title) like :query",
-        query: "%#{query}%")
+        query: "%#{query.downcase}%")
   end
 
   def self.with_stats_and_tags_by_user_id(user_id)
