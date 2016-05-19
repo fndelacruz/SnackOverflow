@@ -58,9 +58,9 @@ def random_word
   FFaker::BaconIpsum.word.gsub(/[ \.]/, '-')
 end
 
-def create_random_user!
+def create_random_user!(markov_options)
   if @markov
-    bio = @markov_user_bio_generator.build_element(400, 5)
+    bio = markov_options[:content].build_element(400, 5)
   else
     bio = FFaker::BaconIpsum.sentences(rand(15)).join(' ')
   end
@@ -79,12 +79,18 @@ end
 def create_random_tags!(count)
   if @markov
     tag_names = @scraper.tag_names.sample(count)
+
+    puts "setting up markov_tag_description_generator..."
+    markov_tag_description_generator =
+      MarkovTextGenerator.new(@scraper.tag_descriptions, 6)
+    markov_tag_description_generator.setup
+
     count.times do |idx|
       puts "creating tag ##{idx}"
       begin
         Tag.create!(
-        name: tag_names[idx],
-        description: @markov_tag_description_generator.build_element(200, 30)
+          name: tag_names[idx],
+          description: markov_tag_description_generator.build_element(200, 30)
         )
       rescue => e
         if e.message != 'Validation failed: Name has already been taken'
@@ -93,6 +99,9 @@ def create_random_tags!(count)
         end
       end
     end
+
+    @scraper.tag_names = nil
+    @scraper.tag_descriptions = nil
   else
     count.times do |idx|
       puts "creating tag ##{idx}"
@@ -111,10 +120,10 @@ def create_random_tags!(count)
   end
 end
 
-def create_random_question!
-  if @markov
-    title = @markov_question_title_generator.build_element
-    content = @markov_question_content_generator.build_element(700, 100)
+def create_random_question!(markov_options=nil)
+  if markov_options
+    title = markov_options[:title].build_element
+    content = markov_options[:content].build_element(700, 100)
   else
     title = FFaker::BaconIpsum.sentence
     content = FFaker::BaconIpsum.sentences(rand(15) + 3).join(' ')
@@ -146,9 +155,9 @@ def toggle_random_favorite!
   end
 end
 
-def create_random_answer!
-  if @markov
-    content = @markov_answer_content_generator.build_element(700, 100)
+def create_random_answer!(markov_options=nil)
+  if markov_options
+    content = markov_options[:content].build_element(700, 100)
   else
     content = FFaker::BaconIpsum.sentences(rand(6) + 1).join(' ')
   end
@@ -161,9 +170,9 @@ def create_random_answer!
   )
 end
 
-def create_random_question_comment!
+def create_random_question_comment!(markov_options)
   if @markov
-    content = @markov_comment_content_generator.build_element(500, 50)
+    content = markov_options[:content].build_element(500, 50)
   else
     content = FFaker::BaconIpsum.sentences(rand(2) + 1).join(' ')
   end
@@ -176,9 +185,9 @@ def create_random_question_comment!
   )
 end
 
-def create_random_answer_comment!
+def create_random_answer_comment!(markov_options)
   if @markov
-    content = @markov_comment_content_generator.build_element(500, 50)
+    content = markov_options[:content].build_element(500, 50)
   else
     content = FFaker::BaconIpsum.sentences(rand(2) + 1).join(' ')
   end
@@ -243,7 +252,6 @@ def create_random_view!(viewable)
   )
 end
 
-
 def create_nontag_badges!
   Badge.SCHEMA[:questions][:views].keys.each do |rank|
     Badge.create!(
@@ -300,198 +308,130 @@ def create_nontag_badges!
   # }])
 end
 
-def generate_fixed_content!
-  cal = User.create!(
-    email: 'cal@cal.cal', display_name: 'cal', password: 'calcal',
-    location: random_location
-  )
-  dan = User.create!(
-    email: 'dan@dan.dan', display_name: 'dan', password: 'dandan',
-    location: random_location
-  )
-  edd = User.create!(
-    email: 'edd@edd.edd', display_name: 'edd', password: 'eddedd',
-    location: random_location
-  )
-  fry = User.create!(
-    email: 'fry@fry.fry', display_name: 'fry', password: 'fryfry',
-    location: random_location
-  )
-  guy = User.create!(
-    email: 'guy@guy.guy', display_name: 'guy', password: 'guyguy',
-    location: random_location
-  )
-  hal = User.create!(
-    email: 'hal@hal.hal', display_name: 'hal', password: 'halhal',
-    location: random_location
-  )
-
-  ann_q1 = ann.questions.create!(
-    title: FFaker::BaconIpsum.sentence,
-    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
-    tag_ids: [1, 2]
-  )
-  ann_q2 = ann.questions.create!(
-    title: FFaker::BaconIpsum.sentence,
-    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
-    tag_ids: []
-  )
-  bob_q1 = bob.questions.create!(
-    title: FFaker::BaconIpsum.sentence,
-    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
-    tag_ids: [2, 4]
-  )
-  bob_q2 = bob.questions.create!(
-    title: FFaker::BaconIpsum.sentence,
-    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
-    tag_ids: [1, 4]
-  )
-  bob_q3 = bob.questions.create!(
-    title: FFaker::BaconIpsum.sentence,
-    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
-    tag_ids: [1, 4]
-  )
-  dan_q1 = dan.questions.create!(
-    title: FFaker::BaconIpsum.sentence,
-    content: FFaker::BaconIpsum.sentences(rand(15) + 3).join(' '),
-    tag_ids: [1, 4]
-  )
-
-
-  ann_q1_a1 = ann_q1.answers.create!(user: bob, content: 'Because your parents named you.')
-  ann_q1_a2 = ann_q1.answers.create!(user: bob, content: 'Because it just is.')
-  ann_q1_a3 = ann_q1.answers.create!(user: cal, content: 'hi there.')
-  ann_q1_a4 = ann_q1.answers.create!(user: ann, content: 'Here I answer my own question.')
-  ann_q2.answers.create!(user: bob, content: "My mom's name is Ann.")
-  cal_a1 = ann_q2.answers.create!(user: cal, content: "I know 3 Ann's. It's common!")
-  bob_q1.answers.create!(user: ann, content: "Nope. I don't like it.")
-  bob_q1.answers.create!(user: cal, content: "I like my name better.")
-  bob_q1.answers.create!(user: dan, content: "It's ok.")
-
-  ann_c1 = ann_q1.comments.create!(user: ann, content: 'By the way, hello!' )
-  ann_q1.comments.create!(user: cal, content: 'I think ann is a fine name.' )
-  ann_q1.answers[0].comments.create!(user: ann, content: 'I guess they did.' )
-  cal_a1.comments.create!(user: ann, content: "It's not that common." )
-  cal_a1.comments.create!(user: bob, content: "Yes, it is common." )
-  cal_a1.comments.create!(user: ann, content: "If you say so." )
-
-  ann_q1.comments.create!(user: ann, content: FFaker::BaconIpsum.sentences(rand(5) + 3).join(' ') )
-  ann_q1.comments.create!(user: dan, content: FFaker::BaconIpsum.sentences(rand(5) + 3).join(' ') )
-  ann_q1.comments.create!(user: fry, content: FFaker::BaconIpsum.sentences(rand(5) + 3).join(' ') )
-  ann_q1.comments.create!(user: guy, content: FFaker::BaconIpsum.sentences(rand(5) + 3).join(' ') )
-  ann_q1.comments.create!(user: hal, content: FFaker::BaconIpsum.sentences(rand(5) + 3).join(' ') )
-  ann_q1.comments.create!(user: bob, content: FFaker::BaconIpsum.sentences(rand(5) + 3).join(' ') )
-
-  ann_q1.answers[0].comments.create!(user: guy, content: FFaker::BaconIpsum.sentences(rand(5) + 3).join(' ') )
-  ann_q1.answers[0].comments.create!(user: hal, content: FFaker::BaconIpsum.sentences(rand(5) + 3).join(' ') )
-  ann_q1.answers[0].comments.create!(user: bob, content: FFaker::BaconIpsum.sentences(rand(5) + 3).join(' ') )
-
-  ann_q1.add_favorite(ann)
-  ann_q1.add_favorite(bob)
-  bob_q1.add_favorite(bob)
-  bob_q1.add_favorite(cal)
-  bob_q1.add_favorite(dan)
-
-  ann_q1.upvote(ann)
-  ann_q1.upvote(bob)
-  ann_q1.upvote(cal)
-  ann_q1.downvote(dan)
-  ann_q2.upvote(ann)
-
-  ann_q2.downvote(bob)
-  ann_q2.downvote(cal)
-  ann_q2.downvote(dan)
-  ann_q2.upvote(edd)
-
-  cal_a1.upvote(cal)
-  cal_a1.upvote(bob)
-  cal_a1.upvote(dan)
-
-  ann_q1.comments[2].upvote(ann)
-  ann_q1.comments[2].upvote(bob)
-  ann_q1.comments[2].upvote(cal)
-  ann_q1.comments[2].upvote(dan)
-  ann_q1.comments[2].upvote(edd)
-  ann_q1.comments[2].downvote(fry)
-  ann_q1.comments[2].upvote(guy)
-  ann_q1.comments[3].upvote(ann)
-  ann_q1.comments[3].upvote(cal)
-  ann_q1.comments[3].upvote(guy)
-  ann_q1.comments[4].upvote(bob)
-  ann_q1.comments[4].upvote(dan)
-
-
-  View.create!(viewable: ann_q1, user: ann, created_at: 1.hour.ago, updated_at: 1.hour.ago)
-  View.create!(viewable: ann_q1, user: ann)
-  View.create!(viewable: bob_q3, user: ann)
-  View.create!(viewable: bob_q3, user: bob)
-  View.create!(viewable: bob_q3, user: cal)
-  View.create!(viewable: bob_q2, user: cal)
-  View.create!(viewable: dan_q1, user: ann)
-  View.create!(viewable: dan_q1, user: bob)
-  View.create!(viewable: dan_q1, user: cal)
-  View.create!(viewable: dan_q1, user: dan)
-  View.create!(viewable: dan_q1, user: edd)
-  View.create!(viewable: dan_q1, user: fry)
-  View.create!(viewable: dan_q1, user: guy)
-  View.create!(viewable: dan_q1, user: hal)
-end
-
 def setup_markov_scraper
   @scraper = Scraper.new
   @scraper.scrape
-
-    puts "setting up markov_question_title_generator..."
-  @markov_question_title_generator =
-    MarkovQuestionTitleGenerator.new(@scraper.question_titles)
-  @markov_question_title_generator.setup
-
-
-  puts "setting up markov_question_content_generator..."
-  @markov_question_content_generator =
-    MarkovTextGenerator.new(@scraper.question_contents, 9)
-  @markov_question_content_generator.setup
-
-
-  puts "setting up markov_answer_content_generator..."
-  @markov_answer_content_generator =
-    MarkovTextGenerator.new(@scraper.answer_contents, 9)
-  @markov_answer_content_generator.setup
-
-  puts "setting up markov_comment_content_generator..."
-  @markov_comment_content_generator =
-    MarkovTextGenerator.new(@scraper.comment_contents, 9)
-  @markov_comment_content_generator.setup
-
-  puts "setting up markov_tag_description_generator..."
-  @markov_tag_description_generator =
-    MarkovTextGenerator.new(@scraper.tag_descriptions, 6)
-  @markov_tag_description_generator.setup
-
-  @markov_user_bio_generator =
-    MarkovTextGenerator.new(@scraper.user_bio_contents, 6)
-  @markov_user_bio_generator.setup
 end
 
 def generate_random_content!
   setup_markov_scraper if @markov
 
-  32.times { |i| puts "creating user #{i}"; create_random_user! }
-
-  # NOTE: the following dates as used DO NOT respect reality (ex: a user can
-  # create an answer before joining the site). Will fix this for deployment.
-  # random tag creation
-
+  create_random_users!(32)
   create_random_tags!(60)
+  create_random_questions!(93)
+  create_random_answers!(150)
+  create_random_comments!(175, 400)
 
-  93.times { |i| puts "creating question #{i}"; create_random_question! }
-  150.times { |i| puts "creating answer #{i}"; create_random_answer! }
-  125.times { |i| puts "creating q_comment #{i}"; create_random_question_comment! }
-  400.times { |i| puts "creating a_comment #{i}"; create_random_answer_comment! }
   1000.times { |i| puts "creating q_vote #{i}"; create_random_vote!(random_question) }
   2000.times { |i| puts "creating a_vote #{i}"; create_random_vote!(random_answer) }
   800.times { |i| puts "creating c_vote #{i}"; create_random_vote!(random_comment) }
   500.times { |i| puts "creating q_view #{i}"; create_random_view!(random_question) }
   500.times { |i| puts "creating u_view #{i}"; create_random_view!(random_user) }
   250.times { |i| puts "toggling favorite #{i}"; toggle_random_favorite! }
+end
+
+def create_random_users!(num)
+  if @markov
+    puts "setting up markov_user_bio_generator..."
+    markov_user_bio_generator =
+      MarkovTextGenerator.new(@scraper.user_bio_contents, 9)
+    markov_user_bio_generator.setup
+  end
+
+  num.times do |i|
+    puts "creating user #{i}"
+    if @markov
+      create_random_user!(content: markov_user_bio_generator)
+    else
+      create_random_user!
+    end
+  end
+
+  if @markov
+    @scraper.user_bio_contents = nil
+  end
+end
+
+def create_random_questions!(num)
+  if @markov
+    puts "setting up markov_question_title_generator..."
+    markov_question_title_generator =
+      MarkovQuestionTitleGenerator.new(@scraper.question_titles, 7)
+    markov_question_title_generator.setup
+
+    puts "setting up markov_question_content_generator..."
+    markov_question_content_generator =
+      MarkovTextGenerator.new(@scraper.question_contents, 9)
+    markov_question_content_generator.setup
+  end
+
+  num.times do |i|
+    puts "creating question #{i}"
+    if @markov
+      create_random_question!(
+        title: markov_question_title_generator,
+        content: markov_question_content_generator
+      )
+    else
+      create_random_question!
+    end
+  end
+
+  if @markov
+    @scraper.question_titles = nil
+    @scraper.question_contents = nil
+  end
+end
+
+def create_random_answers!(num)
+  if @markov
+    puts "setting up markov_answer_content_generator..."
+    markov_answer_content_generator =
+      MarkovTextGenerator.new(@scraper.answer_contents, 9)
+    markov_answer_content_generator.setup
+  end
+
+  num.times do |i|
+    puts "creating answer #{i}"
+    if @markov
+      create_random_answer!(content: markov_answer_content_generator)
+    else
+      create_random_answer!
+    end
+  end
+
+  if @markov
+    @scraper.answer_contents = nil
+  end
+end
+
+def create_random_comments!(num_question, num_answer)
+  if @markov
+    puts "setting up markov_comment_content_generator..."
+    markov_comment_content_generator =
+      MarkovTextGenerator.new(@scraper.comment_contents, 9)
+    markov_comment_content_generator.setup
+  end
+
+  num_question.times do |i|
+    puts "creating question comment #{i}"
+    if @markov
+      create_random_question_comment!(content: markov_comment_content_generator)
+    else
+      create_random_question_comment!
+    end
+  end
+
+  num_answer.times do |i|
+    puts "creating answer comment #{i}"
+    if @markov
+      create_random_answer_comment!(content: markov_comment_content_generator)
+    else
+      create_random_answer_comment!
+    end
+  end
+
+  if @markov
+    @scraper.comment_contents = nil
+  end
 end

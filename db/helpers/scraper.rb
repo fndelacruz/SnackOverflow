@@ -1,5 +1,5 @@
 class Scraper
-  attr_reader :question_titles, :question_contents, :answer_contents,
+  attr_accessor :question_titles, :question_contents, :answer_contents,
       :comment_contents, :tag_names, :tag_descriptions, :user_bio_contents
 
   def initialize
@@ -27,11 +27,24 @@ class Scraper
     fetch_comments
     fetch_users
     scrape_tags_index
+
+    # NOTE: cull_content used to reduce scraped elements to reduce memory foot-
+    # print for heroku deployment. Alternatively, could scrape less pages to
+    # begin with, but I prefer to have more randomness in site content by
+    # taking samples from a larger pool.
+    cull_content
   end
 
   private
 
-  def fetch_questions(max_page=10)
+  def cull_content
+    @question_titles = @question_titles.sample 1000
+    @question_contents = @question_contents.sample 600
+    @answer_contents = @answer_contents.sample 600
+    @comment_contents = @comment_contents.sample 600
+  end
+
+  def fetch_questions(max_page=20)
     params = @default_params.merge(
       filter: '!1hKclsMnzebK' # includes: .items, question.body, question.title
     )
@@ -47,7 +60,7 @@ class Scraper
     end
   end
 
-  def fetch_answers(max_page=10)
+  def fetch_answers(max_page=20)
     params = @default_params.merge(
       filter: '!VYNqt6k_i' # includes: .items, answer.body
     )
@@ -62,7 +75,7 @@ class Scraper
     end
   end
 
-  def fetch_comments(max_page=10)
+  def fetch_comments(max_page=20)
     params = @default_params.merge(
       sort: 'creation',
       filter: '!VYNqt8)cB' # includes: .items, comment.body
@@ -78,7 +91,7 @@ class Scraper
     end
   end
 
-  def fetch_users(max_page=10)
+  def fetch_users(max_page=20)
     params = @default_params.merge(
       sort: 'reputation',
       filter: '!VYNqt(G2S' # includes: .items, user.about_me

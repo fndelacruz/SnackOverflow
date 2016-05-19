@@ -4,17 +4,14 @@ class MarkovTextGenerator
   def initialize(input, order=8)
     @input = input
     @order = order
-    @raw_counts = Hash.new { |hash, key| hash[key] = 0 }
-    @counts_grouped = Hash.new { |hash, key| hash[key] = {} }
-    @probabilities = Hash.new { |hash, key| hash[key] = {} }
     @table = Hash.new { |hash, key| hash[key] = {} }
   end
 
   def setup(slurp=false)
-    populate_counts(slurp)
-    get_unique_starts
-    calculate_probabilities
-    create_table
+    raw_counts = populate_counts(slurp)
+    counts_grouped = get_unique_starts(raw_counts)
+    probabilities = calculate_probabilities(counts_grouped)
+    create_table(probabilities)
     nil
   end
 
@@ -72,8 +69,8 @@ class MarkovTextGenerator
     debugger
   end
 
-  def create_table
-    @probabilities.each do |source, sinks|
+  def create_table(probabilities)
+    probabilities.each do |source, sinks|
       sinks_arr = sinks.to_a
       sinks_arr.each_with_index do |sink, idx|
         sink_char = sink[0]
@@ -87,9 +84,9 @@ class MarkovTextGenerator
     end
   end
 
-  def count_transitions(word_soup)
+  def count_transitions(word_soup, raw_counts)
     (@order...word_soup.length).each do |i|
-      @raw_counts[{ word_soup[(i - @order)...i] => word_soup[i] }] += 1
+      raw_counts[{ word_soup[(i - @order)...i] => word_soup[i] }] += 1
     end
   end
 
@@ -97,35 +94,40 @@ class MarkovTextGenerator
     if @input.is_a?(Array)
       word_soup = @input
     else
-      debugger
       word_soup = File.readlines(@input).map(&:chomp)
     end
 
+    raw_counts = Hash.new { |hash, key| hash[key] = 0 }
     if slurp
       word_soup = word_soup.select { |line| line != "" }.join(" ")
       count_transitions(word_soup)
     else
-      word_soup.each { |line| count_transitions(line) }
+      word_soup.each { |line| count_transitions(line, raw_counts) }
     end
+    raw_counts
   end
 
-  def get_unique_starts
-    @raw_counts.each do |hash|
+  def get_unique_starts(raw_counts)
+    counts_grouped = Hash.new { |hash, key| hash[key] = {} }
+    raw_counts.each do |hash|
       transition = hash[0]
       count = hash[1]
       source = transition.keys[0]
       sink = transition.values[0]
-      @counts_grouped[source][sink] = count
+      counts_grouped[source][sink] = count
     end
+    counts_grouped
   end
 
-  def calculate_probabilities
-    @counts_grouped.each do |source, sink_hash|
+  def calculate_probabilities(counts_grouped)
+    probabilities = Hash.new { |hash, key| hash[key] = {} }
+    counts_grouped.each do |source, sink_hash|
       total = sink_hash.values.inject(0) { |sum, num| sum += num }.to_f
       sink_hash.each do |sink, count|
-        @probabilities[source][sink] = count / total
+        probabilities[source][sink] = count / total
       end
     end
+    probabilities
   end
 
   def random_capitalized_element
