@@ -1,6 +1,6 @@
 # SnackOverflow
 
-[Live!][live]
+[Live on Heroku!][live]
 
 ## Summary
 
