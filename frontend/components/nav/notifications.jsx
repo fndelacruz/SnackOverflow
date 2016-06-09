@@ -105,9 +105,6 @@ var NavNotifications = React.createClass({
               NOTIFICATIONS
             </div>
             {unreadNotificationsString}
-            <div className='notification-dropdown-view-more link'>
-              view all →
-            </div>
           </div>
           <ul className='notification-items-container'>
             {notificationItems}
