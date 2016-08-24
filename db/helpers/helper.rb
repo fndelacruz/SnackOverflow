@@ -58,7 +58,7 @@ def random_word
   FFaker::BaconIpsum.word.gsub(/[ \.]/, '-')
 end
 
-def create_random_user!(markov_options)
+def create_random_user!(markov_options=nil)
   if @markov
     bio = markov_options[:content].build_element(400, 5)
   else
@@ -170,7 +170,7 @@ def create_random_answer!(markov_options=nil)
   )
 end
 
-def create_random_question_comment!(markov_options)
+def create_random_question_comment!(markov_options=nil)
   if @markov
     content = markov_options[:content].build_element(500, 50)
   else
@@ -185,7 +185,7 @@ def create_random_question_comment!(markov_options)
   )
 end
 
-def create_random_answer_comment!(markov_options)
+def create_random_answer_comment!(markov_options={})
   if @markov
     content = markov_options[:content].build_element(500, 50)
   else
