@@ -60,6 +60,7 @@ class User < ActiveRecord::Base
   has_many :received_question_votes, through: :questions, source: :votes
 
   def self.find_with_reputation(user_id=nil)
+    # NOTE: user_id may be an integer or array
     users = User.find_by_sql [<<-SQL, user_id: user_id]
       SELECT
         users.*,
@@ -87,6 +88,9 @@ class User < ActiveRecord::Base
   end
 
   def self.find_with_reputation_hash(user_ids)
+    # immediately return empty hash if no user_ids
+    return {} if user_ids.empty?
+
     users_hash = {}
     self.find_with_reputation(user_ids).each do |user|
       users_hash[user.id] = user
