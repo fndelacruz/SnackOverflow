@@ -170,6 +170,8 @@ module UserSQLHelper
   end
 
   def parse_user_tags(user_id, user_tags)
+    return [] if user_tags.empty?
+
     user_tags[0].tags = []
     users = [user_tags[0]]
 
