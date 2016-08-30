@@ -61,6 +61,77 @@ feature "user authentication" do
         end
       end
 
+      feature "with invalid user credentials" do
+        after(:each) do
+          expect(page).to have_content "Log in"
+          expect(page).to have_css "#nav-log-in"
+          expect(page).to have_css ".auth-form-errors"
+          within(".auth-form-errors") do
+            expect(page).to have_content "Sign Up failed."
+          end
+        end
+
+        feature "with blank email" do
+          scenario "user can't sign up and sees relevant error msg" do
+            within(".authentication-modal") do
+              fill_in "auth-email", with: ""
+              fill_in "auth-display-name", with: "ZeroCool"
+              fill_in "auth-password", with: "hunter2"
+              find("button").click
+            end
+
+            within(".auth-form-errors") do
+              expect(page).to have_content "Email can't be blank."
+            end
+          end
+        end
+
+        feature "with email already registered" do
+          scenario "user can't sign up and sees relevant error msg" do
+            within(".authentication-modal") do
+              fill_in "auth-email", with: "test@user.com"
+              fill_in "auth-display-name", with: "ZeroCool"
+              fill_in "auth-password", with: "hunter2"
+              find("button").click
+            end
+
+            within(".auth-form-errors") do
+              expect(page).to have_content "Email has already been taken."
+            end
+          end
+        end
+
+        feature "with blank display name" do
+          scenario "user can't sign up and sees relevant error msg" do
+            within(".authentication-modal") do
+              fill_in "auth-email", with: "test@user.com"
+              fill_in "auth-display-name", with: ""
+              fill_in "auth-password", with: "hunter2"
+              find("button").click
+            end
+
+            within(".auth-form-errors") do
+              expect(page).to have_content "Display name can't be blank."
+            end
+          end
+        end
+
+        feature "with short password (<6 characters)" do
+          scenario "user can't sign up and sees relevant error msg" do
+            within(".authentication-modal") do
+              fill_in "auth-email", with: "test@user.com"
+              fill_in "auth-display-name", with: "ZeroCool"
+              fill_in "auth-password", with: ""
+              find("button").click
+            end
+
+            within(".auth-form-errors") do
+              expect(page).to have_content "Password is too short (minimum is 6 characters)."
+            end
+          end
+        end
+      end
+
       scenario "user can switch to Log in mode" do
         within("#auth-submit") { expect(page).to have_content("Sign up") }
         within(".authentication-modal") { find("li", text: "Log In").click }
