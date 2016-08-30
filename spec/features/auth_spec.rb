@@ -4,8 +4,10 @@ require "rails_helper"
 # one test to use selenium/javascript properly
 
 Capybara.default_driver = :selenium
+DatabaseCleaner.strategy = :truncation
 
 feature "user authentication" do
+  after(:all) { DatabaseCleaner.clean }
   before(:each) { visit("/") }
 
   feature "when first visit app" do
