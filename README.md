@@ -55,11 +55,25 @@ Optionally, seed data may be purely randomly generated using the FFaker gem by
 setting @markov to false in [seeds.rb][seeds]. This seeding option is faster and
 handy when debugging issues unrelated to seed data.
 
+## RSpec/Capybara tests
+
+Since the included tests use selenium-webdriver, you must have Firefox 45.0esr
+or [47.0.1][firefox47] installed.
+
+To run tests, do:
+
+```
+bundle install
+npm install
+bundle exec rspec --color --format documentation
+```
+
 ## To do:
 
 * Tag favorites/ignores to filter logged-in users questions' feed
 * Make search engine more robust to handle several search conditions
 * Log in using gmail, facebook (OAuth)
 
+[firefox47]: https://ftp.mozilla.org/pub/firefox/releases/47.0.1/
 [live]: http://www.snackoverflow.xyz
 [seeds]: https://github.com/fndelacruz/SnackOverflow/blob/master/db/seeds.rb

@@ -39,6 +39,16 @@ gem 'nokogiri'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+
+  # RSpec/Capybara testing with selenium
+  gem 'capybara'
+  gem 'selenium-webdriver', '2.53.4'
+  gem 'rspec-rails'
+  gem 'launchy'
+end
+
+group :test do
+  gem 'database_cleaner'
 end
 
 group :development do

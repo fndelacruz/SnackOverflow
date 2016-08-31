@@ -77,12 +77,12 @@ var NavBar = React.createClass({
           <li>
             <ul className='base'>
               <li>
-                <div onClick={this.handleLoginClick}>
+                <div onClick={this.handleLoginClick} id="nav-log-in">
                   Log in
                 </div>
               </li>
               <li>
-                <div onClick={this.handleSignupClick}>
+                <div onClick={this.handleSignupClick} id="nav-sign-up">
                   Sign up
                 </div>
               </li>

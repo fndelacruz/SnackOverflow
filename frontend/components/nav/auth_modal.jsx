@@ -78,7 +78,8 @@ var AuthModal = React.createClass({
             type='text'
             placeholder={displayNamePlaceholder}
             onChange={this.handleChange.bind(this, 'displayName')}
-            value={this.state.displayName} />
+            value={this.state.displayName}
+            id="auth-display-name" />
         </div>
       );
       authFormErrorsHeader = 'Sign Up failed.';
@@ -145,7 +146,8 @@ var AuthModal = React.createClass({
                 type='text'
                 placeholder={emailPlaceholder}
                 onChange={this.handleChange.bind(this, 'email')}
-                value={this.state.email} />
+                value={this.state.email}
+                id="auth-email" />
             </div>
             {displayNameInput}
             <div className='auth-form-group'>
@@ -156,9 +158,10 @@ var AuthModal = React.createClass({
                 type='password'
                 placeholder={passwordPlaceholder}
                 onChange={this.handleChange.bind(this, 'password')}
-                value={this.state.password} />
+                value={this.state.password}
+                id="auth-password" />
             </div>
-            <button onClick={this.handleSubmit}>
+            <button onClick={this.handleSubmit} id="auth-submit">
               {this.props.active === 'Sign Up' ? 'Sign up' : 'Log in'}
             </button>
             {errors}
