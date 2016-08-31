@@ -2,6 +2,37 @@
 
 [Live on Heroku!][live]
 
+## Quick Start
+
+```
+bundle install
+npm install
+rake db:reset
+rails s
+```
+
+#### NOTE
+
+By default, seed data is created using data mined from the StackExchange API.
+The first 300 StackExchange API requests are free per day without an API key.
+One `rake db:seed` uses about 85 API requests.
+
+If you will seed more than the allotted free requests, please [sign up for a key][StackExchange-key-signup] and use figaro to register your key:
+
+```
+bundle exec figaro install
+```
+
+This will create a ```config/application.yml``` (which is added to .gitignore)
+where you need to add your key:
+
+```
+STACK_APPS_API_KEY: "YOUR_KEY_HERE"
+```
+
+Alternatively, if you don't want to use seeds with StackExchange data, edit
+`seeds.rb` to set `@markov = false`. This will generate seeds using Ffaker.
+
 ## Summary
 
 SnackOverflow is a single-page, food-themed Q&A web application inspired by
@@ -74,6 +105,7 @@ bundle exec rspec --color --format documentation
 * Make search engine more robust to handle several search conditions
 * Log in using gmail, facebook (OAuth)
 
+[StackExchange-key-signup]: http://stackapps.com/apps/oauth/register
 [firefox47]: https://ftp.mozilla.org/pub/firefox/releases/47.0.1/
 [live]: http://www.snackoverflow.xyz
 [seeds]: https://github.com/fndelacruz/SnackOverflow/blob/master/db/seeds.rb
