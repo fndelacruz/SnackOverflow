@@ -15,7 +15,8 @@
 class Comment < ActiveRecord::Base
   include Votable
 
-  validates :user, :commentable, :content, presence: true
+  validates :user_id, :commentable_id, :commentable_type, :content, presence: true
+  validates :commentable_type, inclusion: ["Question", "Answer"]
 
   belongs_to :user
   belongs_to :commentable, polymorphic: true
