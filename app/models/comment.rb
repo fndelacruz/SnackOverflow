@@ -9,7 +9,7 @@
 #  content          :text             not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  unread           :boolean          default("true")
+#  unread           :boolean          default(TRUE)
 #
 
 class Comment < ActiveRecord::Base

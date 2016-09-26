@@ -54,4 +54,15 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Allow calling of FactoryGirl methods without prefix, ex:
+  # FactoryGirl.build(:user) becomes build(:user)
+  config.include FactoryGirl::Syntax::Methods
+end
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
 end
