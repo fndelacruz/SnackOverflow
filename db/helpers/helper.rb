@@ -44,9 +44,9 @@ end
 
 def random_vote(votable)
   if rand < 0.5
-    votable.upvote!(random_user, random_time_ago)
+    votable.upvote(random_user, random_time_ago)
   else
-    votable.downvote!(random_user, random_time_ago)
+    votable.downvote(random_user, random_time_ago)
   end
 end
 
