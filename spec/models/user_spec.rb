@@ -133,69 +133,72 @@ RSpec.describe User, type: :model do
           it { expect(rep).to eq(0) }
         end
 
-        context "with 1 question" do
-          let(:question) { create(:question, user: users[0])}
+        [:question, :answer, :comment].each do |votable_sym|
+          context "with 1 #{votable_sym}" do
+            let(:votable) { create(votable_sym, user: users[0])}
 
-          context "with no votes" do
-            it { expect(rep).to eq(0) }
-          end
+            context "with no votes" do
+              it { expect(rep).to eq(0) }
+            end
 
-          context "with 1 upvote" do
-            before { create(:upvote, votable: question, user: users[1]) }
-            it { expect(rep).to eq(rep_scheme[:question][:up] * 1) }
-          end
+            context "with 1 upvote" do
+              before { create(:upvote, votable: votable, user: users[1]) }
+              it { expect(rep).to eq(rep_scheme[votable_sym][:up] * 1) }
+            end
 
-          context "with 3 upvotes" do
-            before do
-              3.times do |i|
-                create(:upvote, votable: question, user: users[i + 1])
+            context "with 3 upvotes" do
+              before do
+                3.times do |i|
+                  create(:upvote, votable: votable, user: users[i + 1])
+                end
               end
+              it { expect(rep).to eq(rep_scheme[votable_sym][:up] * 3) }
             end
-            it { expect(rep).to eq(rep_scheme[:question][:up] * 3) }
-          end
 
-          context "with 1 downvote" do
-            before { create(:downvote, votable: question, user: users[1]) }
-            it { expect(rep).to eq(rep_scheme[:question][:down] * 1) }
-          end
+            context "with 1 downvote" do
+              before { create(:downvote, votable: votable, user: users[1]) }
+              it { expect(rep).to eq(rep_scheme[votable_sym][:down] * 1) }
+            end
 
-          context "with 3 downvotes" do
-            before do
-              3.times do |i|
-                create(:downvote, votable: question, user: users[i + 1])
+            context "with 3 downvotes" do
+              before do
+                3.times do |i|
+                  create(:downvote, votable: votable, user: users[i + 1])
+                end
               end
+              it { expect(rep).to eq(rep_scheme[votable_sym][:down] * 3) }
             end
-            it { expect(rep).to eq(rep_scheme[:question][:down] * 3) }
-          end
 
-          context "with 1 downvote and 1 upvote" do
-            before do
-              create(:upvote, votable: question, user: users[1])
-              create(:downvote, votable: question, user: users[2])
-            end
-            it { expect(rep).to eq(rep_scheme[:question][:up] * 1 + rep_scheme[:question][:down] * 1) }
-          end
-
-          context "with 1 downvote and 3 upvotes" do
-            before do
-              3.times do |i|
-                create(:upvote, votable: question, user: users[i + 1])
+            context "with 1 downvote and 1 upvote" do
+              before do
+                create(:upvote, votable: votable, user: users[1])
+                create(:downvote, votable: votable, user: users[2])
               end
-              create(:downvote, votable: question, user: users.last)
+              it { expect(rep).to eq(rep_scheme[votable_sym][:up] * 1 + rep_scheme[votable_sym][:down] * 1) }
             end
-            it { expect(rep).to eq(rep_scheme[:question][:up] * 3 + rep_scheme[:question][:down] * 1) }
-          end
 
-          context "with 3 downvotes and 1 upvote" do
-            before do
-              3.times do |i|
-                create(:downvote, votable: question, user: users[i + 1])
+            context "with 1 downvote and 3 upvotes" do
+              before do
+                3.times do |i|
+                  create(:upvote, votable: votable, user: users[i + 1])
+                end
+                create(:downvote, votable: votable, user: users.last)
               end
-              create(:upvote, votable: question, user: users.last)
+              it { expect(rep).to eq(rep_scheme[votable_sym][:up] * 3 + rep_scheme[votable_sym][:down] * 1) }
             end
-            it { expect(rep).to eq(rep_scheme[:question][:up] * 1 + rep_scheme[:question][:down] * 3) }
-          end
+
+            context "with 3 downvotes and 1 upvote" do
+              before do
+                3.times do |i|
+                  create(:downvote, votable: votable, user: users[i + 1])
+                end
+                create(:upvote, votable: votable, user: users.last)
+              end
+              it { expect(rep).to eq(rep_scheme[votable_sym][:up] * 1 + rep_scheme[votable_sym][:down] * 3) }
+            end
+          end # context "with 1 votable"
         end
+
       end
     end
   end
