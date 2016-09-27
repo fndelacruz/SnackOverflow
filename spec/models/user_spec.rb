@@ -122,7 +122,7 @@ RSpec.describe User, type: :model do
         let(:rep_scheme) do
           {
             question: { up: 10, down: -4 },
-            answer: { up: 20, down: -4 },
+            answer: { up: 20, down: -4, given_down: -2 },
             comment: { up: 1, down: -1 },
           }
         end
@@ -199,7 +199,24 @@ RSpec.describe User, type: :model do
           end # context "with 1 votable"
         end
 
-      end
+        context "when giving answer downvotes" do
+          let(:question) { create(:question, user: users[1] )}
+
+          [1, 3].each do |num|
+            context "when given #{num}" do
+              let(:answers) do
+                create_list(:answer, num, user: users[2], question: question)
+              end
+              before do
+                num.times do |i|
+                  create(:downvote, user: users[0], votable: answers[i])
+                end
+              end
+              it { expect(rep).to eq(rep_scheme[:answer][:given_down] * num) }
+            end
+          end
+        end
+      end # context "when giving answer downvotes"
     end
   end
 
