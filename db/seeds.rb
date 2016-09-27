@@ -15,5 +15,5 @@ bob = User.create!(
   email: 'bob@bob.bob', display_name: 'bob', password: 'bobbob'
 )
 
-@markov = true
+@markov = false
 generate_random_content!
