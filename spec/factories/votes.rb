@@ -14,11 +14,14 @@
 
 FactoryGirl.define do
   # default vote is on a question and is an upvote (value = 1)
-  factory :vote do
+  factory :vote, aliases: [:upvote] do
     value 1
     created_at { Time.now }
     updated_at { Time.now }
     association :user
     association :votable, factory: :question
+    factory :downvote do
+      value -1
+    end
   end
 end
