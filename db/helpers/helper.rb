@@ -42,11 +42,11 @@ def random_tags
   tag_ids.sample(rand(6))
 end
 
-def random_vote(item)
+def random_vote(votable)
   if rand < 0.5
-    item.upvote(random_user, random_time_ago)
+    votable.upvote!(random_user, random_time_ago)
   else
-    item.downvote(random_user, random_time_ago)
+    votable.downvote!(random_user, random_time_ago)
   end
 end
 

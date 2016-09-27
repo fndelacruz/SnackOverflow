@@ -221,6 +221,20 @@ class User < ActiveRecord::Base
     session_token
   end
 
+  def reputation
+    Vote.reputations_for_user_id(id).reduce(0) do |sum, vote|
+      sum + vote.reputation
+    end
+  end
+
+  def upvote!(votable)
+    votable.upvote!
+  end
+
+  def downvote!(votable)
+    votable.downvote!
+  end
+
   def to_s
     display_name
   end
