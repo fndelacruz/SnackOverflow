@@ -15,11 +15,10 @@
 FactoryGirl.define do
   # default comment is on Question id=1
   factory :comment do
-    user_id 1
-    commentable_id 1
-    commentable_type "Question"
     content { FFaker::BaconIpsum.sentences(rand(2) + 1).join(' ') }
     created_at { Time.now }
     updated_at { Time.now }
+    association :user
+    association :commentable, factory: :question
   end
 end

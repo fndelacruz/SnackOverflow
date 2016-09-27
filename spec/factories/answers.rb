@@ -13,10 +13,10 @@
 
 FactoryGirl.define do
   factory :answer do
-    user_id 1
-    question_id 1
     content { FFaker::BaconIpsum.sentences(rand(6) + 1).join(' ') }
     created_at { Time.now }
     updated_at { Time.now }
+    association :user
+    association :question
   end
 end
