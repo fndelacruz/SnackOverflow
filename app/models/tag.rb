@@ -58,8 +58,6 @@ class Tag < ActiveRecord::Base
     ])
   end
 
-  private
-
   def snake_case_to_camel_space(string)
     words = string.split('_')
     words.map { |word| word.capitalize }.join(' ')

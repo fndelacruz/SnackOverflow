@@ -9,10 +9,11 @@
 #  updated_at  :datetime         not null
 #
 
-class Tagging < ActiveRecord::Base
-  validates :question, :tag, presence: true
-  validates :question_id,
-    uniqueness: { scope: :tag_id, message: "already has this Tag" }
-  belongs_to :question
-  belongs_to :tag
+FactoryGirl.define do
+  factory :tagging do
+    created_at { Time.now }
+    updated_at { Time.now }
+    association :question
+    association :tag
+  end
 end
