@@ -61,7 +61,6 @@ RSpec.describe User, type: :model do
       it { expect(user).to respond_to(:is_password?) }
       it { expect(user).to respond_to(:reset_session_token!) }
       it { expect(user).to respond_to(:to_s) }
-      it { expect(user).to respond_to(:reputation) }
       it { expect(user).to respond_to(:upvote!) }
       it { expect(user).to respond_to(:downvote!) }
     end
@@ -116,107 +115,6 @@ RSpec.describe User, type: :model do
           expect(user.to_s).to eq(user.display_name)
         end
       end
-
-      describe "#reputation" do
-        # from USER::REPUTATION_SCHEME
-        let(:rep_scheme) do
-          {
-            question: { up: 10, down: -4 },
-            answer: { up: 20, down: -4, given_down: -2 },
-            comment: { up: 1, down: -1 },
-          }
-        end
-        let(:users) { create_list(:user, 5) }
-        let(:rep) { users.first.reputation }
-
-        context "with brand new user" do
-          it { expect(rep).to eq(0) }
-        end
-
-        [:question, :answer, :comment].each do |votable_sym|
-          context "with 1 #{votable_sym}" do
-            let(:votable) { create(votable_sym, user: users[0])}
-
-            context "with no votes" do
-              it { expect(rep).to eq(0) }
-            end
-
-            context "with 1 upvote" do
-              before { create(:upvote, votable: votable, user: users[1]) }
-              it { expect(rep).to eq(rep_scheme[votable_sym][:up] * 1) }
-            end
-
-            context "with 3 upvotes" do
-              before do
-                3.times do |i|
-                  create(:upvote, votable: votable, user: users[i + 1])
-                end
-              end
-              it { expect(rep).to eq(rep_scheme[votable_sym][:up] * 3) }
-            end
-
-            context "with 1 downvote" do
-              before { create(:downvote, votable: votable, user: users[1]) }
-              it { expect(rep).to eq(rep_scheme[votable_sym][:down] * 1) }
-            end
-
-            context "with 3 downvotes" do
-              before do
-                3.times do |i|
-                  create(:downvote, votable: votable, user: users[i + 1])
-                end
-              end
-              it { expect(rep).to eq(rep_scheme[votable_sym][:down] * 3) }
-            end
-
-            context "with 1 downvote and 1 upvote" do
-              before do
-                create(:upvote, votable: votable, user: users[1])
-                create(:downvote, votable: votable, user: users[2])
-              end
-              it { expect(rep).to eq(rep_scheme[votable_sym][:up] * 1 + rep_scheme[votable_sym][:down] * 1) }
-            end
-
-            context "with 1 downvote and 3 upvotes" do
-              before do
-                3.times do |i|
-                  create(:upvote, votable: votable, user: users[i + 1])
-                end
-                create(:downvote, votable: votable, user: users.last)
-              end
-              it { expect(rep).to eq(rep_scheme[votable_sym][:up] * 3 + rep_scheme[votable_sym][:down] * 1) }
-            end
-
-            context "with 3 downvotes and 1 upvote" do
-              before do
-                3.times do |i|
-                  create(:downvote, votable: votable, user: users[i + 1])
-                end
-                create(:upvote, votable: votable, user: users.last)
-              end
-              it { expect(rep).to eq(rep_scheme[votable_sym][:up] * 1 + rep_scheme[votable_sym][:down] * 3) }
-            end
-          end # context "with 1 votable"
-        end
-
-        context "when giving answer downvotes" do
-          let(:question) { create(:question, user: users[1] )}
-
-          [1, 3].each do |num|
-            context "when given #{num}" do
-              let(:answers) do
-                create_list(:answer, num, user: users[2], question: question)
-              end
-              before do
-                num.times do |i|
-                  create(:downvote, user: users[0], votable: answers[i])
-                end
-              end
-              it { expect(rep).to eq(rep_scheme[:answer][:given_down] * num) }
-            end
-          end
-        end
-      end # context "when giving answer downvotes"
     end
   end
 
