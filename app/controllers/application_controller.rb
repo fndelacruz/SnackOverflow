@@ -6,16 +6,17 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def login!(user)
-    session[:session_token] = user.reset_session_token!
+    session[:user_id] = user.id
+    user.updated_at = DateTime.now
   end
 
   def logout!
-    current_user.reset_session_token!
-    session[:session_token] = nil
+    session[:user_id] = nil
   end
 
   def current_user
-    @current_user ||= User.find_by_session_token(session[:session_token])
+    return nil unless session[:user_id]
+    @current_user ||= User.find(session[:user_id])
   end
 
   def require_login

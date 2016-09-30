@@ -6,7 +6,6 @@
 #  email           :string           not null
 #  display_name    :string           not null
 #  password_digest :string           not null
-#  session_token   :string           not null
 #  bio             :text
 #  location        :string
 #  created_at      :datetime         not null
@@ -27,13 +26,10 @@ RSpec.describe User, type: :model do
     it { should validate_presence_of(:email) }
     it { should validate_presence_of(:display_name) }
     it { should validate_presence_of(:password_digest) }
-    it { should validate_presence_of(:session_token) }
 
     # NOTE: TODO: email uniqueness should NOT be case sensitive. add before_save
     # (and before_update ??) callback on user model to #downcase email string!
     it { expect(user).to validate_uniqueness_of(:email) }
-
-    it { expect(user).to validate_uniqueness_of(:session_token) }
 
     # Format validations
     # TODO: add email format validations
@@ -59,7 +55,6 @@ RSpec.describe User, type: :model do
       it { expect(user).to respond_to(:password=) }
       it { expect(user).to respond_to(:password) }
       it { expect(user).to respond_to(:is_password?) }
-      it { expect(user).to respond_to(:reset_session_token!) }
       it { expect(user).to respond_to(:to_s) }
       it { expect(user).to respond_to(:upvote!) }
       it { expect(user).to respond_to(:downvote!) }
@@ -88,25 +83,6 @@ RSpec.describe User, type: :model do
           it "returns false" do
             expect(user.is_password?("passw0rd")).to be false
           end
-        end
-      end
-
-      describe "#reset_session_token!" do
-        context "resets #session_token to a" do
-          it "string 22 characters long" do
-            user.reset_session_token!
-            expect(user.session_token.length).to eq(22)
-          end
-
-          it "different string" do
-            old_session_token = user.session_token
-            user.reset_session_token!
-            expect(user.session_token).to_not eq(old_session_token)
-          end
-        end
-
-        it "returns the user's new session token" do
-          expect(user.reset_session_token!).to eq(user.session_token)
         end
       end
 
