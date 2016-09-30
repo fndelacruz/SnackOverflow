@@ -18,7 +18,7 @@ class Question < ActiveRecord::Base
 
   attr_accessor :tag_names, :matches
 
-  validates :user_id, :title, :content, :created_at, :updated_at, presence: true
+  validates :user_id, :title, :content, presence: true
   # validate tag_ids?
 
   belongs_to :user
