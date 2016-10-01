@@ -221,6 +221,13 @@ button:hover {
   height: 200px;
 }
 
+#item-content-input {
+  margin: 20px 0;
+  padding: 10px;
+  width: 640px;
+  height: 200px;
+}
+
 /* React transitions */
 
 .fade-in-left-out-enter {

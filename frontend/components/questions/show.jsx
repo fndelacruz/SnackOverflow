@@ -110,7 +110,7 @@ var QuestionShow = React.createClass({
       );
     }
     return (
-      <div className='question-show'>
+      <div className='question-show group'>
         <div className='question-show-header'>
           {question.title}
         </div>
