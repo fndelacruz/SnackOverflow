@@ -14,8 +14,6 @@ FactoryGirl.define do
   factory :question do
     title { FFaker::BaconIpsum.sentence }
     content { FFaker::BaconIpsum.sentences(rand(3) + 1).join(' ') }
-    created_at { Time.now }
-    updated_at { Time.now }
     association :user
   end
 end
