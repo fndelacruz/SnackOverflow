@@ -29,6 +29,36 @@ RSpec.describe Tag, type: :model do
     # Associations
     it { should have_many(:taggings) }
     it { should have_many(:questions) }
+    it { should have_many(:badges) }
+  end
+
+  describe "Lifecycle events" do
+    let(:created_tag) { create(:tag) }
+    let(:db_badges_ranks) do
+      Set.new(Badge.where(category: 'Tag', subcategory: tag.name).pluck(:rank))
+    end
+
+    context "After create" do
+      it "generates 3 corresponding badges (bronze, silver, gold)" do
+        expect(Badge.count).to eq(0)
+        created_tag
+        expect(Badge.count).to eq(3)
+        expect(db_badges_ranks).to eq(Set.new(%w(bronze silver gold)))
+      end
+    end
+
+    context "After destroy" do
+      let!(:tag_to_destroy) { create(:tag, name: 'destroy-me') }
+
+      it "destroys the 3 corresponding badges" do
+        created_tag
+        tag_to_destroy
+        expect(Badge.count).to eq(6)
+        tag_to_destroy.destroy
+        expect(Badge.count).to eq(3)
+        expect(Badge.where(name: created_tag.name).count).to eq(3)
+      end
+    end
   end
 
   describe "public instance methods" do
