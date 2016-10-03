@@ -75,11 +75,11 @@ RSpec.describe Tag, type: :model do
       describe "#monthly_question_count" do
         [0, 1, 3].each do |num|
           context "when #{num} questions in the past month with this tag" do
-            let(:questions) { create_list(:question, num, created_at: 30.days.ago) }
+            let(:questions) { create_list(:question, num, created_at: (1.month - 1.hour).ago) }
 
             before(:each) do
               # create decoy questions
-              4.times { create(:tagging, tag: decoy_tag, created_at: 32.days.ago) }
+              4.times { create(:tagging, tag: decoy_tag, created_at: (1.month + 1.day).ago) }
 
               # create satisfying questions
               num.times do |i|
