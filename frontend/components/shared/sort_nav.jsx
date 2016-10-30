@@ -1,6 +1,7 @@
 var React = require('react');
 var hashHistory = require('react-router').hashHistory;
 var ApiUtil = require('../../util/api_util');
+var util = require('../../util/util');
 
 var SortNav = React.createClass({
   handleLogout: function() {
@@ -47,8 +48,7 @@ var SortNav = React.createClass({
           <img
             onClick={hashHistory.push.bind(this, userPath)}
             className='sort-nav-user-icon link'
-            src={'https://robohash.org/' + this.props.userInfo.id +
-              '?bgset=any'} />
+            src={util.avatarSrc(this.props.userInfo.id)} />
         </div>
       );
     }

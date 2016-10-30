@@ -2,6 +2,7 @@ var React = require('react');
 var UserLinkStub = require('./link_stub');
 var hashHistory = require('react-router').hashHistory;
 var TagLinkIndex = require('../tags/tag_link_index');
+var util = require('../../util/util');
 
 function handleAnswerTagsComma(idx) {
   if (idx !== 0) {
@@ -58,7 +59,7 @@ var UsersIndexItem = React.createClass({
           <img
             onClick={this.handleUserClick}
             className='users-index-item-user-pic'
-            src={'https://robohash.org/' + user.id + '?bgset=any'}/>
+            src={util.avatarSrc(user.id)} />
           <div className='link-container'>
             <UserLinkStub {...user} />
           </div>

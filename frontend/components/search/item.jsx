@@ -2,6 +2,7 @@ var React = require('react');
 var TagStubIndex = require('../tags/stub_index');
 var UserLinkStub = require('../users/link_stub');
 var hashHistory = require('react-router').hashHistory;
+var util = require('../../util/util');
 
 var SearchItem = React.createClass({
   handleTitleClick: function() {
@@ -113,7 +114,7 @@ var SearchItem = React.createClass({
                 <img
                   className='question-index-item-user-pic'
                   onClick={this.handleUserClick.bind(null, post.user.id)}
-                  src={'https://robohash.org/' + post.user.id + '?bgset=any'} />
+                  src={util.avatarSrc(post.user.id)} />
                 <div className='question-index-item-user-display-name-container'>
                   <UserLinkStub {...post.user} />
                 </div>

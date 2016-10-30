@@ -3,6 +3,7 @@ var hashHistory = require('react-router').hashHistory;
 var TagStub = require('../tags/stub');
 var TagStubIndex = require('../tags/stub_index');
 var UserLinkStub = require('../users/link_stub');
+var util = require('../../util/util');
 
 function renderTagStubs(questionId, tags) {
   return tags.map(function(tag) {
@@ -84,7 +85,7 @@ QuestionsIndexItem = React.createClass({
                 <img
                   className='question-index-item-user-pic'
                   onClick={this.handleUserClick}
-                  src={'https://robohash.org/' + question.user.id + '?bgset=any'} />
+                  src={util.avatarSrc(question.user.id)} />
                 <div className='question-index-item-user-display-name-container'>
                   <UserLinkStub {...question.user} />
                 </div>

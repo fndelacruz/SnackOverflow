@@ -88,5 +88,13 @@ module.exports = {
         ' with a total score of ' + tag.answer_reputation + '.');
     }
     return title.join(' ');
+  },
+
+  // DRY avatar image src for easier source modification
+  avatarSrc: function(userId) {
+    // NOTE: RoboHash service currenly down, so use Flathash as temp replacement
+    // return 'https://robohash.org/' + userId + '?bgset=any';
+
+    return 'http://flathash.com/' + userId;
   }
 };
