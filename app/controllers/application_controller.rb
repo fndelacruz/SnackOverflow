@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   def login!(user)
     session[:user_id] = user.id
-    user.updated_at = DateTime.now
+    user.update(updated_at: DateTime.now)
   end
 
   def logout!
