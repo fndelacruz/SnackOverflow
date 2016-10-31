@@ -92,9 +92,8 @@ module.exports = {
 
   // DRY avatar image src for easier source modification
   avatarSrc: function(userId) {
-    // NOTE: RoboHash service currenly down, so use Flathash as temp replacement
+    // NOTE: RoboHash service currenly down, so use personally hosted RoboHash
     // return 'https://robohash.org/' + userId + '?bgset=any';
-
-    return 'http://flathash.com/' + userId;
+    return 'https://robohash-temp.herokuapp.com/' + userId + '?bgset=any';
   }
 };
