@@ -5,6 +5,8 @@ some more stuff
 
 ## Quick Start
 
+here's another thing!
+
 ```
 bundle install
 npm install
