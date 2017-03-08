@@ -9,13 +9,14 @@
 #  content          :text             not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  unread           :boolean          default("true")
+#  unread           :boolean          default(TRUE)
 #
 
 class Comment < ActiveRecord::Base
   include Votable
 
-  validates :user, :commentable, :content, presence: true
+  validates :user_id, :commentable_id, :commentable_type, :content, presence: true
+  validates :commentable_type, inclusion: ["Question", "Answer"]
 
   belongs_to :user
   belongs_to :commentable, polymorphic: true

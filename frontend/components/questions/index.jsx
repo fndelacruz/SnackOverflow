@@ -133,7 +133,7 @@ var QuestionsIndex = React.createClass({
       );
     }
     return (
-      <div>
+      <div className='questions-index-container group'>
         <div className='content-double-main'>
           <SortNav
             tabShift='right'

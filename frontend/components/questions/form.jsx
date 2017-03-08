@@ -266,14 +266,14 @@ var QuestionsForm = React.createClass({
               value={this.state.title}
               onFocus={this.handleFocus.bind(this, 'title')}
               onChange={this.handleChange.bind(this, 'title')}
-              className='question-form-title-input' />
+              id='question-form-title-input' />
           </div>
 
           <textarea
             value={this.state.content}
             onFocus={this.handleFocus.bind(this, 'content')}
             onChange={this.handleChange.bind(this, 'content')}
-            className='item-content-input' />
+            id='item-content-input' />
 
           <div className='question-form-tags-container'>
             <div className='question-form-tags-label-and-tags'>

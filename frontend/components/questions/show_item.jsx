@@ -7,6 +7,7 @@ var UserLinkStub = require('../users/link_stub');
 var hashHistory = require('react-router').hashHistory;
 var AnswersEdit = require('../answers/edit');
 var ApiUtil = require('../../util/api_util');
+var util = require('../../util/util');
 
 function voteClass(userVote, type) {
   var className;
@@ -197,7 +198,7 @@ var ShowItem = React.createClass({ // used for question show and answers index i
                 <img
                   className='question-index-item-user-pic'
                   onClick={this.handleUserClick}
-                  src={'https://robohash.org/' + item.user.id + '?bgset=any'} />
+                  src={util.avatarSrc(item.user.id)} />
                 <div className='question-index-item-user-display-name-container'>
                   <UserLinkStub {...item.user} />
                 </div>

@@ -8,7 +8,7 @@
 #  content     :text             not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  unread      :boolean          default("true")
+#  unread      :boolean          default(TRUE)
 #
 
 class Answer < ActiveRecord::Base
@@ -17,11 +17,12 @@ class Answer < ActiveRecord::Base
 
   attr_accessor :matches
 
-  validates :user, :question, :content, presence: true
+  validates :user_id, :question_id, :content, presence: true
 
   belongs_to :user
   belongs_to :question
   has_many :associated_tags, through: :question, source: :associated_tags
+  has_many :tags, through: :question, source: :associated_tags
 
   def self.notifications_for_user_id(user_id)
     Answer.select("answers.*, questions.title, 'Answer' AS category")
@@ -34,6 +35,5 @@ class Answer < ActiveRecord::Base
       .select("answers.*, questions.title AS title")
       .joins(:question)
       .where("lower(answers.content) like :query", query: "%#{query.downcase}%")
-
   end
 end

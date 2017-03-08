@@ -1,4 +1,5 @@
 var React = require('react');
+var util = require('../../util/util');
 
 var ShowProfileHeaderPortrait = React.createClass({
   renderBadge: function(rank, value) {
@@ -42,10 +43,7 @@ var ShowProfileHeaderPortrait = React.createClass({
     return (
       <div className='user-show-profile-header-portrait-container'>
         <div className='user-show-profile-header-portrait-content'>
-          <img
-            className=''
-            src={'https://robohash.org/' + this.props.id + '?bgset=any'}
-            alt='user-pic' />
+          <img className='' src={util.avatarSrc(this.props.id)} alt='user-pic' />
           <div className='user-show-profile-header-portrait-reputation-container'>
             <span className='user-show-profile-header-portrait-reputation-number'>
               {this.props.reputation + ' '}

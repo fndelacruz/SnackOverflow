@@ -1,6 +1,7 @@
 var React = require('react');
 var CurrentUserStore = require('../../stores/current_user');
 var ApiUtil = require('../../util/api_util');
+var util = require('../../util/util');
 var hashHistory = require('react-router').hashHistory;
 var NavHeaderLink = require('./header_link');
 var QuestionStore = require('../../stores/question');
@@ -65,7 +66,7 @@ var NavBar = React.createClass({
               </div>
               <img
                 className='nav-current-user-icon'
-                src={'https://robohash.org/' + currentUser.id + '?bgset=any'}/>
+                src={util.avatarSrc(currentUser.id)} />
               <div className='current-user-reputation'>
                 {currentUserReputation}
               </div>

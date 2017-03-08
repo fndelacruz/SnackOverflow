@@ -88,5 +88,10 @@ module.exports = {
         ' with a total score of ' + tag.answer_reputation + '.');
     }
     return title.join(' ');
+  },
+
+  // DRY avatar image src for easier source modification
+  avatarSrc: function(userId) {
+    return 'https://robohash.org/' + userId + '?bgset=any';
   }
 };

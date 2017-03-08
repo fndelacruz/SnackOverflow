@@ -6,7 +6,6 @@
 #  email           :string           not null
 #  display_name    :string           not null
 #  password_digest :string           not null
-#  session_token   :string           not null
 #  bio             :text
 #  location        :string
 #  created_at      :datetime         not null
@@ -30,11 +29,9 @@ class User < ActiveRecord::Base
   attr_reader :password
   attr_accessor :tags
 
-  validates :email, :display_name, :password_digest, :session_token, presence: true
-  validates :email, :session_token, uniqueness: true
+  validates :email, :display_name, :password_digest, presence: true
+  validates :email, uniqueness: true
   validates :password, length: { minimum: 6, allow_nil: true}
-
-  after_initialize :ensure_session_token!
 
   has_many :questions
   has_many :received_answers, through: :questions, source: :answers
@@ -215,19 +212,15 @@ class User < ActiveRecord::Base
     BCrypt::Password.new(password_digest).is_password?(password)
   end
 
-  def reset_session_token!
-    self.session_token = SecureRandom::urlsafe_base64(16)
-    self.save!
-    session_token
+  def upvote!(votable)
+    votable.upvote!
+  end
+
+  def downvote!(votable)
+    votable.downvote!
   end
 
   def to_s
     display_name
-  end
-
-  private
-
-  def ensure_session_token!
-    self.session_token ||= SecureRandom::urlsafe_base64(16)
   end
 end

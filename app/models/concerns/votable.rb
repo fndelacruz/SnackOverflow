@@ -7,24 +7,13 @@ module Votable
     has_many :votes, as: :votable, dependent: :delete_all
   end
 
-  # TODO: prevent user from upvoting own items
   # NOTE: time argument is only used for seeding
   def upvote(user, time=nil)
-    if time
-      votes.create!(user: user, value: 1, created_at: time, updated_at: time)
-    else
-      votes.create!(user: user, value: 1)
-    end
+    create_vote!(user, 1, time)
   end
 
-  # TODO: prevent user from downvoting own items
-  # NOTE: time argument is only used for seeding
   def downvote(user, time=nil)
-    if time
-      votes.create!(user: user, value: -1, created_at: time, updated_at: time)
-    else
-      votes.create!(user: user, value: -1)
-    end
+    create_vote!(user, -1, time)
   end
 
   def cancel_vote(user)
@@ -63,4 +52,11 @@ module Votable
     votes.find { |vote| vote.user_id == user.id }
   end
 
+  private
+
+  def create_vote!(user, value, time=nil)
+    vote = Vote.new(votable: self, user: user, value: value)
+    vote.assign_attributes(created_at: time, updated_at: time) if time
+    vote.save!
+  end
 end

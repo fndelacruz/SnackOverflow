@@ -1,10 +1,9 @@
 class Api::QuestionsController < ApplicationController
   def index
     @questions = Question.index_all
-    question_user_ids = @questions.map(&:user_id)
-    answer_user_ids = @questions.map { |question| question.answers }.flatten
-      .map { |answer| answer.user_id}
-    user_ids = (question_user_ids + answer_user_ids).uniq
+    question_user_ids = Set.new(Question.pluck("DISTINCT user_id"))
+    answer_user_ids = Set.new(Answer.pluck("DISTINCT user_id"))
+    user_ids = (question_user_ids + answer_user_ids).to_a
     @users = User.find_with_reputation_hash(user_ids)
   end
 

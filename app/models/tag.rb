@@ -14,6 +14,13 @@ class Tag < ActiveRecord::Base
   validates :name, uniqueness: true
   has_many :taggings
   has_many :questions, through: :taggings, source: :question
+
+  has_many :badges, -> { where(category: 'Tag') },
+    class_name: "Badge",
+    foreign_key: :subcategory,
+    primary_key: :name,
+    dependent: :destroy
+
   after_create :generate_tag_badges
 
   def self.index_all
@@ -57,8 +64,6 @@ class Tag < ActiveRecord::Base
       }
     ])
   end
-
-  private
 
   def snake_case_to_camel_space(string)
     words = string.split('_')

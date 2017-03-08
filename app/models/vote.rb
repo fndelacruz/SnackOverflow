@@ -9,13 +9,14 @@
 #  value        :integer          not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  unread       :boolean          default("true")
+#  unread       :boolean          default(TRUE)
 #
 
 class Vote < ActiveRecord::Base
-  validates :user, :votable, presence: true
+  validates :user, :votable, :value, presence: true
   validates :user_id, uniqueness:
     { scope: [:votable_type, :votable_id], message: 'already voted on this!'}
+  validates :votable_type, inclusion: ['Question', 'Answer', 'Comment']
   validates :value, inclusion: [-1, 1]
   belongs_to :user
   belongs_to :votable, polymorphic: true

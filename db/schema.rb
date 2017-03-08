@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160515002409) do
+ActiveRecord::Schema.define(version: 20160930183918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,8 +64,7 @@ ActiveRecord::Schema.define(version: 20160515002409) do
     t.boolean  "unread",           default: true
   end
 
-  add_index "comments", ["commentable_id"], name: "index_comments_on_commentable_id", using: :btree
-  add_index "comments", ["commentable_type"], name: "index_comments_on_commentable_type", using: :btree
+  add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "favorites", force: :cascade do |t|
@@ -111,7 +110,6 @@ ActiveRecord::Schema.define(version: 20160515002409) do
     t.string   "email",           null: false
     t.string   "display_name",    null: false
     t.string   "password_digest", null: false
-    t.string   "session_token",   null: false
     t.text     "bio"
     t.string   "location"
     t.datetime "created_at",      null: false
@@ -119,7 +117,6 @@ ActiveRecord::Schema.define(version: 20160515002409) do
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["session_token"], name: "index_users_on_session_token", unique: true, using: :btree
 
   create_table "views", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -143,8 +140,7 @@ ActiveRecord::Schema.define(version: 20160515002409) do
     t.boolean  "unread",       default: true
   end
 
-  add_index "votes", ["user_id", "votable_type", "votable_id"], name: "index_votes_on_user_id_and_votable_type_and_votable_id", unique: true, using: :btree
-  add_index "votes", ["votable_id"], name: "index_votes_on_votable_id", using: :btree
-  add_index "votes", ["votable_type"], name: "index_votes_on_votable_type", using: :btree
+  add_index "votes", ["user_id", "votable_id", "votable_type"], name: "index_votes_on_user_id_and_votable_id_and_votable_type", using: :btree
+  add_index "votes", ["votable_id", "votable_type"], name: "index_votes_on_votable_id_and_votable_type", using: :btree
 
 end

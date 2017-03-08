@@ -40,15 +40,19 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 
+  gem 'pry-rails'
+
   # RSpec/Capybara testing with selenium
   gem 'capybara'
   gem 'selenium-webdriver', '2.53.4'
   gem 'rspec-rails'
   gem 'launchy'
+  gem 'factory_girl_rails'
 end
 
 group :test do
   gem 'database_cleaner'
+  gem 'shoulda-matchers'
 end
 
 group :development do
@@ -58,7 +62,6 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 
-  gem 'pry-rails'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'annotate'
